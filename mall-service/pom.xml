@@ -44,9 +44,11 @@
       <version>${hutool.version}</version>
     </dependency>
 
+    <!--common-->
     <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-boot-starter</artifactId>
+      <groupId>com.github</groupId>
+      <artifactId>common_utils</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
