@@ -5,6 +5,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>mall-service</module>
+    <module>renren-fast</module>
   </modules>
   <parent>
     <groupId>org.springframework.boot</groupId>
