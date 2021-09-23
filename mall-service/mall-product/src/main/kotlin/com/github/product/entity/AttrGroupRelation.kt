@@ -11,9 +11,9 @@ import java.io.Serializable
 
 /**
  *
- * @author andochiwa
+ * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-23 23:23:54
+ * @date 2021-09-24 00:47:19
  */
 @Table("pms_attr_group_relation")
 @ApiModel
@@ -23,14 +23,18 @@ data class AttrGroupRelation (
 	@Id
 	@get:JvmName("deprecate")
 	var id: Long? = null,
+
 	@ApiModelProperty(value = "属性id")
 	var attrId: Long? = null,
+
 	@ApiModelProperty(value = "属性分组id")
 	var attrGroupId: Long? = null,
+
 	@ApiModelProperty(value = "属性组内排序")
 	var attrSort: Int? = null,
 
-): Serializable, Persistable<Long> {
+
+) : Serializable, Persistable<Long> {
 	@JsonIgnore
 	override fun isNew(): Boolean {
 		return if (id == null) {

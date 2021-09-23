@@ -11,9 +11,9 @@ import java.io.Serializable
 
 /**
  *
- * @author andochiwa
+ * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-23 23:23:54
+ * @date 2021-09-24 00:47:19
  */
 @Table("pms_comment_replay")
 @ApiModel
@@ -23,12 +23,15 @@ data class CommentReplay (
 	@Id
 	@get:JvmName("deprecate")
 	var id: Long? = null,
+
 	@ApiModelProperty(value = "评论id")
 	var commentId: Long? = null,
+
 	@ApiModelProperty(value = "回复id")
 	var replyId: Long? = null,
 
-): Serializable, Persistable<Long> {
+
+) : Serializable, Persistable<Long> {
 	@JsonIgnore
 	override fun isNew(): Boolean {
 		return if (id == null) {

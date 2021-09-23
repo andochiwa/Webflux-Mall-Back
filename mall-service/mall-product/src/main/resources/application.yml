@@ -1,0 +1,15 @@
+server:
+  port: 8001
+spring:
+  r2dbc:
+    url: r2dbcs:mysql://localhost:3306/mall_pms?serverZoneId=Japan&
+    username: root
+    password: root
+    pool:
+      initial-size: 5
+      max-life-time: 5m
+      max-idle-time: 5m
+      max-size: 20
+logging:
+  level:
+    org.springframework.r2dbc: debug

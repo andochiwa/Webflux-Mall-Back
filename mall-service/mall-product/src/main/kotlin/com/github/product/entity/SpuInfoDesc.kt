@@ -11,9 +11,9 @@ import java.io.Serializable
 
 /**
  *
- * @author andochiwa
+ * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-23 23:23:54
+ * @date 2021-09-24 00:47:19
  */
 @Table("pms_spu_info_desc")
 @ApiModel
@@ -23,10 +23,12 @@ data class SpuInfoDesc (
 	@Id
 	@get:JvmName("deprecate")
 	var spuId: Long? = null,
+
 	@ApiModelProperty(value = "商品介绍")
 	var description: String? = null,
 
-): Serializable, Persistable<Long> {
+
+) : Serializable, Persistable<Long> {
 	@JsonIgnore
 	override fun isNew(): Boolean {
 		return if (spuId == null) {
