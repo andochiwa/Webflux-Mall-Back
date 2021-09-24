@@ -2,7 +2,7 @@ server:
   port: 8001
 spring:
   r2dbc:
-    url: r2dbcs:mysql://localhost:3306/mall_pms?serverZoneId=Japan&
+    url: r2dbcs:mysql://localhost:3306/mall_pms?serverZoneId=Japan&useUnicode=true
     username: root
     password: root
     pool:
