@@ -1,5 +1,5 @@
 server:
-  port: 8005
+  port: 14000
 spring:
   r2dbc:
     url: r2dbcs:mysql://localhost:3306/mall_wms?serverZoneId=Japan&useUnicode=true
