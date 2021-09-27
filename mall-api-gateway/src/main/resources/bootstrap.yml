@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        namespace: bfe6115e-a7b7-48dd-9bc4-4cb33f674b86
+        server-addr: localhost:8848
+        file-extension: yaml
+        extension-configs:
+          - data-id: nacos.yml
+            refresh: true
