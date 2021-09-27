@@ -3,3 +3,33 @@ server:
 spring:
   application:
     name: mall-api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: mall-coupon
+          uri: lb://mall-coupon
+          predicates:
+            - Path=/coupon/**
+
+        - id: mall-member
+          uri: lb://mall-member
+          predicates:
+            - Path=/member/**
+
+        - id: mall-order
+          uri: lb://mall-order
+          predicates:
+            - Path=/order/**
+
+        - id: mall-product
+          uri: lb://mall-product
+          predicates:
+            - Path=/product/**
+
+        - id: mall-ware
+          uri: lb://mall-ware
+          predicates:
+            - Path=/ware/**
