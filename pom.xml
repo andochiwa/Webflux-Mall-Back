@@ -30,6 +30,7 @@
     <swagger.version>3.0.0</swagger.version>
     <aliyun-sdk-oss.version>3.11.3</aliyun-sdk-oss.version>
     <hutool.version>5.7.13</hutool.version>
+    <feign-reactor.version>3.1.1</feign-reactor.version>
   </properties>
 
   <dependencyManagement>
@@ -71,6 +72,22 @@
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
         <version>${hutool.version}</version>
+      </dependency>
+      <!--reactive feign-->
+      <dependency>
+        <groupId>com.playtika.reactivefeign</groupId>
+        <artifactId>feign-reactor-cloud</artifactId>
+        <version>${feign-reactor.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.playtika.reactivefeign</groupId>
+        <artifactId>feign-reactor-spring-configuration</artifactId>
+        <version>${feign-reactor.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.playtika.reactivefeign</groupId>
+        <artifactId>feign-reactor-webclient</artifactId>
+        <version>${feign-reactor.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
