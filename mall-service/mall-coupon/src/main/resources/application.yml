@@ -1,6 +1,8 @@
 server:
   port: 10000
 spring:
+  application:
+    name: mall-coupon
   r2dbc:
     url: r2dbcs:mysql://localhost:3306/mall_sms?serverZoneId=Japan&useUnicode=true
     username: root

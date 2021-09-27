@@ -1,6 +1,8 @@
 server:
   port: 12000
 spring:
+  application:
+    name: mall-order
   r2dbc:
     url: r2dbcs:mysql://localhost:3306/mall_oms?serverZoneId=Japan&useUnicode=true
     username: root

@@ -1,6 +1,8 @@
 server:
   port: 11000
 spring:
+  application:
+    name: mall-member
   r2dbc:
     url: r2dbcs:mysql://localhost:3306/mall_ums?serverZoneId=Japan&useUnicode=true
     username: root
