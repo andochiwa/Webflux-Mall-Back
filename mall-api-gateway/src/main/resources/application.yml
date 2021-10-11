@@ -33,3 +33,8 @@ spring:
           uri: lb://mall-ware
           predicates:
             - Path=/ware/**
+
+        - id: mall-admin
+          uri: lb://mall-admin
+          predicates:
+            - Path=/admin/**
