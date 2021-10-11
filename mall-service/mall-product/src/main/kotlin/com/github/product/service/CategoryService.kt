@@ -3,6 +3,7 @@ package com.github.product.service
 import com.github.product.dao.CategoryDao
 import com.github.product.entity.Category
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -31,6 +32,19 @@ class CategoryService {
 
     fun getAll(): Flow<Category> {
         return categoryDao.findAll()
+    }
+
+    suspend fun listWithTree(): List<Category> {
+        val categoryList = getAll().toList()
+        return categoryList.filter { it.parentCid == 0L }
+            .onEach { it.children = getChildren(it, categoryList) }
+            .sortedWith { menu1, menu2 -> menu1.sort - menu2.sort }
+    }
+
+    private fun getChildren(root: Category, all: List<Category>): List<Category> {
+        return all.filter { it.parentCid == root.id }
+            .onEach { it.children = getChildren(it, all) }
+            .sortedWith{ menu1, menu2 -> menu1.sort - menu2.sort }
     }
 }
 

@@ -6,7 +6,6 @@ import com.github.product.entity.Category
 import com.github.product.service.CategoryService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -53,9 +52,9 @@ class CategoryController {
     }
 
     @GetMapping
-    @ApiOperation("getAll")
+    @ApiOperation("get all category and sub-category tree")
     suspend fun getAll(): ResultDto {
-        val categorys = categoryService.getAll()
-        return resultSuccess().put("category", categorys.toList())
+        val category: List<Category> = categoryService.listWithTree();
+        return resultSuccess().put("category", category)
     }
 }

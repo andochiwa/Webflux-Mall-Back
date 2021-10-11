@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.PersistenceConstructor
+import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
@@ -37,7 +39,7 @@ data class Category (
 	var showStatus: Int? = null,
 
 	@ApiModelProperty(value = "排序")
-	var sort: Int? = null,
+	var sort: Int = 0,
 
 	@ApiModelProperty(value = "图标地址")
 	var icon: String? = null,
@@ -48,8 +50,25 @@ data class Category (
 	@ApiModelProperty(value = "商品数量")
 	var productCount: Int? = null,
 
+	@ApiModelProperty(value = "子分类")
+	@Transient
+	var children: List<Category>? = null,
+
 
 ) : Serializable, Persistable<Long> {
+	@PersistenceConstructor
+	constructor(
+		catId: Long?,
+		name: String?,
+		parentCid: Long?,
+		catLevel: Int?,
+		showStatus: Int?,
+		sort: Int = 0,
+		icon: String?,
+		productUnit: String?,
+		productCount: Int?
+	) : this(catId, name, parentCid, catLevel, showStatus, sort, icon, productUnit, productCount, null)
+
 	@JsonIgnore
 	override fun isNew(): Boolean {
 		return if (catId == null) {
