@@ -27,7 +27,8 @@ class CategoryService {
     }
 
     suspend fun deleteById(id: Long) {
-        categoryDao.deleteById(id)
+        // todo: check references
+        categoryDao.softDelete(id)
     }
 
     fun getAll(): Flow<Category> {
@@ -45,6 +46,11 @@ class CategoryService {
         return all.filter { it.parentCid == root.id }
             .onEach { it.children = getChildren(it, all) }
             .sortedWith{ menu1, menu2 -> menu1.sort - menu2.sort }
+    }
+
+    suspend fun deleteByIds(ids: List<Long>) {
+        // todo: check references
+        categoryDao.softDeleteAll(ids)
     }
 }
 

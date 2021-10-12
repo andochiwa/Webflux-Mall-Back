@@ -51,6 +51,13 @@ class CategoryController {
         return resultSuccess()
     }
 
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteByIds(@RequestBody ids: List<Long>): ResultDto {
+        categoryService.deleteByIds(ids)
+        return resultSuccess()
+    }
+
     @GetMapping
     @ApiOperation("get all category and sub-category tree")
     suspend fun getAll(): ResultDto {

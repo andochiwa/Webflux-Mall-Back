@@ -1,6 +1,8 @@
 package com.github.product.dao
 
 import com.github.product.entity.Category
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -11,4 +13,11 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  */
 interface CategoryDao : CoroutineCrudRepository<Category, Long> {
 
+    @Modifying
+    @Query("update pms_category set show_status = 0 where cat_id = :id")
+    suspend fun softDelete(id: Long)
+
+    @Modifying
+    @Query("update pms_category set show_status = 0 where cat_id in (:id)")
+    suspend fun softDeleteAll(id: List<Long>)
 }
