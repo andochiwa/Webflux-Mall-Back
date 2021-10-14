@@ -2,6 +2,8 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
@@ -24,12 +26,14 @@ data class Category (
 	@ApiModelProperty(value = "分类id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var catId: Long? = null,
 
 	@ApiModelProperty(value = "分类名称")
 	var name: String? = null,
 
 	@ApiModelProperty(value = "父分类id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var parentCid: Long? = null,
 
 	@ApiModelProperty(value = "层级")
@@ -76,5 +80,6 @@ data class Category (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = catId
 }

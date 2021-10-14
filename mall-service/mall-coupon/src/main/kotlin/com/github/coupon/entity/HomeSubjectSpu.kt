@@ -2,6 +2,8 @@ package com.github.coupon.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
@@ -22,15 +24,18 @@ data class HomeSubjectSpu (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "专题名字")
 	var name: String? = null,
 
 	@ApiModelProperty(value = "专题id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var subjectId: Long? = null,
 
 	@ApiModelProperty(value = "spu_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var spuId: Long? = null,
 
 	@ApiModelProperty(value = "排序")
@@ -45,5 +50,6 @@ data class HomeSubjectSpu (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }
