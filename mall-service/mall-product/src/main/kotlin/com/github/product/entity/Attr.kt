@@ -2,6 +2,7 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
@@ -25,6 +26,7 @@ data class Attr (
 	@Id
 	@get:JvmName("deprecate")
 	@JsonSerialize(using = ToStringSerializer::class)
+	@JsonProperty("id")
 	var attrId: Long? = null,
 
 	@ApiModelProperty(value = "属性名")
