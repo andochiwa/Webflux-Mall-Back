@@ -2,6 +2,8 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
@@ -23,12 +25,15 @@ data class SpuComment (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "sku_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var skuId: Long? = null,
 
 	@ApiModelProperty(value = "spu_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var spuId: Long? = null,
 
 	@ApiModelProperty(value = "商品名字")
@@ -79,5 +84,6 @@ data class SpuComment (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }

@@ -1,14 +1,16 @@
 package com.github.order.entity
 
-import java.math.BigDecimal
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 /**
@@ -24,15 +26,18 @@ data class Order (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "member_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var memberId: Long? = null,
 
 	@ApiModelProperty(value = "订单号")
 	var orderSn: String? = null,
 
 	@ApiModelProperty(value = "使用的优惠券")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var couponId: Long? = null,
 
 	@ApiModelProperty(value = "create_time")
@@ -158,5 +163,6 @@ data class Order (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }

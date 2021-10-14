@@ -1,14 +1,16 @@
 package com.github.order.entity
 
-import java.math.BigDecimal
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import java.math.BigDecimal
 
 /**
  *
@@ -23,15 +25,18 @@ data class OrderItem (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "order_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var orderId: Long? = null,
 
 	@ApiModelProperty(value = "order_sn")
 	var orderSn: String? = null,
 
 	@ApiModelProperty(value = "spu_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var spuId: Long? = null,
 
 	@ApiModelProperty(value = "spu_name")
@@ -44,9 +49,11 @@ data class OrderItem (
 	var spuBrand: String? = null,
 
 	@ApiModelProperty(value = "商品分类id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var categoryId: Long? = null,
 
 	@ApiModelProperty(value = "商品sku编号")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var skuId: Long? = null,
 
 	@ApiModelProperty(value = "商品sku名字")
@@ -91,5 +98,6 @@ data class OrderItem (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }

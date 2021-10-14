@@ -2,6 +2,8 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
@@ -23,9 +25,11 @@ data class SkuInfo (
 	@ApiModelProperty(value = "skuId")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var skuId: Long? = null,
 
 	@ApiModelProperty(value = "spuId")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var spuId: Long? = null,
 
 	@ApiModelProperty(value = "sku名称")
@@ -35,9 +39,11 @@ data class SkuInfo (
 	var skuDesc: String? = null,
 
 	@ApiModelProperty(value = "所属分类id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var catalogId: Long? = null,
 
 	@ApiModelProperty(value = "品牌id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var brandId: Long? = null,
 
 	@ApiModelProperty(value = "默认图片")
@@ -53,6 +59,7 @@ data class SkuInfo (
 	var price: BigDecimal? = null,
 
 	@ApiModelProperty(value = "销量")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var saleCount: Long? = null,
 
 
@@ -64,5 +71,6 @@ data class SkuInfo (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = skuId
 }

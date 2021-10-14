@@ -1,6 +1,5 @@
 package com.github.product.entity
 
-import java.math.BigDecimal
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
@@ -11,6 +10,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 /**
@@ -26,6 +26,7 @@ data class SpuInfo (
     @ApiModelProperty(value = "商品id")
     @Id
     @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
     var id: Long? = null,
 
     @ApiModelProperty(value = "商品名称")
@@ -35,9 +36,11 @@ data class SpuInfo (
     var spuDescription: String? = null,
 
     @ApiModelProperty(value = "所属分类id")
+    @JsonSerialize(using = ToStringSerializer::class)
     var catalogId: Long? = null,
 
     @ApiModelProperty(value = "品牌id")
+    @JsonSerialize(using = ToStringSerializer::class)
     var brandId: Long? = null,
 
     @ApiModelProperty(value = "")
@@ -60,6 +63,6 @@ data class SpuInfo (
             true
         } else false
     }
-
+    @JsonSerialize(using = ToStringSerializer::class)
     override fun getId(): Long? = id
 }

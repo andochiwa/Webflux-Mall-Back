@@ -1,14 +1,16 @@
 package com.github.order.entity
 
-import java.math.BigDecimal
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 /**
@@ -24,12 +26,14 @@ data class PaymentInfo (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "订单号（对外业务号）")
 	var orderSn: String? = null,
 
 	@ApiModelProperty(value = "订单id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var orderId: Long? = null,
 
 	@ApiModelProperty(value = "支付宝交易流水号")
@@ -65,5 +69,6 @@ data class PaymentInfo (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }
