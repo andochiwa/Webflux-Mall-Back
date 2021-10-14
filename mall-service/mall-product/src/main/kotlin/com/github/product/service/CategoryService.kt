@@ -32,7 +32,7 @@ class CategoryService {
     }
 
     fun getAll(): Flow<Category> {
-        return categoryDao.findAll()
+        return categoryDao.findAllByShowStatus()
     }
 
     suspend fun listWithTree(): List<Category> {
