@@ -2,6 +2,8 @@ package com.github.ware.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
@@ -23,9 +25,11 @@ data class WmsWareOrderTask (
 	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
 	@ApiModelProperty(value = "order_id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var orderId: Long? = null,
 
 	@ApiModelProperty(value = "order_sn")
@@ -59,6 +63,7 @@ data class WmsWareOrderTask (
 	var createTime: LocalDateTime? = null,
 
 	@ApiModelProperty(value = "仓库id")
+	@JsonSerialize(using = ToStringSerializer::class)
 	var wareId: Long? = null,
 
 	@ApiModelProperty(value = "工作单备注")
@@ -73,5 +78,6 @@ data class WmsWareOrderTask (
 			true
 		} else false
 	}
+	@JsonSerialize(using = ToStringSerializer::class)
 	override fun getId(): Long? = id
 }
