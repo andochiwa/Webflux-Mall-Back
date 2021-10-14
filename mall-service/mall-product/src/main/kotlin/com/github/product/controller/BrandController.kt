@@ -45,10 +45,10 @@ class BrandController {
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        brandService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody id: List<Long>): ResultDto {
+        brandService.deleteByIds(id)
         return resultSuccess()
     }
 
@@ -57,5 +57,14 @@ class BrandController {
     suspend fun getAll(): ResultDto {
         val brands = brandService.getAll()
         return resultSuccess().put("brand", brands.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get pagination")
+    suspend fun getPagination(@RequestParam("page") page: Int,
+                              @RequestParam("limit") limit: Int,
+                              @RequestParam("key", required = false) key: String?): ResultDto {
+        val brandMap = brandService.getPagination(page - 1, limit, key)
+        return resultSuccess().putAll(brandMap)
     }
 }
