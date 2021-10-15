@@ -16,6 +16,6 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     suspend fun globalException(e: Exception): ResultDto {
         e.printStackTrace()
-        return resultError()
+        return resultError(msg = e.message ?: "error")
     }
 }

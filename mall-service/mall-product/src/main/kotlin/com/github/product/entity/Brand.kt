@@ -7,10 +7,15 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.hibernate.validator.constraints.URL
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Pattern
 
 /**
  *
@@ -30,21 +35,27 @@ data class Brand (
 	var brandId: Long? = null,
 
 	@ApiModelProperty(value = "品牌名")
+	@field:NotBlank
 	var name: String? = null,
 
 	@ApiModelProperty(value = "品牌logo地址")
+	@field:URL
 	var logo: String? = null,
 
 	@ApiModelProperty(value = "介绍")
 	var description: String? = null,
 
 	@ApiModelProperty(value = "显示状态[0-不显示；1-显示]")
+	@field:NotNull
 	var showStatus: Int? = null,
 
 	@ApiModelProperty(value = "检索首字母")
+	@field:Pattern(regexp = "^[a-zA-Z]$")
 	var firstLetter: String? = null,
 
 	@ApiModelProperty(value = "排序")
+	@field:Min(value = 0)
+	@field:NotNull
 	var sort: Int? = null,
 
 
