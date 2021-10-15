@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.hibernate.validator.constraints.Range
 import org.hibernate.validator.constraints.URL
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Pattern
+import javax.validation.constraints.*
 
 /**
  *
@@ -32,30 +32,32 @@ data class Brand (
 	@get:JvmName("deprecate")
 	@JsonSerialize(using = ToStringSerializer::class)
 	@JsonProperty("id")
+	@field:NotNull(groups = [UpdateGroup::class])
+	@field:Null(groups = [AddGroup::class])
 	var brandId: Long? = null,
 
 	@ApiModelProperty(value = "品牌名")
-	@field:NotBlank
+	@field:NotBlank(groups = [AddGroup::class, UpdateGroup::class])
 	var name: String? = null,
 
 	@ApiModelProperty(value = "品牌logo地址")
-	@field:URL
+	@field:URL(groups = [AddGroup::class, UpdateGroup::class])
 	var logo: String? = null,
 
 	@ApiModelProperty(value = "介绍")
 	var description: String? = null,
 
 	@ApiModelProperty(value = "显示状态[0-不显示；1-显示]")
-	@field:NotNull
+	@field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
 	var showStatus: Int? = null,
 
 	@ApiModelProperty(value = "检索首字母")
-	@field:Pattern(regexp = "^[a-zA-Z]$")
+	@field:Pattern(regexp = "^[a-zA-Z]$", groups = [AddGroup::class, UpdateGroup::class])
 	var firstLetter: String? = null,
 
 	@ApiModelProperty(value = "排序")
-	@field:Min(value = 0)
-	@field:NotNull
+	@field:Min(value = 0, groups = [AddGroup::class, UpdateGroup::class])
+	@field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
 	var sort: Int? = null,
 
 

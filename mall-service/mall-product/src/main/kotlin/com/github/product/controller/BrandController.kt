@@ -4,13 +4,14 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.Brand
 import com.github.product.service.BrandService
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 /**
  *
@@ -35,14 +36,14 @@ class BrandController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@Valid @RequestBody brand: Brand): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody brand: Brand): ResultDto {
         brandService.saveOrUpdate(brand)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@Validated @RequestBody brand: Brand): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody brand: Brand): ResultDto {
         brandService.saveOrUpdate(brand)
         return resultSuccess()
     }
