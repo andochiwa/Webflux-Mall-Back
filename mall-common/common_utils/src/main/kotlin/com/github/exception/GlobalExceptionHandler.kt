@@ -2,8 +2,10 @@ package com.github.exception
 
 import com.github.dto.ResultDto
 import com.github.dto.resultError
+import com.github.enum.BizCodeEnum
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.bind.support.WebExchangeBindException
 
 /**
  * @author Andochiwa
@@ -13,9 +15,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
+    @ExceptionHandler(WebExchangeBindException::class)
+    suspend fun validateException(e: WebExchangeBindException): ResultDto {
+        e.printStackTrace()
+        val map = mutableMapOf<String, String>()
+        e.bindingResult.fieldErrors.forEach {
+            map[it.field] = it.defaultMessage ?: "unknown error"
+        }
+        return resultError(BizCodeEnum.VALID_EXCEPTION.code, BizCodeEnum.VALID_EXCEPTION.msg)
+            .putAll(map)
+    }
+
     @ExceptionHandler(Exception::class)
     suspend fun globalException(e: Exception): ResultDto {
         e.printStackTrace()
-        return resultError(msg = e.message ?: "error")
+        return resultError(BizCodeEnum.UNKNOWN_EXCEPTION.code, BizCodeEnum.UNKNOWN_EXCEPTION.msg)
     }
 }
