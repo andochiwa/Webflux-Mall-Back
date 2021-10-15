@@ -16,4 +16,8 @@ interface BrandDao : CoroutineCrudRepository<Brand, Long> {
     fun findBy(pageable: Pageable): Flow<Brand>
 
     fun findByNameContaining(name: String, pageable: Pageable): Flow<Brand>
+
+    fun findByIdAndShowStatus(id: Long, showStatus: Int = 1): Brand
+
+    fun findAllByShowStatus(showStatus: Int = 1): Flow<Brand>
 }

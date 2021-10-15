@@ -20,7 +20,7 @@ class BrandService {
     lateinit var brandDao: BrandDao
 
     suspend fun getById(id: Long): Brand? {
-        return brandDao.findById(id)
+        return brandDao.findByIdAndShowStatus(id)
     }
 
     suspend fun saveOrUpdate(brand: Brand): Brand {
