@@ -38,3 +38,8 @@ spring:
           uri: lb://mall-admin
           predicates:
             - Path=/admin/**
+
+        - id: mall-third-party
+          uri: lb://mall-third-party
+          predicates:
+            - Path=/third-party/**
