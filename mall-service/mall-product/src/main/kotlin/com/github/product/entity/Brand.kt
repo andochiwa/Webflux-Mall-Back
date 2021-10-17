@@ -25,50 +25,51 @@ import javax.validation.constraints.*
  */
 @Table("pms_brand")
 @ApiModel
-data class Brand (
+data class Brand(
 
-	@ApiModelProperty(value = "品牌id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	@JsonProperty("id")
-	@field:NotNull(groups = [UpdateGroup::class])
-	@field:Null(groups = [AddGroup::class])
-	var brandId: Long? = null,
+    @ApiModelProperty(value = "品牌id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    @JsonProperty("id")
+    @field:NotNull(groups = [UpdateGroup::class])
+    @field:Null(groups = [AddGroup::class])
+    var brandId: Long? = null,
 
-	@ApiModelProperty(value = "品牌名")
-	@field:NotBlank(groups = [AddGroup::class, UpdateGroup::class])
-	var name: String? = null,
+    @ApiModelProperty(value = "品牌名")
+    @field:NotBlank(groups = [AddGroup::class, UpdateGroup::class])
+    var name: String? = null,
 
-	@ApiModelProperty(value = "品牌logo地址")
-	@field:URL(groups = [AddGroup::class, UpdateGroup::class])
-	var logo: String? = null,
+    @ApiModelProperty(value = "品牌logo地址")
+    @field:URL(groups = [AddGroup::class, UpdateGroup::class])
+    var logo: String? = null,
 
-	@ApiModelProperty(value = "介绍")
-	var description: String? = null,
+    @ApiModelProperty(value = "介绍")
+    var description: String? = null,
 
-	@ApiModelProperty(value = "显示状态[0-不显示；1-显示]")
-	@field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
-	var showStatus: Int? = null,
+    @ApiModelProperty(value = "显示状态[0-不显示；1-显示]")
+    @field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
+    var showStatus: Int? = null,
 
-	@ApiModelProperty(value = "检索首字母")
-	@field:Pattern(regexp = "^[a-zA-Z]$", groups = [AddGroup::class, UpdateGroup::class])
-	var firstLetter: String? = null,
+    @ApiModelProperty(value = "检索首字母")
+    @field:Pattern(regexp = "^[a-zA-Z]$", groups = [AddGroup::class, UpdateGroup::class])
+    var firstLetter: String? = null,
 
-	@ApiModelProperty(value = "排序")
-	@field:Min(value = 0, groups = [AddGroup::class, UpdateGroup::class])
-	@field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
-	var sort: Int? = null,
+    @ApiModelProperty(value = "排序")
+    @field:Min(value = 0, groups = [AddGroup::class, UpdateGroup::class])
+    @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
+    var sort: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (brandId == null) {
-			brandId = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = brandId
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (brandId == null) {
+            brandId = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = brandId
 }
