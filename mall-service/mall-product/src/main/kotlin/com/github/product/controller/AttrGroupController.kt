@@ -52,10 +52,28 @@ class AttrGroupController {
         return resultSuccess()
     }
 
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteByIds(@RequestBody ids: List<Long>): ResultDto {
+        attrGroupService.deleteByIds(ids)
+        return resultSuccess()
+    }
+
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
         val attrGroups = attrGroupService.getAll()
         return resultSuccess().put("attrGroup", attrGroups.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get pagination")
+    suspend fun getPagination(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val attrGroupMap = attrGroupService.getPagination(page - 1, limit, key)
+        return resultSuccess().putAll(attrGroupMap)
     }
 }
