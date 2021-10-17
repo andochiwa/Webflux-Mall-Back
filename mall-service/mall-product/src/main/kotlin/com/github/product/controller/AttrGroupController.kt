@@ -4,10 +4,13 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.AttrGroup
 import com.github.product.service.AttrGroupService
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -33,14 +36,14 @@ class AttrGroupController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody attrGroup: AttrGroup): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody attrGroup: AttrGroup): ResultDto {
         attrGroupService.saveOrUpdate(attrGroup)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody attrGroup: AttrGroup): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody attrGroup: AttrGroup): ResultDto {
         attrGroupService.saveOrUpdate(attrGroup)
         return resultSuccess()
     }

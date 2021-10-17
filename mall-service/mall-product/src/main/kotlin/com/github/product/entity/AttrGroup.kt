@@ -5,12 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Null
 
 /**
  *
@@ -27,12 +33,16 @@ data class AttrGroup(
     @get:JvmName("deprecate")
     @JsonSerialize(using = ToStringSerializer::class)
     @JsonProperty("id")
+    @field:Null(groups = [AddGroup::class])
+    @field:NotNull(groups = [UpdateGroup::class])
     var attrGroupId: Long? = null,
 
     @ApiModelProperty(value = "组名")
+    @field:NotBlank(groups = [AddGroup::class, UpdateGroup::class])
     var attrGroupName: String? = null,
 
     @ApiModelProperty(value = "排序")
+    @field:Min(value = 0, groups = [AddGroup::class, UpdateGroup::class])
     var sort: Int? = null,
 
     @ApiModelProperty(value = "描述")

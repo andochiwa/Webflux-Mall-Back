@@ -5,14 +5,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.hibernate.validator.constraints.Range
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.PersistenceConstructor
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Null
 
 /**
  *
@@ -29,6 +35,8 @@ data class Category(
     @get:JvmName("deprecate")
     @JsonSerialize(using = ToStringSerializer::class)
     @JsonProperty("id")
+    @field:NotNull(groups = [UpdateGroup::class])
+    @field:Null(groups = [AddGroup::class])
     var catId: Long? = null,
 
     @ApiModelProperty(value = "分类名称")
@@ -36,12 +44,15 @@ data class Category(
 
     @ApiModelProperty(value = "父分类id")
     @JsonSerialize(using = ToStringSerializer::class)
+    @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var parentCid: Long? = null,
 
     @ApiModelProperty(value = "层级")
+    @field:Min(value = 0, groups = [AddGroup::class, UpdateGroup::class])
     var catLevel: Int? = null,
 
     @ApiModelProperty(value = "是否显示[0-不显示，1显示]")
+    @field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
     var showStatus: Int? = null,
 
     @ApiModelProperty(value = "排序")

@@ -4,9 +4,12 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.Category
 import com.github.product.service.CategoryService
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -32,14 +35,14 @@ class CategoryController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody category: Category): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody category: Category): ResultDto {
         categoryService.saveOrUpdate(category)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody category: Category): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody category: Category): ResultDto {
         categoryService.saveOrUpdate(category)
         return resultSuccess()
     }
