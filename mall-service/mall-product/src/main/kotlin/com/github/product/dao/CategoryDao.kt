@@ -23,4 +23,7 @@ interface CategoryDao : CoroutineCrudRepository<Category, Long> {
     suspend fun softDeleteAll(id: List<Long>)
 
     fun findAllByShowStatus(showStatus: Int = 1): Flow<Category>
+
+    @Query("select name from pms_category where cat_id = :id")
+    fun findCatelogNameById(id: Long): Category
 }

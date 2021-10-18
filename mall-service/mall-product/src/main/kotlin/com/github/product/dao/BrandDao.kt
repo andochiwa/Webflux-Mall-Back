@@ -3,6 +3,7 @@ package com.github.product.dao
 import com.github.product.entity.Brand
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.domain.Pageable
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -20,4 +21,7 @@ interface BrandDao : CoroutineCrudRepository<Brand, Long> {
     suspend fun findByBrandIdAndShowStatus(id: Long, showStatus: Int = 1): Brand
 
     fun findAllByShowStatus(showStatus: Int = 1): Flow<Brand>
+
+    @Query("select name from pms_brand where brand_id = :id")
+    suspend fun findBrandNameById(id: Long): Brand
 }

@@ -1,6 +1,8 @@
 package com.github.product.service
 
+import com.github.product.dao.BrandDao
 import com.github.product.dao.CategoryBrandRelationDao
+import com.github.product.dao.CategoryDao
 import com.github.product.entity.CategoryBrandRelation
 import kotlinx.coroutines.flow.Flow
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,11 +19,22 @@ class CategoryBrandRelationService {
     @Autowired
     lateinit var categoryBrandRelationDao: CategoryBrandRelationDao
 
+    @Autowired
+    lateinit var brandDao: BrandDao
+
+    @Autowired
+    lateinit var categoryDao: CategoryDao
+
     suspend fun getById(id: Long): CategoryBrandRelation? {
         return categoryBrandRelationDao.findById(id)
     }
 
     suspend fun saveOrUpdate(categoryBrandRelation: CategoryBrandRelation): CategoryBrandRelation {
+        // get brand name and category name
+        val brand = brandDao.findBrandNameById(categoryBrandRelation.brandId!!)
+        val category = categoryDao.findCatelogNameById(categoryBrandRelation.catelogId!!)
+        categoryBrandRelation.catelogName = brand.name
+        categoryBrandRelation.catelogName = category.name
         return categoryBrandRelationDao.save(categoryBrandRelation)
     }
 
@@ -31,6 +44,14 @@ class CategoryBrandRelationService {
 
     fun getAll(): Flow<CategoryBrandRelation> {
         return categoryBrandRelationDao.findAll()
+    }
+
+    suspend fun deleteByIds(ids: List<Long>) {
+        categoryBrandRelationDao.deleteAllById(ids)
+    }
+
+    fun getCatelogByBranId(brandId: Long): Flow<CategoryBrandRelation> {
+        return categoryBrandRelationDao.findByBrandId(brandId)
     }
 }
 
