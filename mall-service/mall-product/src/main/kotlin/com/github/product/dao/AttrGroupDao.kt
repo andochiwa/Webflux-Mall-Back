@@ -16,4 +16,14 @@ interface AttrGroupDao : CoroutineCrudRepository<AttrGroup, Long> {
 
     fun findByAttrGroupNameContaining(key: String, pageRequest: PageRequest): Flow<AttrGroup>
 
+    fun findByCatelogId(catelogId: Long, pageRequest: PageRequest): Flow<AttrGroup>
+
+    fun findByAttrGroupNameContainingAndCatelogId(
+        attrGroupName: String,
+        CatelogId: Long,
+        pageRequest: PageRequest
+    ): Flow<AttrGroup>
+
+    suspend fun countByCatelogId(catelogId: Long): Long
+
 }

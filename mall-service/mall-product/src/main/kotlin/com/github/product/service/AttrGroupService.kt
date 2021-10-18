@@ -49,5 +49,16 @@ class AttrGroupService {
             this["totalCount"] = attrGroupDao.count()
         }
     }
+
+    suspend fun getPaginationByCategoryId(page: Int, limit: Int, key: String?, categoryId: Long): Map<String, Any> {
+        val pageRequest = PageRequest.of(page, limit)
+        val attrGroupList =
+            key?.run { attrGroupDao.findByAttrGroupNameContainingAndCatelogId(key, categoryId, pageRequest).toList() }
+                ?: run { attrGroupDao.findByCatelogId(categoryId, pageRequest).toList() }
+        return mutableMapOf<String, Any>().apply {
+            this["attrgroup"] = attrGroupList
+            this["totalCount"] = attrGroupDao.countByCatelogId(categoryId)
+        }
+    }
 }
 

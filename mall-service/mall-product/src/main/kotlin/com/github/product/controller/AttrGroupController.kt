@@ -79,4 +79,16 @@ class AttrGroupController {
         val attrGroupMap = attrGroupService.getPagination(page - 1, limit, key)
         return resultSuccess().putAll(attrGroupMap)
     }
+
+    @GetMapping("pagination/{categoryId}")
+    @ApiOperation("get pagination by CategoryId")
+    suspend fun getPaginationByCategoryId(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?,
+        @PathVariable("categoryId") categoryId: Long
+    ): ResultDto {
+        val attrGroupMap = attrGroupService.getPaginationByCategoryId(page - 1, limit, key, categoryId)
+        return resultSuccess().putAll(attrGroupMap)
+    }
 }
