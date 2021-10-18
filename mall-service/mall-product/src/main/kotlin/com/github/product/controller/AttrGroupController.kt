@@ -4,6 +4,7 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.AttrGroup
 import com.github.product.service.AttrGroupService
+import com.github.product.service.CategoryService
 import com.github.vaild.AddGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
@@ -27,10 +28,14 @@ class AttrGroupController {
     @Autowired
     lateinit var attrGroupService: AttrGroupService
 
+    @Autowired
+    lateinit var categoryService: CategoryService
+
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
         val attrGroup = attrGroupService.getById(id)
+        attrGroup?.catelogPath = categoryService.getCatelogPath(attrGroup?.catelogId!!)
         return resultSuccess().put("attrGroup", attrGroup)
     }
 

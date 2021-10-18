@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
-*
-* @author Andochiwa
-* @email a1066079469@gmail.com
-* @date 2021-09-24 00:47:19
-*/
+ *
+ * @author Andochiwa
+ * @email a1066079469@gmail.com
+ * @date 2021-09-24 00:47:19
+ */
 @Service
 class CategoryService {
     @Autowired
@@ -45,12 +45,31 @@ class CategoryService {
     private fun getChildren(root: Category, all: List<Category>): List<Category> {
         return all.filter { it.parentCid == root.id }
             .onEach { it.children = getChildren(it, all) }
-            .sortedWith{ menu1, menu2 -> menu1.sort - menu2.sort }
+            .sortedWith { menu1, menu2 -> menu1.sort - menu2.sort }
     }
 
     suspend fun deleteByIds(ids: List<Long>) {
         // todo: check references
         categoryDao.softDeleteAll(ids)
     }
+
+    suspend fun getCatelogPath(id: Long): List<String>? {
+        val catelogPaths = mutableListOf<String>()
+        getParentPath(id, catelogPaths)
+        catelogPaths.reverse()
+        return catelogPaths
+    }
+
+    private suspend fun getParentPath(id: Long, catelogPaths: MutableList<String>) {
+        catelogPaths.add(id.toString())
+        val category = this.getById(id)
+        category?.parentCid?.run {
+            if (this != 0L) {
+                getParentPath(category.parentCid ?: return@run, catelogPaths)
+            }
+        }
+    }
+
+
 }
 

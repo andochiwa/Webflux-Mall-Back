@@ -2,6 +2,7 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
@@ -10,6 +11,8 @@ import com.github.vaild.UpdateGroup
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.PersistenceConstructor
+import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
@@ -53,10 +56,26 @@ data class AttrGroup(
 
     @ApiModelProperty(value = "所属分类id")
     @JsonSerialize(using = ToStringSerializer::class)
+    @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var catelogId: Long? = null,
 
+    @ApiModelProperty(value = "父子所有id")
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var catelogPath: List<String>? = null
 
-    ) : Serializable, Persistable<Long> {
+
+) : Serializable, Persistable<Long> {
+    @PersistenceConstructor
+    constructor(
+        attrGroupId: Long?,
+        attrGroupName: String?,
+        sort: Int?,
+        description: String?,
+        icon: String?,
+        catelogId: Long?
+    ) : this(attrGroupId, attrGroupName, sort, description, icon, catelogId, null)
+
     @JsonIgnore
     override fun isNew(): Boolean {
         return if (attrGroupId == null) {
