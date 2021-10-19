@@ -2,6 +2,8 @@ package com.github.product.dao
 
 import com.github.product.entity.CategoryBrandRelation
 import kotlinx.coroutines.flow.Flow
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -13,5 +15,13 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 interface CategoryBrandRelationDao : CoroutineCrudRepository<CategoryBrandRelation, Long> {
 
     fun findByBrandId(brandId: Long): Flow<CategoryBrandRelation>
+
+    @Modifying
+    @Query("update pms_category_brand_relation set brand_name = :brandName where brand_id = :brandId")
+    suspend fun updateBrandNameByBrandId(brandName: String, brandId: Long)
+
+    @Modifying
+    @Query("delete from pms_category_brand_relation where brand_id in (:brandIds)")
+    suspend fun deleteAllByBrandId(brandIds: List<Long>)
 
 }

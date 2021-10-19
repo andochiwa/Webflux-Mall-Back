@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -19,6 +20,9 @@ class BrandService {
     @Autowired
     lateinit var brandDao: BrandDao
 
+    @Autowired
+    lateinit var categoryBrandRelationService: CategoryBrandRelationService
+
     suspend fun getById(id: Long): Brand? {
         return brandDao.findByBrandIdAndShowStatus(id)
     }
@@ -27,8 +31,11 @@ class BrandService {
         return brandDao.save(brand)
     }
 
+    @Transactional
     suspend fun deleteByIds(id: List<Long>) {
         brandDao.deleteAllById(id)
+        // todo: delete redundant data from other tables
+        categoryBrandRelationService.deleteByBrandId(id)
     }
 
     fun getAll(): Flow<Brand> {
@@ -49,6 +56,13 @@ class BrandService {
             this["brand"] = brandList
             this["totalCount"] = brandDao.count()
         }
+    }
+
+    @Transactional
+    suspend fun updateDetail(brand: Brand) {
+        brandDao.save(brand)
+        // todo: update redundant data from other tables
+        categoryBrandRelationService.updateBrandNameByBrandId(brand)
     }
 }
 

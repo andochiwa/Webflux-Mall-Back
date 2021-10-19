@@ -44,7 +44,7 @@ class BrandController {
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@Validated(UpdateGroup::class) @RequestBody brand: Brand): ResultDto {
-        brandService.saveOrUpdate(brand)
+        brandService.updateDetail(brand)
         return resultSuccess()
     }
 
