@@ -33,7 +33,7 @@ class CategoryBrandRelationService {
         // get brand name and category name
         val brand = brandDao.findBrandNameById(categoryBrandRelation.brandId!!)
         val category = categoryDao.findCatelogNameById(categoryBrandRelation.catelogId!!)
-        categoryBrandRelation.catelogName = brand.name
+        categoryBrandRelation.brandName = brand.name
         categoryBrandRelation.catelogName = category.name
         return categoryBrandRelationDao.save(categoryBrandRelation)
     }
