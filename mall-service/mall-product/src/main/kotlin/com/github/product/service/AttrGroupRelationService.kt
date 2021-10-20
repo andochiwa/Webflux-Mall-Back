@@ -43,5 +43,13 @@ class AttrGroupRelationService {
         val attrIds = attrGroupRelationList.map { it.attrId!! }
         return attrService.getAllById(attrIds).toList()
     }
+
+    fun updateGroup(attrGroupId: Long, attrId: Long) {
+        attrGroupRelationDao.updateGroup(attrGroupId, attrId)
+    }
+
+    suspend fun getGroupIdByAttr(attrId: Long): Long? {
+        return attrGroupRelationDao.findByAttrId(attrId)?.attrGroupId
+    }
 }
 

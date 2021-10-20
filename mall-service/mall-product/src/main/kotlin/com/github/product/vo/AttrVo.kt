@@ -1,18 +1,10 @@
-package com.github.product.entity
+package com.github.product.vo
 
-import cn.hutool.core.util.IdUtil
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.github.vaild.AddGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.validator.constraints.Range
-import org.springframework.data.annotation.Id
-import org.springframework.data.domain.Persistable
-import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -24,18 +16,13 @@ import javax.validation.constraints.Null
  * @email a1066079469@gmail.com
  * @date 2021-09-24 00:47:19
  */
-@Table("pms_attr")
-@ApiModel
-data class Attr(
+@ApiModel("attr vo")
+data class AttrVo(
 
     @ApiModelProperty(value = "属性id")
-    @Id
-    @get:JvmName("deprecate")
-    @JsonSerialize(using = ToStringSerializer::class)
-    @JsonProperty("id")
     @field:Null(groups = [AddGroup::class])
     @field:NotNull(groups = [UpdateGroup::class])
-    var attrId: Long? = null,
+    var id: Long? = null,
 
     @ApiModelProperty(value = "属性名")
     @field:NotBlank(groups = [AddGroup::class, UpdateGroup::class])
@@ -58,13 +45,11 @@ data class Attr(
     var attrType: Int? = null,
 
     @ApiModelProperty(value = "启用状态[0 - 禁用，1 - 启用]")
-    @JsonSerialize(using = ToStringSerializer::class)
     @field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
     @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var enable: Long? = null,
 
     @ApiModelProperty(value = "所属分类")
-    @JsonSerialize(using = ToStringSerializer::class)
     @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var catelogId: Long? = null,
 
@@ -73,16 +58,9 @@ data class Attr(
     @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var showDesc: Int? = null,
 
+    @ApiModelProperty(value = "分组id")
+    @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
+    var attrGroupId: Long? = null,
 
-    ) : Serializable, Persistable<Long> {
-    @JsonIgnore
-    override fun isNew(): Boolean {
-        return if (attrId == null) {
-            attrId = IdUtil.getSnowflake().nextId()
-            true
-        } else false
-    }
-
-    @JsonSerialize(using = ToStringSerializer::class)
-    override fun getId(): Long? = attrId
+    ) : Serializable {
 }

@@ -4,6 +4,7 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.Attr
 import com.github.product.service.AttrService
+import com.github.product.vo.AttrVo
 import com.github.vaild.AddGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
@@ -34,10 +35,23 @@ class AttrController {
         return resultSuccess().put("attr", attr)
     }
 
+    @GetMapping("{attrType}/list/{catelogId}")
+    @ApiOperation("get base attr list")
+    suspend fun getBaseAttrList(
+        @PathVariable("attrType") attrType: Int,
+        @PathVariable("catelogId") catelogId: Long,
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val attrMap = attrService.getBaseAttrList(attrType, catelogId, page - 1, limit, key)
+        return resultSuccess().putAll(attrMap)
+    }
+
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@Validated(AddGroup::class) @RequestBody attr: Attr): ResultDto {
-        attrService.saveOrUpdate(attr)
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody attrVo: AttrVo): ResultDto {
+        attrService.save(attrVo)
         return resultSuccess()
     }
 

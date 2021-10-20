@@ -2,6 +2,8 @@ package com.github.product.dao
 
 import com.github.product.entity.AttrGroupRelation
 import kotlinx.coroutines.flow.Flow
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -13,4 +15,10 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 interface AttrGroupRelationDao : CoroutineCrudRepository<AttrGroupRelation, Long> {
 
     fun getAllByAttrGroupId(attrGroupId: Long): Flow<AttrGroupRelation>
+
+    @Modifying
+    @Query("update pms_attr_group_relation set attr_group_id = :attrGroupId where attr_id = :attrId;")
+    fun updateGroup(attrGroupId: Long, attrId: Long)
+
+    suspend fun findByAttrId(attrId: Long): AttrGroupRelation?
 }
