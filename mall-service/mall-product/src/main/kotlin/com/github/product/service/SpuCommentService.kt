@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
-*
-* @author Andochiwa
-* @email a1066079469@gmail.com
-* @date 2021-09-27 04:43:25
-*/
+ *
+ * @author Andochiwa
+ * @email a1066079469@gmail.com
+ * @date 2021-09-27 04:43:25
+ */
 @Service
 class SpuCommentService {
     @Autowired

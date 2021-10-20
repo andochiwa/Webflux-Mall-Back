@@ -19,34 +19,35 @@ import java.io.Serializable
  */
 @Table("pms_attr_group_relation")
 @ApiModel
-data class AttrGroupRelation (
+data class AttrGroupRelation(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "属性id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var attrId: Long? = null,
+    @ApiModelProperty(value = "属性id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var attrId: Long? = null,
 
-	@ApiModelProperty(value = "属性分组id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var attrGroupId: Long? = null,
+    @ApiModelProperty(value = "属性分组id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var attrGroupId: Long? = null,
 
-	@ApiModelProperty(value = "属性组内排序")
-	var attrSort: Int? = null,
+    @ApiModelProperty(value = "属性组内排序")
+    var attrSort: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }
