@@ -32,5 +32,9 @@ class AttrService {
     fun getAll(): Flow<Attr> {
         return attrDao.findAll()
     }
+
+    fun getAllById(attrIds: List<Long>): Flow<Attr> {
+        return attrDao.findAllById(attrIds)
+    }
 }
 
