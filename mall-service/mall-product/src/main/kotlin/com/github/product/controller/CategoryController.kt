@@ -43,7 +43,7 @@ class CategoryController {
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@Validated(UpdateGroup::class) @RequestBody category: Category): ResultDto {
-        categoryService.saveOrUpdate(category)
+        categoryService.updateDetails(category)
         return resultSuccess()
     }
 

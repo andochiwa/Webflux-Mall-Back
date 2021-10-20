@@ -22,6 +22,14 @@ interface CategoryBrandRelationDao : CoroutineCrudRepository<CategoryBrandRelati
 
     @Modifying
     @Query("delete from pms_category_brand_relation where brand_id in (:brandIds)")
-    suspend fun deleteAllByBrandId(brandIds: List<Long>)
+    suspend fun deleteAllByBrandIds(brandIds: List<Long>)
+
+    @Modifying
+    @Query("delete from pms_category_brand_relation where catelog_id in (:categoryIds);")
+    suspend fun deleteAllByCategorIds(categoryIds: List<Long>)
+
+    @Modifying
+    @Query("update pms_category_brand_relation set catelog_name = :categoryName where catelog_id = :categoryId;")
+    fun updateCategoryNameByCategoryId(categoryName: String, categoryId: Long)
 
 }

@@ -4,6 +4,7 @@ import com.github.product.dao.BrandDao
 import com.github.product.dao.CategoryBrandRelationDao
 import com.github.product.dao.CategoryDao
 import com.github.product.entity.Brand
+import com.github.product.entity.Category
 import com.github.product.entity.CategoryBrandRelation
 import kotlinx.coroutines.flow.Flow
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,8 +60,16 @@ class CategoryBrandRelationService {
         categoryBrandRelationDao.updateBrandNameByBrandId(brand.name!!, brand.id!!)
     }
 
-    suspend fun deleteByBrandId(brandId: List<Long>) {
-        categoryBrandRelationDao.deleteAllByBrandId(brandId)
+    suspend fun deleteByBrandId(brandIds: List<Long>) {
+        categoryBrandRelationDao.deleteAllByBrandIds(brandIds)
+    }
+
+    suspend fun deleteByCategoryIds(categoryIds: List<Long>) {
+        categoryBrandRelationDao.deleteAllByCategorIds(categoryIds)
+    }
+
+    fun updateCategoryNameByCategoryId(category: Category) {
+        categoryBrandRelationDao.updateCategoryNameByCategoryId(category.name!!, category.id!!)
     }
 }
 

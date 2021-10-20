@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -18,6 +19,9 @@ class CategoryService {
     @Autowired
     lateinit var categoryDao: CategoryDao
 
+    @Autowired
+    lateinit var categoryBrandRelationService: CategoryBrandRelationService
+
     suspend fun getById(id: Long): Category? {
         return categoryDao.findById(id)
     }
@@ -26,9 +30,12 @@ class CategoryService {
         return categoryDao.save(category)
     }
 
+    @Transactional
     suspend fun deleteById(id: Long) {
         // todo: check references
         categoryDao.softDelete(id)
+        // todo: delete redundant data from other tables
+        categoryBrandRelationService.deleteByCategoryIds(listOf(id))
     }
 
     fun getAll(): Flow<Category> {
@@ -48,9 +55,12 @@ class CategoryService {
             .sortedWith { menu1, menu2 -> menu1.sort - menu2.sort }
     }
 
+    @Transactional
     suspend fun deleteByIds(ids: List<Long>) {
         // todo: check references
         categoryDao.softDeleteAll(ids)
+        // todo: delete redundant data from other tables
+        categoryBrandRelationService.deleteByCategoryIds(ids)
     }
 
     suspend fun getCatelogPath(id: Long): List<String>? {
@@ -68,6 +78,13 @@ class CategoryService {
                 getParentPath(category.parentCid ?: return@run, catelogPaths)
             }
         }
+    }
+
+    @Transactional
+    suspend fun updateDetails(category: Category) {
+        categoryDao.save(category)
+        // todo: update redundant data from other tables
+        categoryBrandRelationService.updateCategoryNameByCategoryId(category)
     }
 
 
