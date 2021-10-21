@@ -57,8 +57,8 @@ class AttrController {
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@Validated(UpdateGroup::class) @RequestBody attr: Attr): ResultDto {
-        attrService.saveOrUpdate(attr)
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody attrVo: AttrVo): ResultDto {
+        attrService.update(attrVo)
         return resultSuccess()
     }
 

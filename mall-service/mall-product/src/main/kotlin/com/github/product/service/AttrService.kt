@@ -43,10 +43,6 @@ class AttrService {
         return attrDto
     }
 
-    suspend fun saveOrUpdate(attr: Attr): Attr {
-        return attrDao.save(attr)
-    }
-
     suspend fun deleteById(id: Long) {
         attrDao.deleteById(id)
     }
@@ -112,6 +108,14 @@ class AttrService {
         // save to attr group relation
         val attrGroupRelation = AttrGroupRelation(attrId = attr.id!!, attrGroupId = attrVo.attrGroupId!!, attrSort = 0)
         attrGroupRelationService.saveOrUpdate(attrGroupRelation)
+    }
+
+    @Transactional
+    suspend fun update(attrVo: AttrVo) {
+        val attr = Attr().apply { attrId = attrVo.id }
+        BeanUtils.copyProperties(attrVo, attr)
+        attrDao.save(attr)
+        attrGroupRelationService.updateGroup(attrVo.attrGroupId!!, attr.id!!)
     }
 }
 
