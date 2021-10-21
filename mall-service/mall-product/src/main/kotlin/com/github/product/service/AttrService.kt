@@ -43,8 +43,10 @@ class AttrService {
         return attrDto
     }
 
-    suspend fun deleteById(id: Long) {
-        attrDao.deleteById(id)
+    @Transactional
+    suspend fun deleteByIds(ids: List<Long>) {
+        attrDao.deleteAllById(ids)
+        attrGroupRelationService.deleteByAttrIds(ids)
     }
 
     fun getAll(): Flow<Attr> {

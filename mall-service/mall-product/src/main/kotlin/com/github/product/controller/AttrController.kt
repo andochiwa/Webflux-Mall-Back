@@ -2,7 +2,6 @@ package com.github.product.controller
 
 import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
-import com.github.product.entity.Attr
 import com.github.product.service.AttrService
 import com.github.product.vo.AttrVo
 import com.github.vaild.AddGroup
@@ -62,10 +61,10 @@ class AttrController {
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        attrService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteByIds(@RequestBody ids: List<Long>): ResultDto {
+        attrService.deleteByIds(ids)
         return resultSuccess()
     }
 

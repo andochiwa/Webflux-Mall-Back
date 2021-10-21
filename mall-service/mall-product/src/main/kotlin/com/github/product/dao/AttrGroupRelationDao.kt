@@ -21,4 +21,8 @@ interface AttrGroupRelationDao : CoroutineCrudRepository<AttrGroupRelation, Long
     suspend fun updateGroup(attrGroupId: Long, attrId: Long)
 
     suspend fun findByAttrId(attrId: Long): AttrGroupRelation?
+
+    @Modifying
+    @Query("delete from pms_attr_group_relation where attr_id in (:attrId);")
+    suspend fun deleteAllByAttrId(attrId: List<Long>)
 }

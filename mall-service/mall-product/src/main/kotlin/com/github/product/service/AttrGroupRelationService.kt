@@ -51,5 +51,9 @@ class AttrGroupRelationService {
     suspend fun getGroupByAttrId(attrId: Long): AttrGroupRelation? {
         return attrGroupRelationDao.findByAttrId(attrId)
     }
+
+    suspend fun deleteByAttrIds(attrIds: List<Long>) {
+        attrGroupRelationDao.deleteAllByAttrId(attrIds)
+    }
 }
 
