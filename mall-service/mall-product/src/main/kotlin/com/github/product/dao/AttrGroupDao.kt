@@ -26,4 +26,6 @@ interface AttrGroupDao : CoroutineCrudRepository<AttrGroup, Long> {
 
     suspend fun countByCatelogId(catelogId: Long): Long
 
+    fun findByCatelogId(catelogId: Long): Flow<AttrGroup>
+
 }

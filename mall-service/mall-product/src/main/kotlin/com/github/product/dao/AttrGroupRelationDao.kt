@@ -16,6 +16,8 @@ interface AttrGroupRelationDao : CoroutineCrudRepository<AttrGroupRelation, Long
 
     fun getAllByAttrGroupId(attrGroupId: Long): Flow<AttrGroupRelation>
 
+    fun getAllByAttrGroupIdIn(attrGroupId: List<Long>): Flow<AttrGroupRelation>
+
     @Modifying
     @Query("update pms_attr_group_relation set attr_group_id = :attrGroupId where attr_id = :attrId;")
     suspend fun updateGroup(attrGroupId: Long, attrId: Long)

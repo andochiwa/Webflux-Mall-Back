@@ -1,5 +1,6 @@
 package com.github.product.dao
 
+import com.github.constant.AttrEnum
 import com.github.product.entity.Attr
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.domain.Pageable
@@ -33,4 +34,20 @@ interface AttrDao : CoroutineCrudRepository<Attr, Long> {
     fun findByAttrTypeAndAttrNameContaining(attrType: Int, attrName: String, page: Pageable): Flow<Attr>
 
     suspend fun countByAttrTypeAndAttrNameContaining(attrType: Int, attrName: String): Long
+
+    fun findAllByAttrIdNotInAndCatelogIdAndAttrType(
+        attrId: Collection<Long>, catelogId: Long, pageable: Pageable, attrType: Int = AttrEnum.ATTR_TYPE_BASE.value
+    ): Flow<Attr>
+
+    fun findAllByAttrIdNotInAndCatelogIdAndAttrNameContainingAndAttrType(
+        attrId: Collection<Long>, catelogId: Long, attrName: String, page: Pageable, attrType: Int = AttrEnum.ATTR_TYPE_BASE.value
+    ): Flow<Attr>
+
+    suspend fun countAllByAttrIdNotInAndCatelogIdAndAttrType(
+        attrId: Collection<Long>, catelogId: Long, attrType: Int = AttrEnum.ATTR_TYPE_BASE.value
+    ): Long
+
+    suspend fun countAllByAttrIdNotInAndCatelogIdAndAttrNameContainingAndAttrType(
+        attrId: Collection<Long>, catelogId: Long, attrName: String, attrType: Int = AttrEnum.ATTR_TYPE_BASE.value
+    ): Long
 }

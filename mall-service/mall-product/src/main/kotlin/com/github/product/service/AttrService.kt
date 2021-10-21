@@ -55,10 +55,6 @@ class AttrService {
         return attrDao.findAll()
     }
 
-    fun getAllById(attrIds: List<Long>): Flow<Attr> {
-        return attrDao.findAllById(attrIds)
-    }
-
     suspend fun getBaseAttrList(
         attrType: Int,
         catelogId: Long,

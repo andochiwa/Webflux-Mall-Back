@@ -97,10 +97,22 @@ class AttrGroupController {
         return resultSuccess().putAll(attrGroupMap)
     }
 
-    @GetMapping("{attrgroupid}/attr")
-    @ApiOperation("get attr relation data by attrgroupid")
-    suspend fun getAttrRelation(@PathVariable("attrgroupid") attrGroupId: Long): ResultDto {
+    @GetMapping("{attrGroupId}/attr")
+    @ApiOperation("get attr relation data by attrGroupId")
+    suspend fun getAttrRelation(@PathVariable("attrGroupId") attrGroupId: Long): ResultDto {
         val attrs = attrGroupService.getAttrRelation(attrGroupId)
         return resultSuccess().put("attr", attrs)
+    }
+
+    @GetMapping("{attrGroupId}/no-attr")
+    @ApiOperation("get attr no relation data by attrGroupId")
+    suspend fun getNoAttrRelation(
+        @PathVariable("attrGroupId") attrGroupId: Long,
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val attrMap = attrGroupService.getNoAttrRelation(attrGroupId, page - 1, limit, key)
+        return resultSuccess().putAll(attrMap)
     }
 }
