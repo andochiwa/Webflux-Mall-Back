@@ -44,12 +44,12 @@ class AttrGroupRelationService {
         return attrService.getAllById(attrIds).toList()
     }
 
-    fun updateGroup(attrGroupId: Long, attrId: Long) {
+    suspend fun updateGroup(attrGroupId: Long, attrId: Long) {
         attrGroupRelationDao.updateGroup(attrGroupId, attrId)
     }
 
-    suspend fun getGroupIdByAttr(attrId: Long): Long? {
-        return attrGroupRelationDao.findByAttrId(attrId)?.attrGroupId
+    suspend fun getGroupByAttrId(attrId: Long): AttrGroupRelation? {
+        return attrGroupRelationDao.findByAttrId(attrId)
     }
 }
 

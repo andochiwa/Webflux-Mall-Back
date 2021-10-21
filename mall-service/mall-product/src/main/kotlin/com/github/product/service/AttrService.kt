@@ -3,6 +3,7 @@ package com.github.product.service
 import com.github.product.dao.AttrDao
 import com.github.product.dto.AttrDto
 import com.github.product.entity.Attr
+import com.github.product.entity.AttrGroupRelation
 import com.github.product.vo.AttrVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -32,8 +33,14 @@ class AttrService {
     @Autowired
     lateinit var attrGroupRelationService: AttrGroupRelationService
 
-    suspend fun getById(id: Long): Attr? {
-        return attrDao.findById(id)
+    suspend fun getById(id: Long): AttrDto? {
+        val attrDto = AttrDto()
+        val attr = attrDao.findById(id) ?: throw NullPointerException("查询为空")
+        BeanUtils.copyProperties(attr, attrDto)
+        attrDto.attrGroupId = attrGroupRelationService.getGroupByAttrId(id)?.attrGroupId
+        attrDto.catelogName = categoryService.getById(attr.catelogId!!)?.name
+        attrDto.catelogPath = categoryService.getCatelogPath(attr.catelogId!!)
+        return attrDto
     }
 
     suspend fun saveOrUpdate(attr: Attr): Attr {
@@ -86,9 +93,9 @@ class AttrService {
             val attrDto = AttrDto()
             BeanUtils.copyProperties(it, attrDto)
             // set groupName and catelogName
-            val groupId = attrGroupRelationService.getGroupIdByAttr(it.id!!)
+            val groupId = attrGroupRelationService.getGroupByAttrId(it.id!!)?.attrGroupId
             attrDto.groupName = groupId?.run { attrGroupService.getById(groupId)?.attrGroupName }
-            attrDto.catelogName = categoryService.getById(catelogId)?.name
+            attrDto.catelogName = categoryService.getById(it.catelogId!!)?.name
             attrDto
         }
         return mutableMapOf<String, Any>().apply {
@@ -103,7 +110,8 @@ class AttrService {
         BeanUtils.copyProperties(attrVo, attr)
         attrDao.save(attr)
         // save to attr group relation
-        attrGroupRelationService.updateGroup(attrVo.attrGroupId!!, attr.id!!)
+        val attrGroupRelation = AttrGroupRelation(attrId = attr.id!!, attrGroupId = attrVo.attrGroupId!!, attrSort = 0)
+        attrGroupRelationService.saveOrUpdate(attrGroupRelation)
     }
 }
 
