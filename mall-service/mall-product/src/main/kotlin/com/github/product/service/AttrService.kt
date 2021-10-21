@@ -1,5 +1,6 @@
 package com.github.product.service
 
+import com.github.constant.AttrEnum
 import com.github.product.dao.AttrDao
 import com.github.product.dto.AttrDto
 import com.github.product.entity.Attr
@@ -107,6 +108,9 @@ class AttrService {
         val attr = Attr()
         BeanUtils.copyProperties(attrVo, attr)
         attrDao.save(attr)
+        if (attrVo.attrType == AttrEnum.ATTR_TYPE_SALE.value) {
+            return
+        }
         // save to attr group relation
         val attrGroupRelation = AttrGroupRelation(attrId = attr.id, attrGroupId = attrVo.attrGroupId, attrSort = 0)
         attrGroupRelationService.saveOrUpdate(attrGroupRelation)
@@ -117,7 +121,7 @@ class AttrService {
         val attr = Attr().apply { attrId = attrVo.id }
         BeanUtils.copyProperties(attrVo, attr)
         attrDao.save(attr)
-        attrGroupRelationService.updateGroup(attrVo.attrGroupId!!, attr.id!!)
+        attrGroupRelationService.updateGroup(attrVo.attrGroupId ?: return, attr.id!!)
     }
 }
 
