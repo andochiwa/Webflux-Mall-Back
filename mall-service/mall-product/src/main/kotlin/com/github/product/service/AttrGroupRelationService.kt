@@ -55,5 +55,13 @@ class AttrGroupRelationService {
     suspend fun deleteByAttrIds(attrIds: List<Long>) {
         attrGroupRelationDao.deleteAllByAttrId(attrIds)
     }
+
+    suspend fun deleteAttrAndGroupRelation(attrIds: Long, attrGroupIds: Long) {
+        attrGroupRelationDao.deleteByAttrIdAndAttrGroupId(attrIds, attrGroupIds)
+    }
+
+    suspend fun countAttr(attrId: Long): Long {
+        return attrGroupRelationDao.countByAttrId(attrId)
+    }
 }
 

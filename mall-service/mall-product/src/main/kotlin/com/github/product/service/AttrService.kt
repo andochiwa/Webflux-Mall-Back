@@ -5,6 +5,7 @@ import com.github.product.dao.AttrDao
 import com.github.product.dto.AttrDto
 import com.github.product.entity.Attr
 import com.github.product.entity.AttrGroupRelation
+import com.github.product.vo.AttrAndGroupRelationVo
 import com.github.product.vo.AttrVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -121,7 +122,24 @@ class AttrService {
         val attr = Attr().apply { attrId = attrVo.id }
         BeanUtils.copyProperties(attrVo, attr)
         attrDao.save(attr)
-        attrGroupRelationService.updateGroup(attrVo.attrGroupId ?: return, attr.id!!)
+        val count = attrGroupRelationService.countAttr(attr.id!!)
+        if (count == 0L) {
+            val attrGroupRelation = AttrGroupRelation().apply {
+                attrId = attr.id
+                attrGroupId = attrVo.attrGroupId
+                attrSort = 0
+            }
+            attrGroupRelationService.saveOrUpdate(attrGroupRelation)
+        } else {
+            attrGroupRelationService.updateGroup(attrVo.attrGroupId ?: return, attr.id!!)
+        }
+    }
+
+    suspend fun deleteAttrAndGroupRelation(attrAndGroupRelationVo: AttrAndGroupRelationVo) {
+        attrGroupRelationService.deleteAttrAndGroupRelation(
+            attrAndGroupRelationVo.attrId!!,
+            attrAndGroupRelationVo.attrGroupId!!
+        )
     }
 }
 

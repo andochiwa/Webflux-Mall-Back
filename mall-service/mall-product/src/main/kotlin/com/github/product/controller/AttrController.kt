@@ -3,8 +3,10 @@ package com.github.product.controller
 import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.service.AttrService
+import com.github.product.vo.AttrAndGroupRelationVo
 import com.github.product.vo.AttrVo
 import com.github.vaild.AddGroup
+import com.github.vaild.DeleteGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -65,6 +67,15 @@ class AttrController {
     @ApiOperation("deleteByIds")
     suspend fun deleteByIds(@RequestBody ids: List<Long>): ResultDto {
         attrService.deleteByIds(ids)
+        return resultSuccess()
+    }
+
+    @DeleteMapping("attrgroup/relation")
+    @ApiOperation("delete attr and attrgroup relation")
+    suspend fun deleteAttrAndGroupRelation(
+        @Validated(DeleteGroup::class) @RequestBody attrAndGroupRelationVo: AttrAndGroupRelationVo
+    ): ResultDto {
+        attrService.deleteAttrAndGroupRelation(attrAndGroupRelationVo)
         return resultSuccess()
     }
 
