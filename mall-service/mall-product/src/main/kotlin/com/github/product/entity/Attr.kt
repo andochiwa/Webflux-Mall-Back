@@ -58,7 +58,6 @@ data class Attr(
     var attrType: Int? = null,
 
     @ApiModelProperty(value = "启用状态[0 - 禁用，1 - 启用]")
-    @JsonSerialize(using = ToStringSerializer::class)
     @field:Range(min = 0, max = 1, groups = [AddGroup::class, UpdateGroup::class])
     @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var enable: Long? = null,

@@ -20,7 +20,6 @@ data class AttrDto(
 
     var attrType: Int? = null,
 
-    @JsonSerialize(using = ToStringSerializer::class)
     var enable: Long? = null,
 
     @JsonSerialize(using = ToStringSerializer::class)
@@ -32,5 +31,8 @@ data class AttrDto(
 
     var groupName: String? = null,
 
-    var catelogPath: MutableList<Long>? = null
+    @JsonSerialize(using = ToStringSerializer::class)
+    var attrGroupId: Long? = null,
+
+    var catelogPath: List<String>? = null
 ) : Serializable
