@@ -59,7 +59,6 @@ data class AttrVo(
     var showDesc: Int? = null,
 
     @ApiModelProperty(value = "分组id")
-    @field:NotNull(groups = [AddGroup::class, UpdateGroup::class])
     var attrGroupId: Long? = null,
 
     ) : Serializable {

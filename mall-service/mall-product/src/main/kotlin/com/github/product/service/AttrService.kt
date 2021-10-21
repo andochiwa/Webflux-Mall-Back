@@ -108,7 +108,7 @@ class AttrService {
         BeanUtils.copyProperties(attrVo, attr)
         attrDao.save(attr)
         // save to attr group relation
-        val attrGroupRelation = AttrGroupRelation(attrId = attr.id!!, attrGroupId = attrVo.attrGroupId!!, attrSort = 0)
+        val attrGroupRelation = AttrGroupRelation(attrId = attr.id, attrGroupId = attrVo.attrGroupId, attrSort = 0)
         attrGroupRelationService.saveOrUpdate(attrGroupRelation)
     }
 
