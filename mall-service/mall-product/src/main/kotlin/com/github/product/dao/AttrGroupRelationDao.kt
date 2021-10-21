@@ -18,7 +18,7 @@ interface AttrGroupRelationDao : CoroutineCrudRepository<AttrGroupRelation, Long
 
     @Modifying
     @Query("update pms_attr_group_relation set attr_group_id = :attrGroupId where attr_id = :attrId;")
-    fun updateGroup(attrGroupId: Long, attrId: Long)
+    suspend fun updateGroup(attrGroupId: Long, attrId: Long)
 
     suspend fun findByAttrId(attrId: Long): AttrGroupRelation?
 }

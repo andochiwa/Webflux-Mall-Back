@@ -31,8 +31,8 @@ class AttrController {
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val attr = attrService.getById(id)
-        return resultSuccess().put("attr", attr)
+        val attrDto = attrService.getById(id)
+        return resultSuccess().put("attr", attrDto)
     }
 
     @GetMapping("{attrType}/list/{catelogId}")
