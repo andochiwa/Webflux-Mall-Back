@@ -58,11 +58,4 @@ class AttrGroupRelationController {
         val attrGroupRelations = attrGroupRelationService.getAll()
         return resultSuccess().put("attrGroupRelation", attrGroupRelations.toList())
     }
-
-    @GetMapping("{attrgroupid}/attr")
-    @ApiOperation("get attr relation data by attrgroupid")
-    suspend fun getAttrByAttrGroupId(@PathVariable("attrgroupid") attrGroupId: Long): ResultDto {
-        val attrs = attrGroupRelationService.getAttrByAttrGroupId(attrGroupId)
-        return resultSuccess().put("attr", attrs)
-    }
 }

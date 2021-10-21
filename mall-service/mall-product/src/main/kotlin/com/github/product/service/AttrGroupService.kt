@@ -1,6 +1,8 @@
 package com.github.product.service
 
 import com.github.product.dao.AttrGroupDao
+import com.github.product.dao.AttrGroupRelationDao
+import com.github.product.entity.Attr
 import com.github.product.entity.AttrGroup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -18,6 +20,12 @@ import org.springframework.stereotype.Service
 class AttrGroupService {
     @Autowired
     lateinit var attrGroupDao: AttrGroupDao
+
+    @Autowired
+    lateinit var attrGroupRelationDao: AttrGroupRelationDao
+
+    @Autowired
+    lateinit var attrService: AttrService
 
     suspend fun getById(id: Long): AttrGroup? {
         return attrGroupDao.findById(id)
@@ -59,6 +67,12 @@ class AttrGroupService {
             this["attrgroup"] = attrGroupList
             this["totalCount"] = attrGroupDao.countByCatelogId(categoryId)
         }
+    }
+
+    suspend fun getAttrRelation(attrGroupId: Long): List<Attr> {
+        val attrGroupRelationList = attrGroupRelationDao.getAllByAttrGroupId(attrGroupId).toList()
+        val attrIds = attrGroupRelationList.map { it.attrId!! }
+        return attrService.getAllById(attrIds).toList()
     }
 }
 

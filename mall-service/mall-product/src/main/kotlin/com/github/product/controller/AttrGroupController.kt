@@ -96,4 +96,11 @@ class AttrGroupController {
         val attrGroupMap = attrGroupService.getPaginationByCategoryId(page - 1, limit, key, categoryId)
         return resultSuccess().putAll(attrGroupMap)
     }
+
+    @GetMapping("{attrgroupid}/attr")
+    @ApiOperation("get attr relation data by attrgroupid")
+    suspend fun getAttrRelation(@PathVariable("attrgroupid") attrGroupId: Long): ResultDto {
+        val attrs = attrGroupService.getAttrRelation(attrGroupId)
+        return resultSuccess().put("attr", attrs)
+    }
 }
