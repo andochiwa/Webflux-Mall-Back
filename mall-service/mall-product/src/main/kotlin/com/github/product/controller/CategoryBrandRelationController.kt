@@ -75,4 +75,11 @@ class CategoryBrandRelationController {
         val categoryBrandRelations = categoryBrandRelationService.getCatelogByBranId(brandId)
         return resultSuccess().put("categoryBrandRelation", categoryBrandRelations.toList())
     }
+
+    @GetMapping("/brand/{catelogId}")
+    @ApiOperation("get brand by catelog")
+    suspend fun getBrandByCatelog(@PathVariable("catelogId") catelogId: Long): ResultDto {
+        val brandList = categoryBrandRelationService.getBrandByCatelog(catelogId)
+        return resultSuccess().put("list", brandList)
+    }
 }

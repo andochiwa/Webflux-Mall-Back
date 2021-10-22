@@ -3,10 +3,13 @@ package com.github.product.service
 import com.github.product.dao.BrandDao
 import com.github.product.dao.CategoryBrandRelationDao
 import com.github.product.dao.CategoryDao
+import com.github.product.dto.BrandDto
 import com.github.product.entity.Brand
 import com.github.product.entity.Category
 import com.github.product.entity.CategoryBrandRelation
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -70,6 +73,14 @@ class CategoryBrandRelationService {
 
     fun updateCategoryNameByCategoryId(category: Category) {
         categoryBrandRelationDao.updateCategoryNameByCategoryId(category.name!!, category.id!!)
+    }
+
+    suspend fun getBrandByCatelog(catelogId: Long): List<BrandDto> {
+        val brandIds = categoryBrandRelationDao.findByCatelogId(catelogId)
+            .map { it.brandId!! }
+        return brandDao.findAllById(brandIds)
+            .map { BrandDto(it.id, it.name) }
+            .toList()
     }
 }
 
