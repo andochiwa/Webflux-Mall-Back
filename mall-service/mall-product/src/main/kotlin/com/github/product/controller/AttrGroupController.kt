@@ -5,7 +5,9 @@ import com.github.dto.resultSuccess
 import com.github.product.entity.AttrGroup
 import com.github.product.service.AttrGroupService
 import com.github.product.service.CategoryService
+import com.github.product.vo.AttrAndGroupRelationVo
 import com.github.vaild.AddGroup
+import com.github.vaild.DeleteGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -102,6 +104,12 @@ class AttrGroupController {
     suspend fun getAttrRelation(@PathVariable("attrGroupId") attrGroupId: Long): ResultDto {
         val attrs = attrGroupService.getAttrRelation(attrGroupId)
         return resultSuccess().put("attr", attrs)
+    }
+
+    @PostMapping("attr")
+    suspend fun insertAttrRelation(@RequestBody @Validated(DeleteGroup::class) attrAndGroupRelationVo: List<AttrAndGroupRelationVo>): ResultDto {
+        attrGroupService.insertAttrRelation(attrAndGroupRelationVo)
+        return resultSuccess()
     }
 
     @GetMapping("{attrGroupId}/no-attr")

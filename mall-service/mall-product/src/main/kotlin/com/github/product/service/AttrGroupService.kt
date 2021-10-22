@@ -5,6 +5,8 @@ import com.github.product.dao.AttrGroupDao
 import com.github.product.dao.AttrGroupRelationDao
 import com.github.product.entity.Attr
 import com.github.product.entity.AttrGroup
+import com.github.product.entity.AttrGroupRelation
+import com.github.product.vo.AttrAndGroupRelationVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -103,6 +105,18 @@ class AttrGroupService {
             this["attr"] = attrList
             this["totalCount"] = totalCount
         }
+    }
+
+    suspend fun insertAttrRelation(attrAndGroupRelationVo: List<AttrAndGroupRelationVo>) {
+        val attrGroupRelationList = attrAndGroupRelationVo.map {
+            AttrGroupRelation().apply {
+                attrId = it.attrId
+                attrGroupId = it.attrGroupId
+                attrSort = 0
+            }
+        }
+        println(attrGroupRelationList)
+        attrGroupRelationDao.saveAll(attrGroupRelationList).toList()
     }
 }
 
