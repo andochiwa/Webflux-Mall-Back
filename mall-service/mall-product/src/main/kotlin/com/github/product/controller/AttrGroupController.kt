@@ -123,4 +123,11 @@ class AttrGroupController {
         val attrMap = attrGroupService.getNoAttrRelation(attrGroupId, page - 1, limit, key)
         return resultSuccess().putAll(attrMap)
     }
+
+    @GetMapping("{catelogId}/with-attr")
+    @ApiOperation("get attr group with attrs by catelog id")
+    suspend fun getAttrGroupWithAttrsByCatelogId(@PathVariable("catelogId") catelogId: Long): ResultDto {
+        val attrGroupWithAttrsDtoList = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId)
+        return resultSuccess().put("list", attrGroupWithAttrsDtoList)
+    }
 }
