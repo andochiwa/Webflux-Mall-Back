@@ -4,6 +4,7 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.product.entity.SpuInfo
 import com.github.product.service.SpuInfoService
+import com.github.product.vo.SpuSaveVo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
@@ -33,8 +34,8 @@ class SpuInfoController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody spuInfo: SpuInfo): ResultDto {
-        spuInfoService.saveOrUpdate(spuInfo)
+    suspend fun insert(@RequestBody spuSaveVo: SpuSaveVo): ResultDto {
+        spuInfoService.saveSpu(spuSaveVo)
         return resultSuccess()
     }
 

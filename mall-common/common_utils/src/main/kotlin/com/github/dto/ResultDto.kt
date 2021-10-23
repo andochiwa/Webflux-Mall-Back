@@ -5,7 +5,7 @@ package com.github.dto
  * @version 1.0
  * @since 09-24-00:12
  */
-class ResultDto(code: Int = 200) {
+class ResultDto(val code: Int = 200) {
 
     val data = mutableMapOf<String, Any?>()
 

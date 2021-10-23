@@ -1,9 +1,10 @@
 package com.github.coupon.controller
 
-import com.github.dto.ResultDto
-import com.github.dto.resultSuccess
 import com.github.coupon.entity.SkuFullReduction
 import com.github.coupon.service.SkuFullReductionService
+import com.github.dto.ResultDto
+import com.github.dto.resultSuccess
+import com.github.to.SkuFullReductionTo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
@@ -35,6 +36,13 @@ class SkuFullReductionController {
     @ApiOperation("insert")
     suspend fun insert(@RequestBody skuFullReduction: SkuFullReduction): ResultDto {
         skuFullReductionService.saveOrUpdate(skuFullReduction)
+        return resultSuccess()
+    }
+
+    @PostMapping("saveInfo")
+    @ApiOperation("save all sku reduction info")
+    suspend fun saveInfo(@RequestBody skuFullReductionTo: List<SkuFullReductionTo>): ResultDto {
+        skuFullReductionService.saveSkuReduction(skuFullReductionTo)
         return resultSuccess()
     }
 

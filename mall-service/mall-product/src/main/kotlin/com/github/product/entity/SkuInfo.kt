@@ -21,58 +21,59 @@ import java.math.BigDecimal
  */
 @Table("pms_sku_info")
 @ApiModel
-data class SkuInfo (
+data class SkuInfo(
 
-	@ApiModelProperty(value = "skuId")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	@JsonProperty("id")
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "skuId")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    @JsonProperty("id")
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "spuId")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var spuId: Long? = null,
+    @ApiModelProperty(value = "spuId")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var spuId: Long? = null,
 
-	@ApiModelProperty(value = "sku名称")
-	var skuName: String? = null,
+    @ApiModelProperty(value = "sku名称")
+    var skuName: String? = null,
 
-	@ApiModelProperty(value = "sku介绍描述")
-	var skuDesc: String? = null,
+    @ApiModelProperty(value = "sku介绍描述")
+    var skuDesc: String? = null,
 
-	@ApiModelProperty(value = "所属分类id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var catalogId: Long? = null,
+    @ApiModelProperty(value = "所属分类id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var catelogId: Long? = null,
 
-	@ApiModelProperty(value = "品牌id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var brandId: Long? = null,
+    @ApiModelProperty(value = "品牌id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var brandId: Long? = null,
 
-	@ApiModelProperty(value = "默认图片")
-	var skuDefaultImg: String? = null,
+    @ApiModelProperty(value = "默认图片")
+    var skuDefaultImg: String? = null,
 
-	@ApiModelProperty(value = "标题")
-	var skuTitle: String? = null,
+    @ApiModelProperty(value = "标题")
+    var skuTitle: String? = null,
 
-	@ApiModelProperty(value = "副标题")
-	var skuSubtitle: String? = null,
+    @ApiModelProperty(value = "副标题")
+    var skuSubtitle: String? = null,
 
-	@ApiModelProperty(value = "价格")
-	var price: BigDecimal? = null,
+    @ApiModelProperty(value = "价格")
+    var price: BigDecimal? = null,
 
-	@ApiModelProperty(value = "销量")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var saleCount: Long? = null,
+    @ApiModelProperty(value = "销量")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var saleCount: Long? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (skuId == null) {
-			skuId = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = skuId
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (skuId == null) {
+            skuId = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = skuId
 }

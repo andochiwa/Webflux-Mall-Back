@@ -3,11 +3,15 @@ package com.github.product.service
 import com.github.product.dao.AttrDao
 import com.github.product.dao.AttrGroupDao
 import com.github.product.dao.AttrGroupRelationDao
+import com.github.product.dto.AttrGroupWithAttrsDto
 import com.github.product.entity.Attr
 import com.github.product.entity.AttrGroup
+import com.github.product.entity.AttrGroupRelation
+import com.github.product.vo.AttrAndGroupRelationVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -103,6 +107,28 @@ class AttrGroupService {
             this["attr"] = attrList
             this["totalCount"] = totalCount
         }
+    }
+
+    suspend fun insertAttrRelation(attrAndGroupRelationVo: List<AttrAndGroupRelationVo>) {
+        val attrGroupRelationList = attrAndGroupRelationVo.map {
+            AttrGroupRelation().apply {
+                attrId = it.attrId
+                attrGroupId = it.attrGroupId
+                attrSort = 0
+            }
+        }
+        println(attrGroupRelationList)
+        attrGroupRelationDao.saveAll(attrGroupRelationList).toList()
+    }
+
+    suspend fun getAttrGroupWithAttrsByCatelogId(catelogId: Long): List<AttrGroupWithAttrsDto> {
+        return attrGroupDao.findByCatelogId(catelogId)
+            .map {
+                val attrGroupWithAttrsDto = AttrGroupWithAttrsDto()
+                BeanUtils.copyProperties(it, attrGroupWithAttrsDto)
+                attrGroupWithAttrsDto.attrList = this.getAttrRelation(it.attrGroupId!!)
+                attrGroupWithAttrsDto
+            }.toList()
     }
 }
 

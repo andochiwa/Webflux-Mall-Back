@@ -21,7 +21,7 @@ import java.time.LocalDateTime
  */
 @Table("pms_spu_info")
 @ApiModel
-data class SpuInfo (
+data class SpuInfo(
 
     @ApiModelProperty(value = "商品id")
     @Id
@@ -37,7 +37,7 @@ data class SpuInfo (
 
     @ApiModelProperty(value = "所属分类id")
     @JsonSerialize(using = ToStringSerializer::class)
-    var catalogId: Long? = null,
+    var catelogId: Long? = null,
 
     @ApiModelProperty(value = "品牌id")
     @JsonSerialize(using = ToStringSerializer::class)
@@ -63,6 +63,7 @@ data class SpuInfo (
             true
         } else false
     }
+
     @JsonSerialize(using = ToStringSerializer::class)
     override fun getId(): Long? = id
 }

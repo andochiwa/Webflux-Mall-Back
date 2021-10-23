@@ -4,10 +4,13 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.member.entity.MemberLevel
 import com.github.member.service.MemberLevelService
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -33,22 +36,22 @@ class MemberLevelController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody memberLevel: MemberLevel): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody memberLevel: MemberLevel): ResultDto {
         memberLevelService.saveOrUpdate(memberLevel)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody memberLevel: MemberLevel): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody memberLevel: MemberLevel): ResultDto {
         memberLevelService.saveOrUpdate(memberLevel)
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping
     @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        memberLevelService.deleteById(id)
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        memberLevelService.deleteById(ids)
         return resultSuccess()
     }
 
@@ -57,5 +60,16 @@ class MemberLevelController {
     suspend fun getAll(): ResultDto {
         val memberLevels = memberLevelService.getAll()
         return resultSuccess().put("memberLevel", memberLevels.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get all pagination")
+    suspend fun getAllPagination(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val memberLevelMap = memberLevelService.getAllPagination(page - 1, limit, key)
+        return resultSuccess().putAll(memberLevelMap)
     }
 }

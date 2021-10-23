@@ -20,70 +20,71 @@ import java.time.LocalDateTime
  */
 @Table("pms_spu_comment")
 @ApiModel
-data class SpuComment (
+data class SpuComment(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "sku_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "sku_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "spu_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var spuId: Long? = null,
+    @ApiModelProperty(value = "spu_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var spuId: Long? = null,
 
-	@ApiModelProperty(value = "商品名字")
-	var spuName: String? = null,
+    @ApiModelProperty(value = "商品名字")
+    var spuName: String? = null,
 
-	@ApiModelProperty(value = "会员昵称")
-	var memberNickName: String? = null,
+    @ApiModelProperty(value = "会员昵称")
+    var memberNickName: String? = null,
 
-	@ApiModelProperty(value = "星级")
-	var star: Int? = null,
+    @ApiModelProperty(value = "星级")
+    var star: Int? = null,
 
-	@ApiModelProperty(value = "会员ip")
-	var memberIp: String? = null,
+    @ApiModelProperty(value = "会员ip")
+    var memberIp: String? = null,
 
-	@ApiModelProperty(value = "创建时间")
-	var createTime: LocalDateTime? = null,
+    @ApiModelProperty(value = "创建时间")
+    var createTime: LocalDateTime? = null,
 
-	@ApiModelProperty(value = "显示状态[0-不显示，1-显示]")
-	var showStatus: Int? = null,
+    @ApiModelProperty(value = "显示状态[0-不显示，1-显示]")
+    var showStatus: Int? = null,
 
-	@ApiModelProperty(value = "购买时属性组合")
-	var spuAttributes: String? = null,
+    @ApiModelProperty(value = "购买时属性组合")
+    var spuAttributes: String? = null,
 
-	@ApiModelProperty(value = "点赞数")
-	var likesCount: Int? = null,
+    @ApiModelProperty(value = "点赞数")
+    var likesCount: Int? = null,
 
-	@ApiModelProperty(value = "回复数")
-	var replyCount: Int? = null,
+    @ApiModelProperty(value = "回复数")
+    var replyCount: Int? = null,
 
-	@ApiModelProperty(value = "评论图片/视频[json数据；[{type:文件类型,url:资源路径}]]")
-	var resources: String? = null,
+    @ApiModelProperty(value = "评论图片/视频[json数据；[{type:文件类型,url:资源路径}]]")
+    var resources: String? = null,
 
-	@ApiModelProperty(value = "内容")
-	var content: String? = null,
+    @ApiModelProperty(value = "内容")
+    var content: String? = null,
 
-	@ApiModelProperty(value = "用户头像")
-	var memberIcon: String? = null,
+    @ApiModelProperty(value = "用户头像")
+    var memberIcon: String? = null,
 
-	@ApiModelProperty(value = "评论类型[0 - 对商品的直接评论，1 - 对评论的回复]")
-	var commentType: Int? = null,
+    @ApiModelProperty(value = "评论类型[0 - 对商品的直接评论，1 - 对评论的回复]")
+    var commentType: Int? = null,
 
 
-	) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

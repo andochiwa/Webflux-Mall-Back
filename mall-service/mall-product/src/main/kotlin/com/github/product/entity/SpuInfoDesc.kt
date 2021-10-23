@@ -2,7 +2,6 @@ package com.github.product.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.annotations.ApiModel
@@ -20,27 +19,30 @@ import java.io.Serializable
  */
 @Table("pms_spu_info_desc")
 @ApiModel
-data class SpuInfoDesc (
+data class SpuInfoDesc(
 
-	@ApiModelProperty(value = "商品id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	@JsonProperty("id")
-	var spuId: Long? = null,
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "商品介绍")
-	var description: String? = null,
+    @ApiModelProperty(value = "商品介绍")
+    var description: String? = null,
+
+    @ApiModelProperty(value = "商品id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var spuId: Long? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (spuId == null) {
-			spuId = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = spuId
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

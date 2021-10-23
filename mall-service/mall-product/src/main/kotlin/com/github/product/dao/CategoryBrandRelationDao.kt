@@ -32,4 +32,6 @@ interface CategoryBrandRelationDao : CoroutineCrudRepository<CategoryBrandRelati
     @Query("update pms_category_brand_relation set catelog_name = :categoryName where catelog_id = :categoryId;")
     fun updateCategoryNameByCategoryId(categoryName: String, categoryId: Long)
 
+    fun findByCatelogId(catelogId: Long): Flow<CategoryBrandRelation>
+
 }

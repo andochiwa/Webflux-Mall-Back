@@ -5,7 +5,9 @@ import com.github.dto.resultSuccess
 import com.github.product.entity.AttrGroup
 import com.github.product.service.AttrGroupService
 import com.github.product.service.CategoryService
+import com.github.product.vo.AttrAndGroupRelationVo
 import com.github.vaild.AddGroup
+import com.github.vaild.DeleteGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -104,6 +106,12 @@ class AttrGroupController {
         return resultSuccess().put("attr", attrs)
     }
 
+    @PostMapping("attr")
+    suspend fun insertAttrRelation(@RequestBody @Validated(DeleteGroup::class) attrAndGroupRelationVo: List<AttrAndGroupRelationVo>): ResultDto {
+        attrGroupService.insertAttrRelation(attrAndGroupRelationVo)
+        return resultSuccess()
+    }
+
     @GetMapping("{attrGroupId}/no-attr")
     @ApiOperation("get attr no relation data by attrGroupId")
     suspend fun getNoAttrRelation(
@@ -114,5 +122,12 @@ class AttrGroupController {
     ): ResultDto {
         val attrMap = attrGroupService.getNoAttrRelation(attrGroupId, page - 1, limit, key)
         return resultSuccess().putAll(attrMap)
+    }
+
+    @GetMapping("{catelogId}/with-attr")
+    @ApiOperation("get attr group with attrs by catelog id")
+    suspend fun getAttrGroupWithAttrsByCatelogId(@PathVariable("catelogId") catelogId: Long): ResultDto {
+        val attrGroupWithAttrsDtoList = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId)
+        return resultSuccess().put("list", attrGroupWithAttrsDtoList)
     }
 }

@@ -19,40 +19,41 @@ import java.io.Serializable
  */
 @Table("pms_sku_sale_attr_value")
 @ApiModel
-data class SkuSaleAttrValue (
+data class SkuSaleAttrValue(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "sku_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "sku_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "attr_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var attrId: Long? = null,
+    @ApiModelProperty(value = "attr_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var attrId: Long? = null,
 
-	@ApiModelProperty(value = "销售属性名")
-	var attrName: String? = null,
+    @ApiModelProperty(value = "销售属性名")
+    var attrName: String? = null,
 
-	@ApiModelProperty(value = "销售属性值")
-	var attrValue: String? = null,
+    @ApiModelProperty(value = "销售属性值")
+    var attrValue: String? = null,
 
-	@ApiModelProperty(value = "顺序")
-	var attrSort: Int? = null,
+    @ApiModelProperty(value = "顺序")
+    var attrSort: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }
