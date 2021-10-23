@@ -11,6 +11,13 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
+import org.springframework.data.r2dbc.core.flow
+import org.springframework.data.relational.core.query.Criteria
+import org.springframework.data.relational.core.query.Query
+import org.springframework.data.relational.core.query.isEqual
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -49,6 +56,9 @@ class SpuInfoService {
 
     @Autowired
     lateinit var couponFeign: CouponFeign
+
+    @Autowired
+    lateinit var template: R2dbcEntityTemplate
 
     suspend fun getById(id: Long): SpuInfo? {
         return spuInfoDao.findById(id)
@@ -185,7 +195,45 @@ class SpuInfoService {
             couponFeign.saveSkuReduction(skuFullReductionToList).awaitSingle()
                 .run { if (code != 200) throw RuntimeException("sku reduction远程服务保存失败") }
         }
+    }
 
+
+    suspend fun geyListOnConditions(
+        page: Int,
+        limit: Int,
+        field: String?,
+        order: String?,
+        key: String?,
+        catelogId: Long?,
+        brandId: Long?,
+        status: Int?,
+    ): Map<String, Any> {
+        var criteria = Criteria.empty()
+        if (catelogId?.equals(0L) == false) {
+            criteria = criteria.and("catelog_id").isEqual(catelogId)
+        }
+        if (brandId?.equals(0L) == false) {
+            criteria = criteria.and("brand_id").isEqual(brandId)
+        }
+        status?.run { criteria = criteria.and("publish_status").isEqual(status) }
+        if (key?.isNotBlank() == true) {
+            criteria = criteria.and("spu_name").like("%${key}%")
+        }
+
+        val sortOrder = if (order == "desc") Sort.Direction.DESC else Sort.Direction.ASC
+        val pageRequest = field?.run { PageRequest.of(page, limit, Sort.by(sortOrder, field)) }
+            ?: run { PageRequest.of(page, limit) }
+
+        val spuInfoList = template
+            .select(SpuInfo::class.java)
+            .from("pms_spu_info")
+            .matching(Query.query(criteria).with(pageRequest))
+            .flow().toList()
+        val count = template.count(Query.query(criteria), SpuInfo::class.java).awaitSingle()
+        return mutableMapOf<String, Any>().apply {
+            this["list"] = spuInfoList
+            this["totalCount"] = count
+        }
     }
 }
 
