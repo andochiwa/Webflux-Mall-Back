@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 
 /**
  *
@@ -51,12 +52,12 @@ class SkuFullReductionService {
     suspend fun saveSkuReduction(skuFullReductionTo: List<SkuFullReductionTo>) {
         // 保存优惠，满减, 会员价格等信息
         val skuLadderList = mutableListOf<SkuLadder>()
-        val skuFullReductionList = mutableListOf<SkuFullReduction>()
+        var skuFullReductionList = mutableListOf<SkuFullReduction>()
         val memberPriceList = mutableListOf<MemberPrice>()
         skuFullReductionTo.forEach { to ->
             SkuLadder().apply {
                 skuId = to.skuId
-                fullCount = to.fullCount
+                fullCount = to.fullCount ?: return
                 discount = to.discount
                 price = to.price
                 addOther = to.countStatus
@@ -64,8 +65,8 @@ class SkuFullReductionService {
 
             SkuFullReduction().apply {
                 skuId = to.skuId
-                fullPrice = to.fullPrice
-                reducePrice = to.reducePrice
+                fullPrice = to.fullPrice ?: return@apply
+                reducePrice = to.reducePrice ?: return@apply
                 addOther = to.countStatus
             }.run { skuFullReductionList += this }
 
@@ -79,6 +80,10 @@ class SkuFullReductionService {
                 }
             }?.run { memberPriceList += this }
         }
+        // filter invalid data
+        skuFullReductionList = skuFullReductionList.filter {
+            it.fullPrice!! >= it.reducePrice!! && it.fullPrice!! > BigDecimal(0) && it.reducePrice!! > BigDecimal(0)
+        } as MutableList<SkuFullReduction>
         skuLadderDao.saveAll(skuLadderList).toList()
         skuFullReductionDao.saveAll(skuFullReductionList).toList()
         memberPriceDao.saveAll(memberPriceList).toList()
