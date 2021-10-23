@@ -19,39 +19,34 @@ import java.io.Serializable
  */
 @Table("pms_spu_images")
 @ApiModel
-data class SpuImages (
+data class SpuImages(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "spu_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var spuId: Long? = null,
+    @ApiModelProperty(value = "spu_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var spuId: Long? = null,
 
-	@ApiModelProperty(value = "图片名")
-	var imgName: String? = null,
+    @ApiModelProperty(value = "图片地址")
+    var imgUrl: String? = null,
 
-	@ApiModelProperty(value = "图片地址")
-	var imgUrl: String? = null,
-
-	@ApiModelProperty(value = "顺序")
-	var imgSort: Int? = null,
-
-	@ApiModelProperty(value = "是否默认图")
-	var defaultImg: Int? = null,
+    @ApiModelProperty(value = "顺序")
+    var imgSort: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }
