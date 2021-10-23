@@ -36,8 +36,8 @@ class WareInfoService {
         return wareInfoDao.save(wareInfo)
     }
 
-    suspend fun deleteById(id: Long) {
-        wareInfoDao.deleteById(id)
+    suspend fun deleteById(ids: List<Long>) {
+        wareInfoDao.deleteAllById(ids)
     }
 
     fun getAll(): Flow<WareInfo> {

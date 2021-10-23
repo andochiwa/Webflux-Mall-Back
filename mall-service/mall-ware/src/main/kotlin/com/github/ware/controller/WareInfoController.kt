@@ -2,12 +2,15 @@ package com.github.ware.controller
 
 import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import com.github.ware.entity.WareInfo
 import com.github.ware.service.WareInfoService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -33,22 +36,22 @@ class WareInfoController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody wareInfo: WareInfo): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody wareInfo: WareInfo): ResultDto {
         wareInfoService.saveOrUpdate(wareInfo)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody wareInfo: WareInfo): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody wareInfo: WareInfo): ResultDto {
         wareInfoService.saveOrUpdate(wareInfo)
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wareInfoService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        wareInfoService.deleteById(ids)
         return resultSuccess()
     }
 
