@@ -19,7 +19,7 @@ import java.io.Serializable
  */
 @Table("wms_ware_sku")
 @ApiModel
-data class WmsWareSku (
+data class WareSku (
 
 	@ApiModelProperty(value = "id")
 	@Id

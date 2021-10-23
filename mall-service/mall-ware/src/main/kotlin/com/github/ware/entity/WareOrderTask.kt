@@ -20,7 +20,7 @@ import java.time.LocalDateTime
  */
 @Table("wms_ware_order_task")
 @ApiModel
-data class WmsWareOrderTask (
+data class WareOrderTask (
 
 	@ApiModelProperty(value = "id")
 	@Id

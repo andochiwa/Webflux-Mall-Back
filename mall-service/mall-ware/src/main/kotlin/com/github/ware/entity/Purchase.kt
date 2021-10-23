@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
+import java.math.BigDecimal
+import java.time.LocalDateTime
 
 /**
  *
@@ -17,39 +19,47 @@ import java.io.Serializable
  * @email a1066079469@gmail.com
  * @date 2021-09-26 03:53:23
  */
-@Table("wms_ware_order_task_detail")
+@Table("wms_purchase")
 @ApiModel
-data class WmsWareOrderTaskDetail (
+data class Purchase (
 
-	@ApiModelProperty(value = "id")
+	@ApiModelProperty(value = "")
 	@Id
 	@get:JvmName("deprecate")
 	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
-	@ApiModelProperty(value = "sku_id")
+	@ApiModelProperty(value = "")
 	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+	var assigneeId: Long? = null,
 
-	@ApiModelProperty(value = "sku_name")
-	var skuName: String? = null,
+	@ApiModelProperty(value = "")
+	var assigneeName: String? = null,
 
-	@ApiModelProperty(value = "购买个数")
-	var skuNum: Int? = null,
+	@ApiModelProperty(value = "")
+	var phone: String? = null,
 
-	@ApiModelProperty(value = "工作单id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var taskId: Long? = null,
+	@ApiModelProperty(value = "")
+	var priority: Int? = null,
 
-	@ApiModelProperty(value = "仓库id")
+	@ApiModelProperty(value = "")
+	var status: Int? = null,
+
+	@ApiModelProperty(value = "")
 	@JsonSerialize(using = ToStringSerializer::class)
 	var wareId: Long? = null,
 
-	@ApiModelProperty(value = "1-已锁定  2-已解锁  3-扣减")
-	var lockStatus: Int? = null,
+	@ApiModelProperty(value = "")
+	var amount: BigDecimal? = null,
+
+	@ApiModelProperty(value = "")
+	var createTime: LocalDateTime? = null,
+
+	@ApiModelProperty(value = "")
+	var updateTime: LocalDateTime? = null,
 
 
-) : Serializable, Persistable<Long> {
+	) : Serializable, Persistable<Long> {
 	@JsonIgnore
 	override fun isNew(): Boolean {
 		return if (id == null) {

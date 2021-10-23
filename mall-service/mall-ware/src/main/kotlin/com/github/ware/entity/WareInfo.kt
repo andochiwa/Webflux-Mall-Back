@@ -10,7 +10,6 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
-import java.math.BigDecimal
 
 /**
  *
@@ -18,36 +17,24 @@ import java.math.BigDecimal
  * @email a1066079469@gmail.com
  * @date 2021-09-26 03:53:24
  */
-@Table("wms_purchase_detail")
+@Table("wms_ware_info")
 @ApiModel
-data class WmsPurchaseDetail (
+data class WareInfo (
 
-	@ApiModelProperty(value = "")
+	@ApiModelProperty(value = "id")
 	@Id
 	@get:JvmName("deprecate")
 	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
-	@ApiModelProperty(value = "采购单id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var purchaseId: Long? = null,
+	@ApiModelProperty(value = "仓库名")
+	var name: String? = null,
 
-	@ApiModelProperty(value = "采购商品id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+	@ApiModelProperty(value = "仓库地址")
+	var address: String? = null,
 
-	@ApiModelProperty(value = "采购数量")
-	var skuNum: Int? = null,
-
-	@ApiModelProperty(value = "采购金额")
-	var skuPrice: BigDecimal? = null,
-
-	@ApiModelProperty(value = "仓库id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var wareId: Long? = null,
-
-	@ApiModelProperty(value = "状态[0新建，1已分配，2正在采购，3已完成，4采购失败]")
-	var status: Int? = null,
+	@ApiModelProperty(value = "区域编码")
+	var areaCode: String? = null,
 
 
 ) : Serializable, Persistable<Long> {

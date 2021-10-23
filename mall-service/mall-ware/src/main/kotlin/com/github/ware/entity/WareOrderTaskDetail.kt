@@ -15,11 +15,11 @@ import java.io.Serializable
  *
  * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-26 03:53:24
+ * @date 2021-09-26 03:53:23
  */
-@Table("wms_ware_info")
+@Table("wms_ware_order_task_detail")
 @ApiModel
-data class WmsWareInfo (
+data class WareOrderTaskDetail (
 
 	@ApiModelProperty(value = "id")
 	@Id
@@ -27,14 +27,26 @@ data class WmsWareInfo (
 	@JsonSerialize(using = ToStringSerializer::class)
 	var id: Long? = null,
 
-	@ApiModelProperty(value = "仓库名")
-	var name: String? = null,
+	@ApiModelProperty(value = "sku_id")
+	@JsonSerialize(using = ToStringSerializer::class)
+	var skuId: Long? = null,
 
-	@ApiModelProperty(value = "仓库地址")
-	var address: String? = null,
+	@ApiModelProperty(value = "sku_name")
+	var skuName: String? = null,
 
-	@ApiModelProperty(value = "区域编码")
-	var areaCode: String? = null,
+	@ApiModelProperty(value = "购买个数")
+	var skuNum: Int? = null,
+
+	@ApiModelProperty(value = "工作单id")
+	@JsonSerialize(using = ToStringSerializer::class)
+	var taskId: Long? = null,
+
+	@ApiModelProperty(value = "仓库id")
+	@JsonSerialize(using = ToStringSerializer::class)
+	var wareId: Long? = null,
+
+	@ApiModelProperty(value = "1-已锁定  2-已解锁  3-扣减")
+	var lockStatus: Int? = null,
 
 
 ) : Serializable, Persistable<Long> {

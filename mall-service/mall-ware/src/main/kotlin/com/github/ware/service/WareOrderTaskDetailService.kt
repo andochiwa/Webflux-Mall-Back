@@ -1,7 +1,7 @@
 package com.github.ware.service
 
-import com.github.ware.dao.WmsWareOrderTaskDetailDao
-import com.github.ware.entity.WmsWareOrderTaskDetail
+import com.github.ware.dao.WareOrderTaskDetailDao
+import com.github.ware.entity.WareOrderTaskDetail
 import kotlinx.coroutines.flow.Flow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service
 * @date 2021-09-26 03:53:23
 */
 @Service
-class WmsWareOrderTaskDetailService {
+class WareOrderTaskDetailService {
     @Autowired
-    lateinit var wmsWareOrderTaskDetailDao: WmsWareOrderTaskDetailDao
+    lateinit var wmsWareOrderTaskDetailDao: WareOrderTaskDetailDao
 
-    suspend fun getById(id: Long): WmsWareOrderTaskDetail? {
+    suspend fun getById(id: Long): WareOrderTaskDetail? {
         return wmsWareOrderTaskDetailDao.findById(id)
     }
 
-    suspend fun saveOrUpdate(wmsWareOrderTaskDetail: WmsWareOrderTaskDetail): WmsWareOrderTaskDetail {
+    suspend fun saveOrUpdate(wmsWareOrderTaskDetail: WareOrderTaskDetail): WareOrderTaskDetail {
         return wmsWareOrderTaskDetailDao.save(wmsWareOrderTaskDetail)
     }
 
@@ -29,7 +29,7 @@ class WmsWareOrderTaskDetailService {
         wmsWareOrderTaskDetailDao.deleteById(id)
     }
 
-    fun getAll(): Flow<WmsWareOrderTaskDetail> {
+    fun getAll(): Flow<WareOrderTaskDetail> {
         return wmsWareOrderTaskDetailDao.findAll()
     }
 }
