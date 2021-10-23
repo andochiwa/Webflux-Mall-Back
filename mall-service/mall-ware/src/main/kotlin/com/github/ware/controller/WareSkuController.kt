@@ -17,45 +17,45 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("ware/wmswaresku")
+@RequestMapping("ware/waresku")
 @Api
 class WareSkuController {
 
     @Autowired
-    lateinit var wmsWareSkuService: WareSkuService
+    lateinit var wareSkuService: WareSkuService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareSku = wmsWareSkuService.getById(id)
+        val wmsWareSku = wareSkuService.getById(id)
         return resultSuccess().put("wmsWareSku", wmsWareSku)
     }
 
     @PostMapping
     @ApiOperation("insert")
     suspend fun insert(@RequestBody wmsWareSku: WareSku): ResultDto {
-        wmsWareSkuService.saveOrUpdate(wmsWareSku)
+        wareSkuService.saveOrUpdate(wmsWareSku)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@RequestBody wmsWareSku: WareSku): ResultDto {
-        wmsWareSkuService.saveOrUpdate(wmsWareSku)
+        wareSkuService.saveOrUpdate(wmsWareSku)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsWareSkuService.deleteById(id)
+        wareSkuService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareSkus = wmsWareSkuService.getAll()
+        val wmsWareSkus = wareSkuService.getAll()
         return resultSuccess().put("wmsWareSku", wmsWareSkus.toList())
     }
 }

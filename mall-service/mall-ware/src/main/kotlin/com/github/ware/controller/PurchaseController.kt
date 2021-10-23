@@ -17,45 +17,45 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("ware/wmspurchase")
+@RequestMapping("ware/purchase")
 @Api
 class PurchaseController {
 
     @Autowired
-    lateinit var wmsPurchaseService: PurchaseService
+    lateinit var purchaseService: PurchaseService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsPurchase = wmsPurchaseService.getById(id)
+        val wmsPurchase = purchaseService.getById(id)
         return resultSuccess().put("wmsPurchase", wmsPurchase)
     }
 
     @PostMapping
     @ApiOperation("insert")
     suspend fun insert(@RequestBody purchase: Purchase): ResultDto {
-        wmsPurchaseService.saveOrUpdate(purchase)
+        purchaseService.saveOrUpdate(purchase)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@RequestBody purchase: Purchase): ResultDto {
-        wmsPurchaseService.saveOrUpdate(purchase)
+        purchaseService.saveOrUpdate(purchase)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsPurchaseService.deleteById(id)
+        purchaseService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsPurchases = wmsPurchaseService.getAll()
+        val wmsPurchases = purchaseService.getAll()
         return resultSuccess().put("wmsPurchase", wmsPurchases.toList())
     }
 }

@@ -21,52 +21,53 @@ import java.time.LocalDateTime
  */
 @Table("wms_purchase")
 @ApiModel
-data class Purchase (
+data class Purchase(
 
-	@ApiModelProperty(value = "")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var assigneeId: Long? = null,
+    @ApiModelProperty(value = "")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var assigneeId: Long? = null,
 
-	@ApiModelProperty(value = "")
-	var assigneeName: String? = null,
+    @ApiModelProperty(value = "")
+    var assigneeName: String? = null,
 
-	@ApiModelProperty(value = "")
-	var phone: String? = null,
+    @ApiModelProperty(value = "")
+    var phone: String? = null,
 
-	@ApiModelProperty(value = "")
-	var priority: Int? = null,
+    @ApiModelProperty(value = "")
+    var priority: Int? = null,
 
-	@ApiModelProperty(value = "")
-	var status: Int? = null,
+    @ApiModelProperty(value = "")
+    var status: Int? = null,
 
-	@ApiModelProperty(value = "")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var wareId: Long? = null,
+    @ApiModelProperty(value = "")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var wareId: Long? = null,
 
-	@ApiModelProperty(value = "")
-	var amount: BigDecimal? = null,
+    @ApiModelProperty(value = "")
+    var amount: BigDecimal? = null,
 
-	@ApiModelProperty(value = "")
-	var createTime: LocalDateTime? = null,
+    @ApiModelProperty(value = "")
+    var createTime: LocalDateTime? = null,
 
-	@ApiModelProperty(value = "")
-	var updateTime: LocalDateTime? = null,
+    @ApiModelProperty(value = "")
+    var updateTime: LocalDateTime? = null,
 
 
-	) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

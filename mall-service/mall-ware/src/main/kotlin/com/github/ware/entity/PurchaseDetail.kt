@@ -20,44 +20,45 @@ import java.math.BigDecimal
  */
 @Table("wms_purchase_detail")
 @ApiModel
-data class PurchaseDetail (
+data class PurchaseDetail(
 
-	@ApiModelProperty(value = "")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "采购单id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var purchaseId: Long? = null,
+    @ApiModelProperty(value = "采购单id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var purchaseId: Long? = null,
 
-	@ApiModelProperty(value = "采购商品id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "采购商品id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "采购数量")
-	var skuNum: Int? = null,
+    @ApiModelProperty(value = "采购数量")
+    var skuNum: Int? = null,
 
-	@ApiModelProperty(value = "采购金额")
-	var skuPrice: BigDecimal? = null,
+    @ApiModelProperty(value = "采购金额")
+    var skuPrice: BigDecimal? = null,
 
-	@ApiModelProperty(value = "仓库id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var wareId: Long? = null,
+    @ApiModelProperty(value = "仓库id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var wareId: Long? = null,
 
-	@ApiModelProperty(value = "状态[0新建，1已分配，2正在采购，3已完成，4采购失败]")
-	var status: Int? = null,
+    @ApiModelProperty(value = "状态[0新建，1已分配，2正在采购，3已完成，4采购失败]")
+    var status: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

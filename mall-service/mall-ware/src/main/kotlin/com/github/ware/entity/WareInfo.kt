@@ -19,32 +19,33 @@ import java.io.Serializable
  */
 @Table("wms_ware_info")
 @ApiModel
-data class WareInfo (
+data class WareInfo(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "仓库名")
-	var name: String? = null,
+    @ApiModelProperty(value = "仓库名")
+    var name: String? = null,
 
-	@ApiModelProperty(value = "仓库地址")
-	var address: String? = null,
+    @ApiModelProperty(value = "仓库地址")
+    var address: String? = null,
 
-	@ApiModelProperty(value = "区域编码")
-	var areaCode: String? = null,
+    @ApiModelProperty(value = "区域编码")
+    var areaCode: String? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

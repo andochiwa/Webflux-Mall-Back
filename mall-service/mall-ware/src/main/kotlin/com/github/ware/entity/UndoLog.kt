@@ -20,48 +20,49 @@ import java.time.LocalDateTime
  */
 @Table("undo_log")
 @ApiModel
-data class UndoLog (
+data class UndoLog(
 
-	@ApiModelProperty(value = "")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var branchId: Long? = null,
+    @ApiModelProperty(value = "")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var branchId: Long? = null,
 
-	@ApiModelProperty(value = "")
-	var xid: String? = null,
+    @ApiModelProperty(value = "")
+    var xid: String? = null,
 
-	@ApiModelProperty(value = "")
-	var context: String? = null,
+    @ApiModelProperty(value = "")
+    var context: String? = null,
 
-	@ApiModelProperty(value = "")
-	var rollbackInfo: String? = null,
+    @ApiModelProperty(value = "")
+    var rollbackInfo: String? = null,
 
-	@ApiModelProperty(value = "")
-	var logStatus: Int? = null,
+    @ApiModelProperty(value = "")
+    var logStatus: Int? = null,
 
-	@ApiModelProperty(value = "")
-	var logCreated: LocalDateTime? = null,
+    @ApiModelProperty(value = "")
+    var logCreated: LocalDateTime? = null,
 
-	@ApiModelProperty(value = "")
-	var logModified: LocalDateTime? = null,
+    @ApiModelProperty(value = "")
+    var logModified: LocalDateTime? = null,
 
-	@ApiModelProperty(value = "")
-	var ext: String? = null,
+    @ApiModelProperty(value = "")
+    var ext: String? = null,
 
 
-	) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

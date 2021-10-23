@@ -19,40 +19,41 @@ import java.io.Serializable
  */
 @Table("wms_ware_sku")
 @ApiModel
-data class WareSku (
+data class WareSku(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "sku_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "sku_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "仓库id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var wareId: Long? = null,
+    @ApiModelProperty(value = "仓库id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var wareId: Long? = null,
 
-	@ApiModelProperty(value = "库存数")
-	var stock: Int? = null,
+    @ApiModelProperty(value = "库存数")
+    var stock: Int? = null,
 
-	@ApiModelProperty(value = "sku_name")
-	var skuName: String? = null,
+    @ApiModelProperty(value = "sku_name")
+    var skuName: String? = null,
 
-	@ApiModelProperty(value = "锁定库存")
-	var stockLocked: Int? = null,
+    @ApiModelProperty(value = "锁定库存")
+    var stockLocked: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

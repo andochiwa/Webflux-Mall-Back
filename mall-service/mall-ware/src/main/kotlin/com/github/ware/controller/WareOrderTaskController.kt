@@ -17,45 +17,45 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("ware/wmswareordertask")
+@RequestMapping("wareswareordertask")
 @Api
 class WareOrderTaskController {
 
     @Autowired
-    lateinit var wmsWareOrderTaskService: WareOrderTaskService
+    lateinit var wareOrderTaskService: WareOrderTaskService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareOrderTask = wmsWareOrderTaskService.getById(id)
+        val wmsWareOrderTask = wareOrderTaskService.getById(id)
         return resultSuccess().put("wmsWareOrderTask", wmsWareOrderTask)
     }
 
     @PostMapping
     @ApiOperation("insert")
     suspend fun insert(@RequestBody wmsWareOrderTask: WareOrderTask): ResultDto {
-        wmsWareOrderTaskService.saveOrUpdate(wmsWareOrderTask)
+        wareOrderTaskService.saveOrUpdate(wmsWareOrderTask)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@RequestBody wmsWareOrderTask: WareOrderTask): ResultDto {
-        wmsWareOrderTaskService.saveOrUpdate(wmsWareOrderTask)
+        wareOrderTaskService.saveOrUpdate(wmsWareOrderTask)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsWareOrderTaskService.deleteById(id)
+        wareOrderTaskService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareOrderTasks = wmsWareOrderTaskService.getAll()
+        val wmsWareOrderTasks = wareOrderTaskService.getAll()
         return resultSuccess().put("wmsWareOrderTask", wmsWareOrderTasks.toList())
     }
 }

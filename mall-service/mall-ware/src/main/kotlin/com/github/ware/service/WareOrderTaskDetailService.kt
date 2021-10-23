@@ -15,22 +15,22 @@ import org.springframework.stereotype.Service
 @Service
 class WareOrderTaskDetailService {
     @Autowired
-    lateinit var wmsWareOrderTaskDetailDao: WareOrderTaskDetailDao
+    lateinit var wareOrderTaskDetailDao: WareOrderTaskDetailDao
 
     suspend fun getById(id: Long): WareOrderTaskDetail? {
-        return wmsWareOrderTaskDetailDao.findById(id)
+        return wareOrderTaskDetailDao.findById(id)
     }
 
     suspend fun saveOrUpdate(wmsWareOrderTaskDetail: WareOrderTaskDetail): WareOrderTaskDetail {
-        return wmsWareOrderTaskDetailDao.save(wmsWareOrderTaskDetail)
+        return wareOrderTaskDetailDao.save(wmsWareOrderTaskDetail)
     }
 
     suspend fun deleteById(id: Long) {
-        wmsWareOrderTaskDetailDao.deleteById(id)
+        wareOrderTaskDetailDao.deleteById(id)
     }
 
     fun getAll(): Flow<WareOrderTaskDetail> {
-        return wmsWareOrderTaskDetailDao.findAll()
+        return wareOrderTaskDetailDao.findAll()
     }
 }
 

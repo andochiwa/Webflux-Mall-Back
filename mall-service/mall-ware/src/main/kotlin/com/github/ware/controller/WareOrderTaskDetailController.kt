@@ -17,45 +17,45 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("ware/wmswareordertaskdetail")
+@RequestMapping("ware/wareordertaskdetail")
 @Api
 class WareOrderTaskDetailController {
 
     @Autowired
-    lateinit var wmsWareOrderTaskDetailService: WareOrderTaskDetailService
+    lateinit var wareOrderTaskDetailService: WareOrderTaskDetailService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareOrderTaskDetail = wmsWareOrderTaskDetailService.getById(id)
+        val wmsWareOrderTaskDetail = wareOrderTaskDetailService.getById(id)
         return resultSuccess().put("wmsWareOrderTaskDetail", wmsWareOrderTaskDetail)
     }
 
     @PostMapping
     @ApiOperation("insert")
     suspend fun insert(@RequestBody wmsWareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
-        wmsWareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
+        wareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@RequestBody wmsWareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
-        wmsWareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
+        wareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsWareOrderTaskDetailService.deleteById(id)
+        wareOrderTaskDetailService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareOrderTaskDetails = wmsWareOrderTaskDetailService.getAll()
+        val wmsWareOrderTaskDetails = wareOrderTaskDetailService.getAll()
         return resultSuccess().put("wmsWareOrderTaskDetail", wmsWareOrderTaskDetails.toList())
     }
 }

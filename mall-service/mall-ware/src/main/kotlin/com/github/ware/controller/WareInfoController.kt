@@ -17,45 +17,56 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:24
  */
 @RestController
-@RequestMapping("ware/wmswareinfo")
+@RequestMapping("ware/wareinfo")
 @Api
 class WareInfoController {
 
     @Autowired
-    lateinit var wmsWareInfoService: WareInfoService
+    lateinit var wareInfoService: WareInfoService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareInfo = wmsWareInfoService.getById(id)
+        val wmsWareInfo = wareInfoService.getById(id)
         return resultSuccess().put("wmsWareInfo", wmsWareInfo)
     }
 
     @PostMapping
     @ApiOperation("insert")
     suspend fun insert(@RequestBody wareInfo: WareInfo): ResultDto {
-        wmsWareInfoService.saveOrUpdate(wareInfo)
+        wareInfoService.saveOrUpdate(wareInfo)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
     suspend fun update(@RequestBody wareInfo: WareInfo): ResultDto {
-        wmsWareInfoService.saveOrUpdate(wareInfo)
+        wareInfoService.saveOrUpdate(wareInfo)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsWareInfoService.deleteById(id)
+        wareInfoService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareInfos = wmsWareInfoService.getAll()
+        val wmsWareInfos = wareInfoService.getAll()
         return resultSuccess().put("wmsWareInfo", wmsWareInfos.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get pagination")
+    suspend fun getPagination(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key") key: String?
+    ): ResultDto {
+        val map = wareInfoService.getPagination(page - 1, limit, key)
+        return resultSuccess().putAll(map)
     }
 }

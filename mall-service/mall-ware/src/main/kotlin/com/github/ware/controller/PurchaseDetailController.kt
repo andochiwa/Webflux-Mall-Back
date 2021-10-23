@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:24
  */
 @RestController
-@RequestMapping("ware/wmspurchasedetail")
+@RequestMapping("ware/purchasedetail")
 @Api
 class PurchaseDetailController {
 
