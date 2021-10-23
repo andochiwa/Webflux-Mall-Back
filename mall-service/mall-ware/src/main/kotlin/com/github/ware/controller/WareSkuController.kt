@@ -27,21 +27,21 @@ class WareSkuController {
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareSku = wareSkuService.getById(id)
-        return resultSuccess().put("wmsWareSku", wmsWareSku)
+        val wareSku = wareSkuService.getById(id)
+        return resultSuccess().put("wareSku", wareSku)
     }
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody wmsWareSku: WareSku): ResultDto {
-        wareSkuService.saveOrUpdate(wmsWareSku)
+    suspend fun insert(@RequestBody wareSku: WareSku): ResultDto {
+        wareSkuService.saveOrUpdate(wareSku)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody wmsWareSku: WareSku): ResultDto {
-        wareSkuService.saveOrUpdate(wmsWareSku)
+    suspend fun update(@RequestBody wareSku: WareSku): ResultDto {
+        wareSkuService.saveOrUpdate(wareSku)
         return resultSuccess()
     }
 
@@ -55,7 +55,7 @@ class WareSkuController {
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareSkus = wareSkuService.getAll()
-        return resultSuccess().put("wmsWareSku", wmsWareSkus.toList())
+        val wareSkus = wareSkuService.getAll()
+        return resultSuccess().put("wareSku", wareSkus.toList())
     }
 }

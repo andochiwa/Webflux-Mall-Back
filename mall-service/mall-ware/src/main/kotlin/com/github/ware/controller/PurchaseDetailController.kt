@@ -27,8 +27,8 @@ class PurchaseDetailController {
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsPurchaseDetail = purchaseDetailService.getById(id)
-        return resultSuccess().put("wmsPurchaseDetail", wmsPurchaseDetail)
+        val purchaseDetail = purchaseDetailService.getById(id)
+        return resultSuccess().put("purchaseDetail", purchaseDetail)
     }
 
     @PostMapping
@@ -55,7 +55,7 @@ class PurchaseDetailController {
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsPurchaseDetails = purchaseDetailService.getAll()
-        return resultSuccess().put("wmsPurchaseDetail", wmsPurchaseDetails.toList())
+        val purchaseDetails = purchaseDetailService.getAll()
+        return resultSuccess().put("purchaseDetail", purchaseDetails.toList())
     }
 }

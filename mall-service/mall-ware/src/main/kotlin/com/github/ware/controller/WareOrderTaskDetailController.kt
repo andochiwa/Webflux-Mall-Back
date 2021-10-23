@@ -27,21 +27,21 @@ class WareOrderTaskDetailController {
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareOrderTaskDetail = wareOrderTaskDetailService.getById(id)
-        return resultSuccess().put("wmsWareOrderTaskDetail", wmsWareOrderTaskDetail)
+        val wareOrderTaskDetail = wareOrderTaskDetailService.getById(id)
+        return resultSuccess().put("wareOrderTaskDetail", wareOrderTaskDetail)
     }
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody wmsWareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
-        wareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
+    suspend fun insert(@RequestBody wareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
+        wareOrderTaskDetailService.saveOrUpdate(wareOrderTaskDetail)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody wmsWareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
-        wareOrderTaskDetailService.saveOrUpdate(wmsWareOrderTaskDetail)
+    suspend fun update(@RequestBody wareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
+        wareOrderTaskDetailService.saveOrUpdate(wareOrderTaskDetail)
         return resultSuccess()
     }
 
@@ -55,7 +55,7 @@ class WareOrderTaskDetailController {
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareOrderTaskDetails = wareOrderTaskDetailService.getAll()
-        return resultSuccess().put("wmsWareOrderTaskDetail", wmsWareOrderTaskDetails.toList())
+        val wareOrderTaskDetails = wareOrderTaskDetailService.getAll()
+        return resultSuccess().put("wareOrderTaskDetail", wareOrderTaskDetails.toList())
     }
 }

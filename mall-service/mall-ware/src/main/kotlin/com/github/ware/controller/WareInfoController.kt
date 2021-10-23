@@ -27,8 +27,8 @@ class WareInfoController {
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareInfo = wareInfoService.getById(id)
-        return resultSuccess().put("wmsWareInfo", wmsWareInfo)
+        val wareInfo = wareInfoService.getById(id)
+        return resultSuccess().put("wareInfo", wareInfo)
     }
 
     @PostMapping
@@ -55,8 +55,8 @@ class WareInfoController {
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareInfos = wareInfoService.getAll()
-        return resultSuccess().put("wmsWareInfo", wmsWareInfos.toList())
+        val wareInfos = wareInfoService.getAll()
+        return resultSuccess().put("wareInfo", wareInfos.toList())
     }
 
     @GetMapping("pagination")

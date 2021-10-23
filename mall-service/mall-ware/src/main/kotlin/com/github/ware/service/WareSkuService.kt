@@ -21,8 +21,8 @@ class WareSkuService {
         return wareSkuDao.findById(id)
     }
 
-    suspend fun saveOrUpdate(wmsWareSku: WareSku): WareSku {
-        return wareSkuDao.save(wmsWareSku)
+    suspend fun saveOrUpdate(wareSku: WareSku): WareSku {
+        return wareSkuDao.save(wareSku)
     }
 
     suspend fun deleteById(id: Long) {

@@ -21,8 +21,8 @@ class WareOrderTaskDetailService {
         return wareOrderTaskDetailDao.findById(id)
     }
 
-    suspend fun saveOrUpdate(wmsWareOrderTaskDetail: WareOrderTaskDetail): WareOrderTaskDetail {
-        return wareOrderTaskDetailDao.save(wmsWareOrderTaskDetail)
+    suspend fun saveOrUpdate(wareOrderTaskDetail: WareOrderTaskDetail): WareOrderTaskDetail {
+        return wareOrderTaskDetailDao.save(wareOrderTaskDetail)
     }
 
     suspend fun deleteById(id: Long) {
