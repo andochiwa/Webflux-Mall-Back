@@ -20,38 +20,39 @@ import java.math.BigDecimal
  */
 @Table("sms_sku_ladder")
 @ApiModel
-data class SkuLadder (
+data class SkuLadder(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "spu_id")
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "spu_id")
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "满几件")
-	var fullCount: Int? = null,
+    @ApiModelProperty(value = "满几件")
+    var fullCount: Int? = null,
 
-	@ApiModelProperty(value = "打几折")
-	var discount: BigDecimal? = null,
+    @ApiModelProperty(value = "打几折")
+    var discount: BigDecimal? = null,
 
-	@ApiModelProperty(value = "折后价")
-	var price: BigDecimal? = null,
+    @ApiModelProperty(value = "折后价")
+    var price: BigDecimal? = null,
 
-	@ApiModelProperty(value = "是否叠加其他优惠[0-不可叠加，1-可叠加]")
-	var addOther: Int? = null,
+    @ApiModelProperty(value = "是否叠加其他优惠[0-不可叠加，1-可叠加]")
+    var addOther: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }

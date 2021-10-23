@@ -20,40 +20,41 @@ import java.math.BigDecimal
  */
 @Table("sms_member_price")
 @ApiModel
-data class MemberPrice (
+data class MemberPrice(
 
-	@ApiModelProperty(value = "id")
-	@Id
-	@get:JvmName("deprecate")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var id: Long? = null,
+    @ApiModelProperty(value = "id")
+    @Id
+    @get:JvmName("deprecate")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var id: Long? = null,
 
-	@ApiModelProperty(value = "sku_id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var skuId: Long? = null,
+    @ApiModelProperty(value = "sku_id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var skuId: Long? = null,
 
-	@ApiModelProperty(value = "会员等级id")
-	@JsonSerialize(using = ToStringSerializer::class)
-	var memberLevelId: Long? = null,
+    @ApiModelProperty(value = "会员等级id")
+    @JsonSerialize(using = ToStringSerializer::class)
+    var memberLevelId: Long? = null,
 
-	@ApiModelProperty(value = "会员等级名")
-	var memberLevelName: String? = null,
+    @ApiModelProperty(value = "会员等级名")
+    var memberLevelName: String? = null,
 
-	@ApiModelProperty(value = "会员对应价格")
-	var memberPrice: BigDecimal? = null,
+    @ApiModelProperty(value = "会员对应价格")
+    var memberPrice: BigDecimal? = null,
 
-	@ApiModelProperty(value = "可否叠加其他优惠[0-不可叠加优惠，1-可叠加]")
-	var addOther: Int? = null,
+    @ApiModelProperty(value = "可否叠加其他优惠[0-不可叠加优惠，1-可叠加]")
+    var addOther: Int? = null,
 
 
-) : Serializable, Persistable<Long> {
-	@JsonIgnore
-	override fun isNew(): Boolean {
-		return if (id == null) {
-			id = IdUtil.getSnowflake().nextId()
-			true
-		} else false
-	}
-	@JsonSerialize(using = ToStringSerializer::class)
-	override fun getId(): Long? = id
+    ) : Serializable, Persistable<Long> {
+    @JsonIgnore
+    override fun isNew(): Boolean {
+        return if (id == null) {
+            id = IdUtil.getSnowflake().nextId()
+            true
+        } else false
+    }
+
+    @JsonSerialize(using = ToStringSerializer::class)
+    override fun getId(): Long? = id
 }
