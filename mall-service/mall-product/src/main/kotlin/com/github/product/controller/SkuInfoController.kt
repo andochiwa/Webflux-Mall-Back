@@ -58,4 +58,19 @@ class SkuInfoController {
         val skuInfos = skuInfoService.getAll()
         return resultSuccess().put("skuInfo", skuInfos.toList())
     }
+
+    @GetMapping("pagination")
+    @ApiOperation("get sku list on conditions")
+    suspend fun getSkusOnConditions(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?,
+        @RequestParam("catelogId", required = false) catelogId: Long?,
+        @RequestParam("brandId", required = false) brandId: Long?,
+        @RequestParam("min", required = false) min: Int?,
+        @RequestParam("max", required = false) max: Int?,
+    ): ResultDto {
+        val map = skuInfoService.getSkusOnConditions(page - 1, limit, key, catelogId, brandId, min, max)
+        return resultSuccess().putAll(map)
+    }
 }
