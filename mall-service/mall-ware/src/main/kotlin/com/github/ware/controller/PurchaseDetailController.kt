@@ -45,10 +45,10 @@ class PurchaseDetailController {
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        purchaseDetailService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        purchaseDetailService.deleteByIds(ids)
         return resultSuccess()
     }
 
@@ -57,5 +57,17 @@ class PurchaseDetailController {
     suspend fun getAll(): ResultDto {
         val purchaseDetails = purchaseDetailService.getAll()
         return resultSuccess().put("purchaseDetail", purchaseDetails.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get list on conditions")
+    suspend fun getOnConditions(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("wareId", required = false) wareId: Long?,
+        @RequestParam("status", required = false) status: Int?
+    ): ResultDto {
+        val map = purchaseDetailService.getOnConditions(page - 1, limit, wareId, status)
+        return resultSuccess().putAll(map)
     }
 }
