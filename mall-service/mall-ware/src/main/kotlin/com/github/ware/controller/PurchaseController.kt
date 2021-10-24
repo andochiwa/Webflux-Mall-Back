@@ -4,6 +4,7 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.ware.entity.Purchase
 import com.github.ware.service.PurchaseService
+import com.github.ware.vo.MergeVo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
@@ -45,10 +46,10 @@ class PurchaseController {
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        purchaseService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        purchaseService.deleteByIds(ids)
         return resultSuccess()
     }
 
@@ -57,5 +58,31 @@ class PurchaseController {
     suspend fun getAll(): ResultDto {
         val purchases = purchaseService.getAll()
         return resultSuccess().put("purchase", purchases.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get list on conditions")
+    suspend fun getOnConditions(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("status", required = false) status: Int?,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val map = purchaseService.getOnConditions(page - 1, limit, status, key)
+        return resultSuccess().putAll(map)
+    }
+
+    @GetMapping("unreceived")
+    @ApiOperation("get unreceived(status == 0, 1) list")
+    suspend fun getUnReceiveList(): ResultDto {
+        val purchase = purchaseService.getUnreceivedList()
+        return resultSuccess().put("list", purchase)
+    }
+
+    @PostMapping("merge")
+    @ApiOperation("merge purchase and purchase detail")
+    suspend fun merge(@RequestBody mergeVo: MergeVo): ResultDto {
+        purchaseService.merge(mergeVo)
+        return resultSuccess()
     }
 }

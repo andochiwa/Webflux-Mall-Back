@@ -1,6 +1,8 @@
 package com.github.ware.dao
 
 import com.github.ware.entity.PurchaseDetail
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -11,4 +13,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  */
 interface PurchaseDetailDao : CoroutineCrudRepository<PurchaseDetail, Long> {
 
+    @Modifying
+    @Query("update wms_purchase_detail set purchase_id = :purchaseId, status = :status where id = :id;")
+    suspend fun updatePurchaseIdAndStatusById(id: Long, purchaseId: Long, status: Int)
 }

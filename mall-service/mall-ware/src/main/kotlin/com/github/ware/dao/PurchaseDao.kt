@@ -1,6 +1,7 @@
 package com.github.ware.dao
 
 import com.github.ware.entity.Purchase
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -10,5 +11,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  * @date 2021-09-26 03:53:23
  */
 interface PurchaseDao : CoroutineCrudRepository<Purchase, Long> {
+
+    fun getByStatusIn(status: List<Int>): Flow<Purchase>
 
 }
