@@ -79,8 +79,6 @@ class PurchaseService {
 
     @Transactional
     suspend fun merge(mergeVo: MergeVo) {
-        println(mergeVo)
-
         val purchaseId =
             mergeVo.purchaseId ?: this.saveOrUpdate(Purchase(status = PurchaseStatusEnum.CREATES.value)).id!!
         mergeVo.items.onEach {
