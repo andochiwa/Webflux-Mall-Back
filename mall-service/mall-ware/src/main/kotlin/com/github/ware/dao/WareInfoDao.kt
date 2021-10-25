@@ -1,6 +1,6 @@
 package com.github.ware.dao
 
-import com.github.ware.entity.WmsPurchaseDetail
+import com.github.ware.entity.WareInfo
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -9,6 +9,6 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  * @email a1066079469@gmail.com
  * @date 2021-09-26 03:53:24
  */
-interface WmsPurchaseDetailDao : CoroutineCrudRepository<WmsPurchaseDetail, Long> {
+interface WareInfoDao : CoroutineCrudRepository<WareInfo, Long> {
 
 }

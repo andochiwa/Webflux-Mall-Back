@@ -2,8 +2,8 @@ package com.github.ware.controller
 
 import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
-import com.github.ware.entity.WmsWareSku
-import com.github.ware.service.WmsWareSkuService
+import com.github.ware.entity.WareOrderTaskDetail
+import com.github.ware.service.WareOrderTaskDetailService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
@@ -17,45 +17,45 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("ware/wmswaresku")
+@RequestMapping("ware/wareordertaskdetail")
 @Api
-class WmsWareSkuController {
+class WareOrderTaskDetailController {
 
     @Autowired
-    lateinit var wmsWareSkuService: WmsWareSkuService
+    lateinit var wareOrderTaskDetailService: WareOrderTaskDetailService
 
     @GetMapping("{id}")
     @ApiOperation("get")
     suspend fun getById(@PathVariable("id") id: Long): ResultDto {
-        val wmsWareSku = wmsWareSkuService.getById(id)
-        return resultSuccess().put("wmsWareSku", wmsWareSku)
+        val wareOrderTaskDetail = wareOrderTaskDetailService.getById(id)
+        return resultSuccess().put("wareOrderTaskDetail", wareOrderTaskDetail)
     }
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody wmsWareSku: WmsWareSku): ResultDto {
-        wmsWareSkuService.saveOrUpdate(wmsWareSku)
+    suspend fun insert(@RequestBody wareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
+        wareOrderTaskDetailService.saveOrUpdate(wareOrderTaskDetail)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody wmsWareSku: WmsWareSku): ResultDto {
-        wmsWareSkuService.saveOrUpdate(wmsWareSku)
+    suspend fun update(@RequestBody wareOrderTaskDetail: WareOrderTaskDetail): ResultDto {
+        wareOrderTaskDetailService.saveOrUpdate(wareOrderTaskDetail)
         return resultSuccess()
     }
 
     @DeleteMapping("{id}")
     @ApiOperation("deleteById")
     suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wmsWareSkuService.deleteById(id)
+        wareOrderTaskDetailService.deleteById(id)
         return resultSuccess()
     }
 
     @GetMapping
     @ApiOperation("getAll")
     suspend fun getAll(): ResultDto {
-        val wmsWareSkus = wmsWareSkuService.getAll()
-        return resultSuccess().put("wmsWareSku", wmsWareSkus.toList())
+        val wareOrderTaskDetails = wareOrderTaskDetailService.getAll()
+        return resultSuccess().put("wareOrderTaskDetail", wareOrderTaskDetails.toList())
     }
 }

@@ -1,6 +1,8 @@
 package com.github.product.dao
 
 import com.github.product.entity.SpuInfo
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -11,4 +13,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  */
 interface SpuInfoDao : CoroutineCrudRepository<SpuInfo, Long> {
 
+    @Modifying
+    @Query("update pms_spu_info set publish_status = :status where id = :id;")
+    suspend fun updatePublishStatusById(id: Long, status: Int)
 }

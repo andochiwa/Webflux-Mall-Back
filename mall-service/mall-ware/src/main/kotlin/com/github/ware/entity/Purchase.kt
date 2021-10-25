@@ -1,4 +1,4 @@
-package com.github.product.entity
+package com.github.ware.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -17,45 +17,49 @@ import java.time.LocalDateTime
  *
  * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-24 00:47:19
+ * @date 2021-09-26 03:53:23
  */
-@Table("pms_spu_info")
+@Table("wms_purchase")
 @ApiModel
-data class SpuInfo(
+data class Purchase(
 
-    @ApiModelProperty(value = "商品id")
+    @ApiModelProperty(value = "")
     @Id
     @get:JvmName("deprecate")
     @JsonSerialize(using = ToStringSerializer::class)
     var id: Long? = null,
 
-    @ApiModelProperty(value = "商品名称")
-    var spuName: String? = null,
-
-    @ApiModelProperty(value = "商品描述")
-    var spuDescription: String? = null,
-
-    @ApiModelProperty(value = "所属分类id")
+    @ApiModelProperty(value = "")
     @JsonSerialize(using = ToStringSerializer::class)
-    var catelogId: Long? = null,
-
-    @ApiModelProperty(value = "品牌id")
-    @JsonSerialize(using = ToStringSerializer::class)
-    var brandId: Long? = null,
+    var assigneeId: Long? = null,
 
     @ApiModelProperty(value = "")
-    var weight: BigDecimal? = null,
+    var assigneeName: String? = null,
 
-    @ApiModelProperty(value = "上架状态[0 - 新建，1 - 上架，2 - 下架]")
-    var publishStatus: Int? = null,
+    @ApiModelProperty(value = "")
+    var phone: String? = null,
+
+    @ApiModelProperty(value = "")
+    var priority: Int? = null,
+
+    @ApiModelProperty(value = "")
+    var status: Int? = null,
 
     @ApiModelProperty(value = "")
     @JsonSerialize(using = ToStringSerializer::class)
+    var wareId: Long? = null,
+
+    @ApiModelProperty(value = "")
+    var amount: BigDecimal? = null,
+
+    @ApiModelProperty(value = "")
     var createTime: LocalDateTime? = null,
 
     @ApiModelProperty(value = "")
     var updateTime: LocalDateTime? = null,
-) : Serializable, Persistable<Long> {
+
+
+    ) : Serializable, Persistable<Long> {
     @JsonIgnore
     override fun isNew(): Boolean {
         return if (id == null) {

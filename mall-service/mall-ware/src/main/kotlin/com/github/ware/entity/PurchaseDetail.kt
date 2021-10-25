@@ -1,4 +1,4 @@
-package com.github.product.entity
+package com.github.ware.entity
 
 import cn.hutool.core.util.IdUtil
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -11,51 +11,46 @@ import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.math.BigDecimal
-import java.time.LocalDateTime
 
 /**
  *
  * @author Andochiwa
  * @email a1066079469@gmail.com
- * @date 2021-09-24 00:47:19
+ * @date 2021-09-26 03:53:24
  */
-@Table("pms_spu_info")
+@Table("wms_purchase_detail")
 @ApiModel
-data class SpuInfo(
+data class PurchaseDetail(
 
-    @ApiModelProperty(value = "商品id")
+    @ApiModelProperty(value = "")
     @Id
     @get:JvmName("deprecate")
     @JsonSerialize(using = ToStringSerializer::class)
     var id: Long? = null,
 
-    @ApiModelProperty(value = "商品名称")
-    var spuName: String? = null,
-
-    @ApiModelProperty(value = "商品描述")
-    var spuDescription: String? = null,
-
-    @ApiModelProperty(value = "所属分类id")
+    @ApiModelProperty(value = "采购单id")
     @JsonSerialize(using = ToStringSerializer::class)
-    var catelogId: Long? = null,
+    var purchaseId: Long? = null,
 
-    @ApiModelProperty(value = "品牌id")
+    @ApiModelProperty(value = "采购商品id")
     @JsonSerialize(using = ToStringSerializer::class)
-    var brandId: Long? = null,
+    var skuId: Long? = null,
 
-    @ApiModelProperty(value = "")
-    var weight: BigDecimal? = null,
+    @ApiModelProperty(value = "采购数量")
+    var skuNum: Int? = null,
 
-    @ApiModelProperty(value = "上架状态[0 - 新建，1 - 上架，2 - 下架]")
-    var publishStatus: Int? = null,
+    @ApiModelProperty(value = "采购金额")
+    var skuPrice: BigDecimal? = null,
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "仓库id")
     @JsonSerialize(using = ToStringSerializer::class)
-    var createTime: LocalDateTime? = null,
+    var wareId: Long? = null,
 
-    @ApiModelProperty(value = "")
-    var updateTime: LocalDateTime? = null,
-) : Serializable, Persistable<Long> {
+    @ApiModelProperty(value = "状态[0新建，1已分配，2正在采购，3已完成，4采购失败]")
+    var status: Int? = null,
+
+
+    ) : Serializable, Persistable<Long> {
     @JsonIgnore
     override fun isNew(): Boolean {
         return if (id == null) {

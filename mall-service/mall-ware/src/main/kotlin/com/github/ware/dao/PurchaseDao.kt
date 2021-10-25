@@ -1,6 +1,7 @@
 package com.github.ware.dao
 
-import com.github.ware.entity.WmsWareOrderTask
+import com.github.ware.entity.Purchase
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -9,6 +10,8 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  * @email a1066079469@gmail.com
  * @date 2021-09-26 03:53:23
  */
-interface WmsWareOrderTaskDao : CoroutineCrudRepository<WmsWareOrderTask, Long> {
+interface PurchaseDao : CoroutineCrudRepository<Purchase, Long> {
+
+    fun getByStatusIn(status: List<Int>): Flow<Purchase>
 
 }
