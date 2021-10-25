@@ -5,10 +5,12 @@ import com.github.dto.resultSuccess
 import com.github.ware.entity.Purchase
 import com.github.ware.service.PurchaseService
 import com.github.ware.vo.MergeVo
+import com.github.ware.vo.PurchaseDoneVo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -90,6 +92,13 @@ class PurchaseController {
     @ApiOperation("received purchase")
     suspend fun receivedPurchase(@RequestBody purchaseIds: List<Long>): ResultDto {
         purchaseService.receivedPurchase(purchaseIds)
+        return resultSuccess()
+    }
+
+    @PostMapping("done")
+    @ApiOperation("complete purchase")
+    suspend fun completePurchase(@Validated @RequestBody purchaseDoneVo: PurchaseDoneVo): ResultDto {
+        purchaseService.completePurchase(purchaseDoneVo)
         return resultSuccess()
     }
 }

@@ -1,11 +1,18 @@
 package com.github.ware.service
 
+import cn.hutool.core.bean.BeanUtil
 import com.github.constant.PurchaseDetailStatusEnum
 import com.github.constant.PurchaseStatusEnum
+import com.github.to.SkuInfoTo
 import com.github.ware.dao.PurchaseDao
 import com.github.ware.dao.PurchaseDetailDao
+import com.github.ware.dao.WareSkuDao
 import com.github.ware.entity.Purchase
+import com.github.ware.entity.PurchaseDetail
+import com.github.ware.entity.WareSku
+import com.github.ware.feign.ProductFeign
 import com.github.ware.vo.MergeVo
+import com.github.ware.vo.PurchaseDoneVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
@@ -39,6 +46,12 @@ class PurchaseService {
 
     @Autowired
     lateinit var purchaseDetailDao: PurchaseDetailDao
+
+    @Autowired
+    lateinit var wareSkuDao: WareSkuDao
+
+    @Autowired
+    lateinit var productFeign: ProductFeign
 
     suspend fun getById(id: Long): Purchase? {
         return purchaseDao.findById(id)
@@ -110,6 +123,58 @@ class PurchaseService {
             .onEach { it.status = PurchaseDetailStatusEnum.BUYING.value }
             .run { purchaseDetailDao.saveAll(this) }
             .toList()
+    }
+
+    @Transactional
+    suspend fun completePurchase(purchaseDoneVo: PurchaseDoneVo) {
+        val purchaseId = purchaseDoneVo.id
+        var successFlag = true
+        // 设置采购项状态
+        purchaseDoneVo.items.map {
+            PurchaseDetail().apply {
+                id = it.itemId
+                status = it.status
+                // todo need reason field to failure
+            }
+        }.onEach {
+            if (it.status == PurchaseDetailStatusEnum.BUY_FAIL.value) {
+                successFlag = false
+            }
+            purchaseDetailDao.updateStatusById(it.id, it.status)
+        }.filter {
+            // 过滤采购失败的信息
+            it.status == PurchaseDetailStatusEnum.FINISH.value
+        }.map {
+            it.id!!
+        }.run {
+            purchaseDetailDao.findAllById(this)
+        }.onEach {
+            // 入库, 如果没有库则创建一个库
+            if (wareSkuDao.countBySkuIdAndWareId(it.skuId!!, it.wareId!!) == 0L) {
+                val wareSku = WareSku().apply {
+                    skuId = it.skuId
+                    wareId = it.wareId
+                    stock = it.skuNum
+                    // 远程查询sku_name
+                    val resultDto = productFeign.getSkuInfoById(skuId!!).awaitSingle()
+                    if (resultDto.code == 200) {
+                        val skuInfoTo = BeanUtil.toBean(resultDto.data["skuInfo"], SkuInfoTo::class.java)
+                        // todo: skuInfo cannot be null
+                        skuName = skuInfoTo?.skuName
+                    }
+                }
+                wareSkuDao.save(wareSku)
+            } else {
+                wareSkuDao.updateStockBySkuIdAndWareId(it.skuId!!, it.wareId!!, it.skuNum)
+            }
+        }.toList()
+        // 设置采购单状态
+        this.getById(purchaseId!!)?.apply {
+            status = if (successFlag) PurchaseStatusEnum.FINISH.value else PurchaseStatusEnum.HAS_ERROR.value
+        }?.run {
+            saveOrUpdate(this)
+        } ?: throw NullPointerException("采购单为空")
+
     }
 }
 

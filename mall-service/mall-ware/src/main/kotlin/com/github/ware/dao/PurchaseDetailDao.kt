@@ -19,4 +19,8 @@ interface PurchaseDetailDao : CoroutineCrudRepository<PurchaseDetail, Long> {
     suspend fun updatePurchaseIdAndStatusById(id: Long, purchaseId: Long, status: Int)
 
     fun getAllByPurchaseIdIn(purchaseId: List<Long>): Flow<PurchaseDetail>
+
+    @Modifying
+    @Query("update wms_purchase_detail set status = :status where id = :id;")
+    suspend fun updateStatusById(id: Long?, status: Int?)
 }
