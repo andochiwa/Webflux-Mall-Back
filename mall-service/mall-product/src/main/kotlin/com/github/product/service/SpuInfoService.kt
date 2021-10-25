@@ -1,5 +1,6 @@
 package com.github.product.service
 
+import com.github.constant.SpuPublishStatusEnum
 import com.github.product.dao.*
 import com.github.product.entity.*
 import com.github.product.feign.CouponFeign
@@ -234,6 +235,10 @@ class SpuInfoService {
             this["list"] = spuInfoList
             this["totalCount"] = count
         }
+    }
+
+    suspend fun putOnSale(id: Long) {
+        spuInfoDao.updatePublishStatusById(id, SpuPublishStatusEnum.PUT_ON.value)
     }
 }
 

@@ -46,7 +46,7 @@ data class SpuInfo(
     @ApiModelProperty(value = "")
     var weight: BigDecimal? = null,
 
-    @ApiModelProperty(value = "上架状态[0 - 下架，1 - 上架]")
+    @ApiModelProperty(value = "上架状态[0 - 新建，1 - 上架，2 - 下架]")
     var publishStatus: Int? = null,
 
     @ApiModelProperty(value = "")

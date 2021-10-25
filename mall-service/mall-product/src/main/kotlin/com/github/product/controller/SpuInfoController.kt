@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import springfox.documentation.annotations.ApiIgnore
 
 /**
  *
@@ -76,5 +77,12 @@ class SpuInfoController {
         val map =
             spuInfoService.geyListOnConditions(page - 1, limit, sortField, order, key, catelogId, brandId, status)
         return resultSuccess().putAll(map)
+    }
+
+    @PutMapping("{spuId}/put-on")
+    @ApiIgnore("put on sale")
+    suspend fun putOnSale(@PathVariable("spuId") id: Long): ResultDto {
+        spuInfoService.putOnSale(id)
+        return resultSuccess()
     }
 }
