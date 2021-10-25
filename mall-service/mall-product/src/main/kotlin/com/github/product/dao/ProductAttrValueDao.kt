@@ -1,6 +1,7 @@
 package com.github.product.dao
 
 import com.github.product.entity.ProductAttrValue
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -11,4 +12,5 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  */
 interface ProductAttrValueDao : CoroutineCrudRepository<ProductAttrValue, Long> {
 
+    fun getAllBySpuId(spuId: Long): Flow<ProductAttrValue>
 }
