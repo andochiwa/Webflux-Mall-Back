@@ -85,4 +85,11 @@ class PurchaseController {
         purchaseService.merge(mergeVo)
         return resultSuccess()
     }
+
+    @PostMapping("received")
+    @ApiOperation("received purchase")
+    suspend fun receivedPurchase(@RequestBody purchaseIds: List<Long>): ResultDto {
+        purchaseService.receivedPurchase(purchaseIds)
+        return resultSuccess()
+    }
 }

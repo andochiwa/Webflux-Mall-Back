@@ -7,6 +7,8 @@ import com.github.ware.dao.PurchaseDetailDao
 import com.github.ware.entity.Purchase
 import com.github.ware.vo.MergeVo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Autowired
@@ -82,9 +84,32 @@ class PurchaseService {
         val purchaseId =
             mergeVo.purchaseId ?: this.saveOrUpdate(Purchase(status = PurchaseStatusEnum.CREATES.value)).id!!
         mergeVo.items.onEach {
-            purchaseDetailDao.updatePurchaseIdAndStatusById(it, purchaseId, PurchaseDetailStatusEnum.ASSIGNED.value)
+            // 确认采购单是新增或未分配
+            val purchaseDetail = purchaseDetailDao.findById(it)
+            if (purchaseDetail?.status?.equals(PurchaseDetailStatusEnum.CREATES.value) == true
+                || purchaseDetail?.status?.equals(PurchaseDetailStatusEnum.ASSIGNED.value) == true
+            ) {
+                purchaseDetailDao.updatePurchaseIdAndStatusById(it, purchaseId, PurchaseDetailStatusEnum.ASSIGNED.value)
+            }
         }
 
+    }
+
+    @Transactional
+    suspend fun receivedPurchase(purchaseIds: List<Long>) {
+        val updateTime = LocalDateTime.now()
+        purchaseDao.findAllById(purchaseIds)
+            .filter { it.status == PurchaseStatusEnum.ASSIGNED.value } // 确认采购单是已分配状态
+            .onEach {
+                it.status = PurchaseStatusEnum.RECEIVE.value
+                it.updateTime = updateTime
+            }
+            .run { purchaseDao.saveAll(this).toList() }
+            .map { it.id!! } // 改变采购单状态
+            .run { purchaseDetailDao.getAllByPurchaseIdIn(this) } // 改变采购项状态
+            .onEach { it.status = PurchaseDetailStatusEnum.BUYING.value }
+            .run { purchaseDetailDao.saveAll(this) }
+            .toList()
     }
 }
 
