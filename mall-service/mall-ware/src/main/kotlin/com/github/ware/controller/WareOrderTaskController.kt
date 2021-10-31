@@ -2,12 +2,15 @@ package com.github.ware.controller
 
 import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import com.github.ware.entity.WareOrderTask
 import com.github.ware.service.WareOrderTaskService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -33,14 +36,14 @@ class WareOrderTaskController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody wareOrderTask: WareOrderTask): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody wareOrderTask: WareOrderTask): ResultDto {
         wareOrderTaskService.saveOrUpdate(wareOrderTask)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody wareOrderTask: WareOrderTask): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody wareOrderTask: WareOrderTask): ResultDto {
         wareOrderTaskService.saveOrUpdate(wareOrderTask)
         return resultSuccess()
     }

@@ -13,6 +13,7 @@ import org.springframework.data.r2dbc.core.select
 import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 /**
  *
@@ -33,6 +34,7 @@ class WareOrderTaskService {
     }
 
     suspend fun saveOrUpdate(wareOrderTask: WareOrderTask): WareOrderTask {
+        wareOrderTask.id ?: run { wareOrderTask.createTime = LocalDateTime.now() }
         return wareOrderTaskDao.save(wareOrderTask)
     }
 
