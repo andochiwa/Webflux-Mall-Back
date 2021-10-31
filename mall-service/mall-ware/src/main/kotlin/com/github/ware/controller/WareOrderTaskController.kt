@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
  * @date 2021-09-26 03:53:23
  */
 @RestController
-@RequestMapping("wareswareordertask")
+@RequestMapping("ware/wareordertask")
 @Api
 class WareOrderTaskController {
 
@@ -45,10 +45,10 @@ class WareOrderTaskController {
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        wareOrderTaskService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        wareOrderTaskService.deleteByIds(ids)
         return resultSuccess()
     }
 
@@ -57,5 +57,16 @@ class WareOrderTaskController {
     suspend fun getAll(): ResultDto {
         val wareOrderTasks = wareOrderTaskService.getAll()
         return resultSuccess().put("wareOrderTask", wareOrderTasks.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get pagination")
+    suspend fun getPagination(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val map = wareOrderTaskService.getPagination(page - 1, limit, key)
+        return resultSuccess().putAll(map)
     }
 }
