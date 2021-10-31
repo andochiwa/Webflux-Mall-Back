@@ -4,10 +4,13 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.member.entity.Member
 import com.github.member.service.MemberService
+import com.github.vaild.AddGroup
+import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -33,22 +36,22 @@ class MemberController {
 
     @PostMapping
     @ApiOperation("insert")
-    suspend fun insert(@RequestBody member: Member): ResultDto {
+    suspend fun insert(@Validated(AddGroup::class) @RequestBody member: Member): ResultDto {
         memberService.saveOrUpdate(member)
         return resultSuccess()
     }
 
     @PutMapping
     @ApiOperation("update")
-    suspend fun update(@RequestBody member: Member): ResultDto {
+    suspend fun update(@Validated(UpdateGroup::class) @RequestBody member: Member): ResultDto {
         memberService.saveOrUpdate(member)
         return resultSuccess()
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("deleteById")
-    suspend fun deleteById(@PathVariable("id") id: Long): ResultDto {
-        memberService.deleteById(id)
+    @DeleteMapping
+    @ApiOperation("deleteByIds")
+    suspend fun deleteById(@RequestBody ids: List<Long>): ResultDto {
+        memberService.deleteByIds(ids)
         return resultSuccess()
     }
 
@@ -57,5 +60,16 @@ class MemberController {
     suspend fun getAll(): ResultDto {
         val members = memberService.getAll()
         return resultSuccess().put("member", members.toList())
+    }
+
+    @GetMapping("pagination")
+    @ApiOperation("get pagination")
+    suspend fun getPagination(
+        @RequestParam("page") page: Int,
+        @RequestParam("limit") limit: Int,
+        @RequestParam("key", required = false) key: String?
+    ): ResultDto {
+        val map = memberService.getPagination(page - 1, limit, key)
+        return resultSuccess().putAll(map)
     }
 }
