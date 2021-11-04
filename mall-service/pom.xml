@@ -18,6 +18,7 @@
     <module>mall-ware</module>
     <module>mall-order</module>
     <module>mall-third-party</module>
+    <module>mall-search</module>
   </modules>
 
   <properties>
