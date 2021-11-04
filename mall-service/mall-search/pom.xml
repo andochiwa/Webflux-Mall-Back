@@ -11,10 +11,6 @@
 
   <artifactId>mall-search</artifactId>
 
-  <properties>
-    <elasticsearch.version>7.14.2</elasticsearch.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
