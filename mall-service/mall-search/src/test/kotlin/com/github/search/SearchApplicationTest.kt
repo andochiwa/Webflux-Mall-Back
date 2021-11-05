@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.runBlocking
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -14,6 +16,7 @@ import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.Criteria
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery
 
 /**
  * @author Andochiwa
@@ -49,6 +52,21 @@ class SearchApplicationTest {
         val searchFlux = esTemplate.search(query, Any::class.java, IndexCoordinates.of("bank"))
         runBlocking {
             log.info(searchFlux.asFlow().toList().toString())
+        }
+    }
+
+    @Test
+    fun searchAggTest() {
+        val queryBuilder = QueryBuilders.matchQuery("address", "mill")
+        val searchQuery = NativeSearchQuery(queryBuilder).apply {
+            // term age
+            addAggregation(AggregationBuilders.terms("ageAgg").field("age").size(10))
+            // avg balance
+            addAggregation(AggregationBuilders.avg("balanceAvg").field("balance"))
+        }
+        val flux = esTemplate.search(searchQuery, Any::class.java, IndexCoordinates.of("bank"))
+        runBlocking {
+            log.info(flux.asFlow().toList().toString())
         }
     }
 
