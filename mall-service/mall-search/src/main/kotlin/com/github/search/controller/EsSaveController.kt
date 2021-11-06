@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController
  * @version 1.0
  * @since 11-06-22:01
  */
-@RestController("/search")
+@RestController
+@RequestMapping("/search")
 @Api
 class EsSaveController {
 
