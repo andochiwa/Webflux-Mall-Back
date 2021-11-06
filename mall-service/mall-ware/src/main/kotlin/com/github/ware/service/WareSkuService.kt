@@ -68,7 +68,7 @@ class WareSkuService {
         val map = mutableMapOf<Long, Boolean>()
         skuIds.forEach {
             val wareSku = wareSkuDao.getBySkuId(it)
-            map[it] = (wareSku.stock?.minus(wareSku.stockLocked ?: 0) ?: 0) > 0
+            map[it] = (wareSku?.stock?.minus(wareSku.stockLocked ?: 0) ?: 0) > 0
         }
         return map
     }

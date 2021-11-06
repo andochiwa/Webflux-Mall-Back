@@ -5,6 +5,7 @@ import com.github.constant.SpuPublishStatusEnum
 import com.github.product.dao.*
 import com.github.product.entity.*
 import com.github.product.feign.CouponFeign
+import com.github.product.feign.SearchFeign
 import com.github.product.feign.WareFeign
 import com.github.product.vo.SpuSaveVo
 import com.github.to.SkuFullReductionTo
@@ -73,6 +74,9 @@ class SpuInfoService {
 
     @Autowired
     lateinit var wareFeign: WareFeign
+
+    @Autowired
+    lateinit var searchFeign: SearchFeign
 
     suspend fun getById(id: Long): SpuInfo? {
         return spuInfoDao.findById(id)
@@ -258,7 +262,7 @@ class SpuInfoService {
         val attrIdSet = attrValueList.map { it.attrId!! }
             .run { attrDao.getAllByAttrIdInAndSearchType(this, AttrSearchEnum.ATTR_CAN_SEARCH.value) }
             .toSet()
-        val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.id) }
+        val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.attrId) }
             .map {
                 SkuEsTo.Attrs().apply {
                     attrId = it.attrId
@@ -269,10 +273,12 @@ class SpuInfoService {
         // 查询是否有库存，返回MutableMap: skuId -> true/false
         val skuIdList = skuList.map { it.skuId!! }
         val resultDto = wareFeign.checkSkuStock(skuIdList).awaitSingle()
-        val skuIdStockMap = resultDto.data["item"] as MutableMap<*, *>
+
+        @Suppress("UNCHECKED_CAST")
+        val skuIdStockMap = resultDto.data["item"] as MutableMap<Long, Boolean>
 
         skuList.map {
-            val skuEsTo = SkuEsTo().apply {
+            SkuEsTo().apply {
                 skuId = it.skuId
                 this.spuId = spuId
                 skuTitle = it.skuTitle
@@ -292,13 +298,17 @@ class SpuInfoService {
                 catelogName = category?.name
                 // 设置attrs和库存
                 attrs = attrsEsToList
-                hasStock = skuIdStockMap[skuId!!] as Boolean
+                hasStock = skuIdStockMap[skuId!!] ?: false
             }
+        }.run {
+            // 保存到es
+            val remoteSearch = searchFeign.putOnProduct(this).awaitSingle()
+            if (remoteSearch.code != 200) {
+                throw Exception("es插入失败")
+            }
+            // 更新上架状态
+            spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
         }
-        // 保存到es
-
-
-        spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
     }
 }
 
