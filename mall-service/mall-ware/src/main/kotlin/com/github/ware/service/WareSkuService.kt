@@ -63,5 +63,14 @@ class WareSkuService {
             this["totalCount"] = count
         }
     }
+
+    suspend fun checkSkuStock(skuIds: List<Long>): Map<Long, Boolean> {
+        val map = mutableMapOf<Long, Boolean>()
+        skuIds.forEach {
+            val wareSku = wareSkuDao.getBySkuId(it)
+            map[it] = (wareSku.stock?.minus(wareSku.stockLocked ?: 0) ?: 0) > 0
+        }
+        return map
+    }
 }
 
