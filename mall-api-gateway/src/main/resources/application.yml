@@ -43,3 +43,8 @@ spring:
           uri: lb://mall-third-party
           predicates:
             - Path=/third-party/**
+
+        - id: mall-search
+          uri: lb://mall-search
+          predicates:
+            - Path=/search/**
