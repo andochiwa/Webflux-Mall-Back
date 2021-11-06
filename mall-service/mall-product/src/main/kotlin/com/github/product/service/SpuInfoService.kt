@@ -5,6 +5,7 @@ import com.github.constant.SpuPublishStatusEnum
 import com.github.product.dao.*
 import com.github.product.entity.*
 import com.github.product.feign.CouponFeign
+import com.github.product.feign.WareFeign
 import com.github.product.vo.SpuSaveVo
 import com.github.to.SkuFullReductionTo
 import com.github.to.SpuBoundTo
@@ -69,6 +70,9 @@ class SpuInfoService {
 
     @Autowired
     lateinit var categoryDao: CategoryDao
+
+    @Autowired
+    lateinit var wareFeign: WareFeign
 
     suspend fun getById(id: Long): SpuInfo? {
         return spuInfoDao.findById(id)
@@ -256,13 +260,16 @@ class SpuInfoService {
             .toSet()
         val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.id) }
             .map {
-                val attrsEsTo = SkuEsTo.Attrs().apply {
+                SkuEsTo.Attrs().apply {
                     attrId = it.attrId
                     attrName = it.attrName
                     attrValue = it.attrValue
                 }
-                attrsEsTo
             }
+        // 查询是否有库存，返回MutableMap: skuId -> true/false
+        val skuIdList = skuList.map { it.skuId!! }
+        val resultDto = wareFeign.checkSkuStock(skuIdList).awaitSingle()
+        val skuIdStockMap = resultDto.data["item"] as MutableMap<*, *>
 
         skuList.map {
             val skuEsTo = SkuEsTo().apply {
@@ -283,13 +290,14 @@ class SpuInfoService {
                 brandImg = brand?.logo
                 val category = categoryDao.findById(catelogId!!)
                 catelogName = category?.name
-                // 设置attrs
+                // 设置attrs和库存
                 attrs = attrsEsToList
-
-
+                hasStock = skuIdStockMap[skuId!!] as Boolean
             }
         }
         // 保存到es
+
+
         spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
     }
 }
