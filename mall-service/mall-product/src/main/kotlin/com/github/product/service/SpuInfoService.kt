@@ -7,6 +7,7 @@ import com.github.product.feign.CouponFeign
 import com.github.product.vo.SpuSaveVo
 import com.github.to.SkuFullReductionTo
 import com.github.to.SpuBoundTo
+import com.github.to.es.SkuEsTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
@@ -44,6 +45,9 @@ class SpuInfoService {
     lateinit var productAttrValueDao: ProductAttrValueDao
 
     @Autowired
+    lateinit var productAttrValueService: ProductAttrValueService
+
+    @Autowired
     lateinit var attrDao: AttrDao
 
     @Autowired
@@ -60,6 +64,12 @@ class SpuInfoService {
 
     @Autowired
     lateinit var template: R2dbcEntityTemplate
+
+    @Autowired
+    lateinit var brandDao: BrandDao
+
+    @Autowired
+    lateinit var categoryDao: CategoryDao
 
     suspend fun getById(id: Long): SpuInfo? {
         return spuInfoDao.findById(id)
@@ -237,8 +247,51 @@ class SpuInfoService {
         }
     }
 
-    suspend fun putOnSale(id: Long) {
-        spuInfoDao.updatePublishStatusById(id, SpuPublishStatusEnum.PUT_ON.value)
+    suspend fun putOnSale(spuId: Long) {
+
+        val skuList = skuInfoDao.getAllBySpuId(spuId)
+        // 查询当前sku的可被检索的规格属性
+        val attrValueList = productAttrValueDao.getAllBySpuId(spuId).toList()
+        val attrIdSet = attrValueList.map { it.attrId!! }
+            .run { productAttrValueService.getSearchAttrIds(this) }
+            .toSet()
+        val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.id) }
+            .map {
+                val attrsEsTo = SkuEsTo.Attrs().apply {
+                    attrId = it.attrId
+                    attrName = it.attrName
+                    attrValue = it.attrValue
+                }
+                attrsEsTo
+            }
+
+        skuList.map {
+            val skuEsTo = SkuEsTo().apply {
+                skuId = it.skuId
+                this.spuId = spuId
+                skuTitle = it.skuTitle
+                skuPrice = it.price
+                skuImg = it.skuDefaultImg
+                saleCount = it.saleCount
+                brandId = it.brandId
+                catelogId = it.catelogId
+                // todo: 远程查询是否有库存
+                // todo: 热度评分
+
+                // 查询brandName, catelogName
+                val brand = brandDao.findById(brandId!!)
+                brandName = brand?.name
+                brandImg = brand?.logo
+                val category = categoryDao.findById(catelogId!!)
+                catelogName = category?.name
+                // 设置attrs
+                attrs = attrsEsToList
+
+
+            }
+        }
+        // 保存到es
+        spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
     }
 }
 
