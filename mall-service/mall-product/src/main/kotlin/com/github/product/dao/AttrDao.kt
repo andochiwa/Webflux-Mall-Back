@@ -4,6 +4,7 @@ import com.github.constant.AttrEnum
 import com.github.product.entity.Attr
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.domain.Pageable
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 /**
@@ -50,4 +51,7 @@ interface AttrDao : CoroutineCrudRepository<Attr, Long> {
     suspend fun countAllByAttrIdNotInAndCatelogIdAndAttrNameContainingAndAttrType(
         attrId: Collection<Long>, catelogId: Long, attrName: String, attrType: Int = AttrEnum.ATTR_TYPE_BASE.value
     ): Long
+
+    @Query("select attr_id from pms_attr where attr_id in(:attrId) and search_type = :searchType;")
+    fun getAllByAttrIdInAndSearchType(attrId: List<Long>, searchType: Int): Flow<Long>
 }

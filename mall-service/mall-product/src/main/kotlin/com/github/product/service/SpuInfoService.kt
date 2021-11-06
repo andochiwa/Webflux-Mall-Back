@@ -1,5 +1,6 @@
 package com.github.product.service
 
+import com.github.constant.AttrSearchEnum
 import com.github.constant.SpuPublishStatusEnum
 import com.github.product.dao.*
 import com.github.product.entity.*
@@ -10,6 +11,7 @@ import com.github.to.SpuBoundTo
 import com.github.to.es.SkuEsTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,9 +45,6 @@ class SpuInfoService {
 
     @Autowired
     lateinit var productAttrValueDao: ProductAttrValueDao
-
-    @Autowired
-    lateinit var productAttrValueService: ProductAttrValueService
 
     @Autowired
     lateinit var attrDao: AttrDao
@@ -253,7 +252,7 @@ class SpuInfoService {
         // 查询当前sku的可被检索的规格属性
         val attrValueList = productAttrValueDao.getAllBySpuId(spuId).toList()
         val attrIdSet = attrValueList.map { it.attrId!! }
-            .run { productAttrValueService.getSearchAttrIds(this) }
+            .run { attrDao.getAllByAttrIdInAndSearchType(this, AttrSearchEnum.ATTR_CAN_SEARCH.value) }
             .toSet()
         val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.id) }
             .map {
