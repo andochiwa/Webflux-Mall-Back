@@ -287,7 +287,6 @@ class SpuInfoService {
                 saleCount = it.saleCount
                 brandId = it.brandId
                 catelogId = it.catelogId
-                // todo: 远程查询是否有库存
                 // todo: 热度评分
 
                 // 查询brandName, catelogName
