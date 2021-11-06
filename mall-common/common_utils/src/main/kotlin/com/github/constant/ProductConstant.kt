@@ -15,3 +15,8 @@ enum class SpuPublishStatusEnum(val value: Int, val info: String) {
     PUT_ON(1, "上架"),
     PULL_ON(2, "下架")
 }
+
+enum class AttrSearchEnum(val value: Int, val info: String) {
+    ATTR_CAN_SEARCH(1, "可被检索"),
+    ATTR_CANNOT_SEARCH(0, "不可被检索")
+}
