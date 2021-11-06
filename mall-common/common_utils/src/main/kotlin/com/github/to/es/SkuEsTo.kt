@@ -12,7 +12,7 @@ data class SkuEsTo(
     var skuImg: String? = null,
     var saleCount: Long? = null,
     var hasStock: Boolean = false,
-    var hotScore: Long? = null,
+    var hotScore: Long = 0,
     var brandId: Long? = null,
     var catelogId: Long? = null,
     var brandName: String? = null,
