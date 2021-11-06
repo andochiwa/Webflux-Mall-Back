@@ -18,7 +18,7 @@ data class SkuEsTo(
     var brandName: String? = null,
     var brandImg: String? = null,
     var catelogName: String? = null,
-    var attrs: MutableList<Attrs>? = null
+    var attrs: List<Attrs>? = null
 ) {
     data class Attrs(
         var attrId: Long? = null,
