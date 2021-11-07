@@ -1,5 +1,7 @@
 package com.github.search.entity
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.elasticsearch.annotations.Document
@@ -11,9 +13,11 @@ import java.math.BigDecimal
 data class SkuEntity(
     @Id
     @Field(type = FieldType.Long)
+    @JsonSerialize(using = ToStringSerializer::class)
     var skuId: Long? = null,
 
     @Field(type = FieldType.Long)
+    @JsonSerialize(using = ToStringSerializer::class)
     var spuId: Long? = null,
 
     @Field(type = FieldType.Text, analyzer = "ik_smart")
@@ -35,9 +39,11 @@ data class SkuEntity(
     var hotScore: Long = 0,
 
     @Field(type = FieldType.Long)
+    @JsonSerialize(using = ToStringSerializer::class)
     var brandId: Long? = null,
 
     @Field(type = FieldType.Long)
+    @JsonSerialize(using = ToStringSerializer::class)
     var catelogId: Long? = null,
 
     @Field(type = FieldType.Keyword, index = false, docValues = false)
@@ -54,6 +60,7 @@ data class SkuEntity(
 ) : Persistable<Long> {
     data class Attrs(
         @Field(type = FieldType.Long)
+        @JsonSerialize(using = ToStringSerializer::class)
         var attrId: Long? = null,
 
         @Field(type = FieldType.Keyword, index = false, docValues = false)
@@ -63,6 +70,7 @@ data class SkuEntity(
         var attrValue: String? = null,
     )
 
+    @JsonSerialize(using = ToStringSerializer::class)
     override fun getId(): Long? = skuId
 
     override fun isNew(): Boolean = false
