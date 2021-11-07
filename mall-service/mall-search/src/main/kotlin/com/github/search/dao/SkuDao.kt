@@ -1,12 +1,12 @@
 package com.github.search.dao
 
 import com.github.search.entity.SkuEntity
-import org.springframework.data.repository.reactive.ReactiveSortingRepository
+import org.springframework.data.repository.kotlin.CoroutineSortingRepository
 
 /**
  * @author Andochiwa
  * @version 1.0
  * @since 11-06-23:01
  */
-interface SkuDao : ReactiveSortingRepository<SkuEntity, Long> {
+interface SkuDao : CoroutineSortingRepository<SkuEntity, Long> {
 }
