@@ -1,15 +1,19 @@
 package com.github.product.service
 
+import com.github.constant.AttrSearchEnum
 import com.github.constant.SpuPublishStatusEnum
 import com.github.product.dao.*
 import com.github.product.entity.*
 import com.github.product.feign.CouponFeign
+import com.github.product.feign.SearchFeign
+import com.github.product.feign.WareFeign
 import com.github.product.vo.SpuSaveVo
 import com.github.to.SkuFullReductionTo
 import com.github.to.SpuBoundTo
 import com.github.to.es.SkuEsTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,9 +49,6 @@ class SpuInfoService {
     lateinit var productAttrValueDao: ProductAttrValueDao
 
     @Autowired
-    lateinit var productAttrValueService: ProductAttrValueService
-
-    @Autowired
     lateinit var attrDao: AttrDao
 
     @Autowired
@@ -70,6 +71,12 @@ class SpuInfoService {
 
     @Autowired
     lateinit var categoryDao: CategoryDao
+
+    @Autowired
+    lateinit var wareFeign: WareFeign
+
+    @Autowired
+    lateinit var searchFeign: SearchFeign
 
     suspend fun getById(id: Long): SpuInfo? {
         return spuInfoDao.findById(id)
@@ -253,20 +260,25 @@ class SpuInfoService {
         // 查询当前sku的可被检索的规格属性
         val attrValueList = productAttrValueDao.getAllBySpuId(spuId).toList()
         val attrIdSet = attrValueList.map { it.attrId!! }
-            .run { productAttrValueService.getSearchAttrIds(this) }
+            .run { attrDao.getAllByAttrIdInAndSearchType(this, AttrSearchEnum.ATTR_CAN_SEARCH.value) }
             .toSet()
-        val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.id) }
+        val attrsEsToList = attrValueList.filter { attrIdSet.contains(it.attrId) }
             .map {
-                val attrsEsTo = SkuEsTo.Attrs().apply {
+                SkuEsTo.Attrs().apply {
                     attrId = it.attrId
                     attrName = it.attrName
                     attrValue = it.attrValue
                 }
-                attrsEsTo
             }
+        // 查询是否有库存，返回MutableMap: skuId -> true/false
+        val skuIdList = skuList.map { it.skuId!! }
+        val resultDto = wareFeign.checkSkuStock(skuIdList).awaitSingle()
+
+        @Suppress("UNCHECKED_CAST")
+        val skuIdStockMap = resultDto.data["item"] as MutableMap<Long, Boolean>
 
         skuList.map {
-            val skuEsTo = SkuEsTo().apply {
+            SkuEsTo().apply {
                 skuId = it.skuId
                 this.spuId = spuId
                 skuTitle = it.skuTitle
@@ -275,7 +287,6 @@ class SpuInfoService {
                 saleCount = it.saleCount
                 brandId = it.brandId
                 catelogId = it.catelogId
-                // todo: 远程查询是否有库存
                 // todo: 热度评分
 
                 // 查询brandName, catelogName
@@ -284,14 +295,19 @@ class SpuInfoService {
                 brandImg = brand?.logo
                 val category = categoryDao.findById(catelogId!!)
                 catelogName = category?.name
-                // 设置attrs
+                // 设置attrs和库存
                 attrs = attrsEsToList
-
-
+                hasStock = skuIdStockMap[skuId!!] ?: false
             }
+        }.run {
+            // 保存到es
+            val remoteSearch = searchFeign.putOnProduct(this).awaitSingle()
+            if (remoteSearch.code != 200) {
+                throw Exception("es插入失败")
+            }
+            // 更新上架状态
+            spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
         }
-        // 保存到es
-        spuInfoDao.updatePublishStatusById(spuId, SpuPublishStatusEnum.PUT_ON.value)
     }
 }
 

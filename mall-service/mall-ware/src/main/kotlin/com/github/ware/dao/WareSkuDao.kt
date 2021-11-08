@@ -18,4 +18,6 @@ interface WareSkuDao : CoroutineCrudRepository<WareSku, Long> {
     @Modifying
     @Query("update wms_ware_sku set stock = stock + :skuNum where sku_id = :skuId and ware_id = :wareId;")
     suspend fun updateStockBySkuIdAndWareId(skuId: Long, wareId: Long, skuNum: Int?)
+
+    suspend fun getBySkuId(skuId: Long): WareSku?
 }

@@ -73,4 +73,11 @@ class WareSkuController {
         val map = wareSkuService.getPagination(page - 1, limit, skuId, wareId)
         return resultSuccess().putAll(map)
     }
+
+    @PostMapping("has-stock")
+    @ApiOperation("check sku stock")
+    suspend fun checkSkuStock(@RequestBody skuIds: List<Long>): ResultDto {
+        val map = wareSkuService.checkSkuStock(skuIds)
+        return resultSuccess().put("item", map)
+    }
 }
