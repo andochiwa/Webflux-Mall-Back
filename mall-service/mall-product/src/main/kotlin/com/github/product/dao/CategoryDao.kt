@@ -28,4 +28,6 @@ interface CategoryDao : CoroutineCrudRepository<Category, Long> {
     suspend fun findCatelogNameById(id: Long): Category
 
     fun getAllByCatLevel(catLevel: Int): Flow<Category>
+
+    fun getAllByParentCid(parentCid: Long): Flow<Category>
 }
