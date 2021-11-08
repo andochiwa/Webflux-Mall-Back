@@ -1,0 +1,5 @@
+*.html linguist-language=Kotlin
+*.js linguist-language=Kotlin
+*.css linguist-language=Kotlin
+*.jpg linguist-language=Kotlin
+*.webp linguist-language=Kotlin
