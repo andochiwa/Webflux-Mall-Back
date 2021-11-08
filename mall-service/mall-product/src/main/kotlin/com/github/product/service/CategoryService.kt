@@ -87,6 +87,10 @@ class CategoryService {
         categoryBrandRelationService.updateCategoryNameByCategoryId(category)
     }
 
+    suspend fun getLevel1Category(): List<Category> {
+        return categoryDao.getAllByCatLevel(1).toList()
+    }
+
 
 }
 
