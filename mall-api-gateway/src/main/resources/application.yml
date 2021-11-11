@@ -48,3 +48,8 @@ spring:
           uri: lb://mall-search
           predicates:
             - Path=/search/**
+
+        - id: host-product
+          uri: lb://mall-product
+          predicates:
+            - Host=**.chiwamall.com

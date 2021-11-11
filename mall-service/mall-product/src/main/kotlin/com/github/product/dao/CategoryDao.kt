@@ -26,4 +26,8 @@ interface CategoryDao : CoroutineCrudRepository<Category, Long> {
 
     @Query("select name from pms_category where cat_id = :id")
     suspend fun findCatelogNameById(id: Long): Category
+
+    fun getAllByCatLevel(catLevel: Int): Flow<Category>
+
+    fun getAllByParentCid(parentCid: Long): Flow<Category>
 }

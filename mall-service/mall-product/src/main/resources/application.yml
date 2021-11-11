@@ -12,6 +12,8 @@ spring:
       max-life-time: 5m
       max-idle-time: 5m
       max-size: 20
+  thymeleaf:
+    cache: false
 logging:
   level:
     org.springframework.r2dbc: debug

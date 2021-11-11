@@ -2,7 +2,9 @@ package com.github.product.service
 
 import com.github.product.dao.CategoryDao
 import com.github.product.entity.Category
+import com.github.product.vo.Catelog2Vo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -85,6 +87,37 @@ class CategoryService {
         categoryDao.save(category)
         // todo: update redundant data from other tables
         categoryBrandRelationService.updateCategoryNameByCategoryId(category)
+    }
+
+    suspend fun getLevel1Category(): List<Category> {
+        return categoryDao.getAllByCatLevel(1).toList()
+    }
+
+    suspend fun getCatelogJson(): Map<String, Any> {
+        // 查出一级分类
+        val level1Category = getLevel1Category()
+
+        return level1Category.associateBy(
+            { it.id.toString() },
+            { category1 ->
+                // 查出二级分类
+                categoryDao.getAllByParentCid(category1.id!!).map { category2 ->
+                    Catelog2Vo().apply {
+                        id = category2.catId
+                        name = category2.name
+                        catelog1Id = category1.id
+                        // 查询三级分类
+                        catelog3List = categoryDao.getAllByParentCid(category2.id!!).map { category3 ->
+                            Catelog2Vo.Catelog3Vo().apply {
+                                id = category3.id
+                                name = category3.name
+                                catelog2Id = category2.id
+                            }
+                        }.toList()
+                    }
+                }.toList()
+            }
+        )
     }
 
 
