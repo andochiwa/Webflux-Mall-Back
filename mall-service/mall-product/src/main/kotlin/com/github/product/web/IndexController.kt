@@ -27,11 +27,4 @@ class IndexController {
         model.addAttribute("category", categoryList)
         return "index"
     }
-
-    @GetMapping("index/catelog")
-    @ResponseBody
-    suspend fun getCatelog(): ResultDto {
-        val map = categoryService.getCatelogJson()
-        return resultSuccess().putAll(map)
-    }
 }

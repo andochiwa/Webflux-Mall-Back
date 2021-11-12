@@ -1,5 +1,5 @@
 $(function () {
-    $.getJSON("index/catelog", function (data) {
+    $.getJSON("product/category/index", function (data) {
         const ctGall = data.data;
         $(".header_main_left_a").each(function () {
             var ctgNums = $(this).attr("ctg-data");

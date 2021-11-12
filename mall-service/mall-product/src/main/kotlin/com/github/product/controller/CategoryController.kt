@@ -67,4 +67,11 @@ class CategoryController {
         val category: List<Category> = categoryService.listWithTree();
         return resultSuccess().put("category", category)
     }
+
+    @GetMapping("index")
+    @ResponseBody
+    suspend fun getCatelog(): ResultDto {
+        val map = categoryService.getCatelogJson()
+        return resultSuccess().putAll(map)
+    }
 }
