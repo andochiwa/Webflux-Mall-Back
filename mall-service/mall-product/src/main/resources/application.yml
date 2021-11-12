@@ -13,7 +13,7 @@ spring:
       max-idle-time: 5m
       max-size: 20
   thymeleaf:
-    cache: true
+    cache: false
   redis:
     host: localhost
     port: 6379
