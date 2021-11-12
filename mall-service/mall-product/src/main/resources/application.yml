@@ -13,7 +13,17 @@ spring:
       max-idle-time: 5m
       max-size: 20
   thymeleaf:
-    cache: false
+    cache: true
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 150000
+    lettuce:
+      pool:
+        max-active: 30
+        max-wait: 2
+        max-idle: 10
+        min-idle: 0
 logging:
   level:
     org.springframework.r2dbc: debug
