@@ -1,5 +1,7 @@
 package com.github.product.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.product.dao.CategoryDao
 import com.github.product.entity.Category
 import com.github.product.vo.Catelog2Vo
@@ -7,8 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.core.getAndAwait
+import org.springframework.data.redis.core.setAndAwait
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 /**
  *
@@ -23,6 +29,9 @@ class CategoryService {
 
     @Autowired
     lateinit var categoryBrandRelationService: CategoryBrandRelationService
+
+    @Autowired
+    lateinit var redisTemplate: ReactiveRedisTemplate<String, Any>
 
     suspend fun getById(id: Long): Category? {
         return categoryDao.findById(id)
@@ -93,11 +102,16 @@ class CategoryService {
         return categoryDao.getAllByCatLevel(1).toList()
     }
 
-    suspend fun getCatelogJson(): Map<String, Any> {
+    suspend fun getCatelogJson(): Map<String, List<Catelog2Vo>> {
+        val valueOperation = redisTemplate.opsForValue()
+        valueOperation.getAndAwait("catelogJson")?.run {
+            return ObjectMapper().convertValue(this)
+        }
+
         // 查出一级分类
         val level1Category = getLevel1Category()
 
-        return level1Category.associateBy(
+        val resultMap = level1Category.associateBy(
             { it.id.toString() },
             { category1 ->
                 // 查出二级分类
@@ -118,6 +132,8 @@ class CategoryService {
                 }.toList()
             }
         )
+        valueOperation.setAndAwait("catelogJson", resultMap, Duration.ofMinutes(30))
+        return resultMap
     }
 
 
