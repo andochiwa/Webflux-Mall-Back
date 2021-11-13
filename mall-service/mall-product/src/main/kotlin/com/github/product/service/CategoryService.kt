@@ -115,8 +115,8 @@ class CategoryService {
             return ObjectMapper().convertValue(this)
         }
         // coroutine will switch threads to cause thread id change
-
         val threadId = RandomUtil.randomLong()
+
         val lock = redisson.getSpinLock("catelogJson-lock")
         lock.lock(threadId).awaitSingleOrNull()
         try {
