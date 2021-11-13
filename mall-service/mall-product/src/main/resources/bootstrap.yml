@@ -8,7 +8,5 @@ spring:
         extension-configs:
           - data-id: nacos.yml
             refresh: true
-          - data-id: alibaba-oss.yml
-            refresh: true
           - data-id: redis.yml
             refresh: true
