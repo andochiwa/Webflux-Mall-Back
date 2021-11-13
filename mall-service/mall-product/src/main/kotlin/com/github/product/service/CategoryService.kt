@@ -1,5 +1,6 @@
 package com.github.product.service
 
+import cn.hutool.core.util.RandomUtil
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.product.dao.CategoryDao
@@ -8,6 +9,8 @@ import com.github.product.vo.Catelog2Vo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.redisson.api.RedissonReactiveClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.data.redis.core.getAndAwait
@@ -32,6 +35,9 @@ class CategoryService {
 
     @Autowired
     lateinit var redisTemplate: ReactiveRedisTemplate<String, Any>
+
+    @Autowired
+    lateinit var redisson: RedissonReactiveClient
 
     suspend fun getById(id: Long): Category? {
         return categoryDao.findById(id)
@@ -104,14 +110,32 @@ class CategoryService {
 
     suspend fun getCatelogJson(): Map<String, List<Catelog2Vo>> {
         val valueOperation = redisTemplate.opsForValue()
+
         valueOperation.getAndAwait("catelogJson")?.run {
             return ObjectMapper().convertValue(this)
         }
+        // coroutine will switch threads to cause thread id change
 
+        val threadId = RandomUtil.randomLong()
+        val lock = redisson.getSpinLock("catelogJson-lock")
+        lock.lock(threadId).awaitSingleOrNull()
+        try {
+            valueOperation.getAndAwait("catelogJson")?.run {
+                return ObjectMapper().convertValue(this)
+            }
+            val resultMap = getCatelogJsonImpl()
+            valueOperation.setAndAwait("catelogJson", resultMap, Duration.ofMinutes(30))
+            return resultMap
+        } finally {
+            lock.unlock(threadId).awaitSingleOrNull()
+        }
+    }
+
+    private suspend fun getCatelogJsonImpl(): Map<String, List<Catelog2Vo>> {
         // 查出一级分类
         val level1Category = getLevel1Category()
 
-        val resultMap = level1Category.associateBy(
+        return level1Category.associateBy(
             { it.id.toString() },
             { category1 ->
                 // 查出二级分类
@@ -132,8 +156,6 @@ class CategoryService {
                 }.toList()
             }
         )
-        valueOperation.setAndAwait("catelogJson", resultMap, Duration.ofMinutes(30))
-        return resultMap
     }
 
 
