@@ -1,6 +1,6 @@
 package com.github.search.vo
 
-data class SearchParam(
+data class SearchParamVo(
     var keyword: String? = null,
     var catelog3Id: Int? = null,
     var sort: String? = null, // sort=saleCount_asc

@@ -1,7 +1,7 @@
 package com.github.search.web
 
 import com.github.search.service.SearchService
-import com.github.search.vo.SearchParam
+import com.github.search.vo.SearchParamVo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,7 +18,7 @@ class SearchController {
     lateinit var searchService: SearchService
 
     @GetMapping("list", "list.html")
-    suspend fun listPage(searchParam: SearchParam): String {
+    suspend fun listPage(searchParam: SearchParamVo): String {
 
         searchService.search(searchParam)
 

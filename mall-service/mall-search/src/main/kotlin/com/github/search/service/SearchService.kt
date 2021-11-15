@@ -1,6 +1,6 @@
 package com.github.search.service
 
-import com.github.search.vo.SearchParam
+import com.github.search.vo.SearchParamVo
 import org.springframework.stereotype.Service
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class SearchService {
-    fun search(searchParam: SearchParam) {
+    fun search(searchParam: SearchParamVo) {
         TODO("Not yet implemented")
     }
 }
