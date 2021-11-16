@@ -5,17 +5,17 @@ import com.github.search.entity.SkuEntity
 data class SearchDto(
     var products: List<SkuEntity>? = null,
 
-    var pageNum: Int,
+    var pageNum: Int? = null,
 
-    var totalNum: Long,
+    var totalNum: Long? = null,
 
-    var totalPage: Long,
+    var totalPage: Long? = null,
 
-    var brands: List<BrandVo>,
+    var brands: List<BrandVo>? = null,
 
-    var attrs: List<AttrVo>,
+    var attrs: List<AttrVo>? = null,
 
-    var catelogs: List<CatelogVo>
+    var catelogs: List<CatelogVo>? = null
 ) {
     data class BrandVo(
         var brandId: Long? = null,
