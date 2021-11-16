@@ -20,13 +20,13 @@ data class SkuEntity(
     @JsonSerialize(using = ToStringSerializer::class)
     var spuId: Long? = null,
 
-    @Field(type = FieldType.Text, analyzer = "ik_smart")
+    @Field(type = FieldType.Text, searchAnalyzer = "ik_smart", analyzer = "ik_max_word")
     var skuTitle: String? = null,
 
     @Field(type = FieldType.Scaled_Float)
     var skuPrice: BigDecimal? = null,
 
-    @Field(type = FieldType.Keyword, index = false, docValues = false)
+    @Field(type = FieldType.Keyword)
     var skuImg: String? = null,
 
     @Field(type = FieldType.Long)
@@ -46,13 +46,13 @@ data class SkuEntity(
     @JsonSerialize(using = ToStringSerializer::class)
     var catelogId: Long? = null,
 
-    @Field(type = FieldType.Keyword, index = false, docValues = false)
+    @Field(type = FieldType.Keyword)
     var brandName: String? = null,
 
-    @Field(type = FieldType.Keyword, index = false, docValues = false)
+    @Field(type = FieldType.Keyword)
     var brandImg: String? = null,
 
-    @Field(type = FieldType.Keyword, index = false, docValues = false)
+    @Field(type = FieldType.Keyword)
     var catelogName: String? = null,
 
     @Field(type = FieldType.Nested)
@@ -63,7 +63,7 @@ data class SkuEntity(
         @JsonSerialize(using = ToStringSerializer::class)
         var attrId: Long? = null,
 
-        @Field(type = FieldType.Keyword, index = false, docValues = false)
+        @Field(type = FieldType.Keyword)
         var attrName: String? = null,
 
         @Field(type = FieldType.Keyword)
