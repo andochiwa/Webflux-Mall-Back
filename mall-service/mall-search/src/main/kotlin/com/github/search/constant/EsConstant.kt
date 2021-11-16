@@ -8,3 +8,7 @@ package com.github.search.constant
 enum class EsIndexConstant(val index: String) {
     PRODUCT_INDEX("product")
 }
+
+enum class EsPageConstant(val size: Int) {
+    DEFAULT_SIZE(16)
+}
