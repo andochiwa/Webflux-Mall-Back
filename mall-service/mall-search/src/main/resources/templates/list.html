@@ -785,94 +785,11 @@
                         <div class="sl_value_logo">
                             <ul>
                                 <li>
-                                    <a href="#">
-                                        <img src="/static/search/img/598033b4nd6055897.jpg" alt="">
-                                        <div>
-                                            华为(HUAWEI)
-                                        </div>
+                                    <a href="#" th:each="brand:${result.brands}">
+                                        <img th:src="${brand.brandImg}" alt="">
+                                        <div th:text="${brand.brandName}"></div>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="/static/search/img/598042c9n6e4e79e5.jpg" alt="">
-                                        <div>
-                                            小米(MI)
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="/static/search/img/574d36dbn262ef26d.jpg" alt="">
-                                        <div>
-                                            Apple
-                                        </div>
-                                    </a>
-                                </li>
-                                <li><a href="#"><img src="/static/search/img/57fdf4b8n6e95624d.jpg" alt="">
-                                    <div>
-                                        魅族(MEIZU)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/5716e2c4nc925baf3.jpg" alt="">
-                                    <div>
-                                        三星(SAMSUNG)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/591aa1abn602ebecf.jpg" alt="">
-                                    <div>
-                                        360
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/56b2f385n8e4eb051.jpg" alt="">
-                                    <div>
-                                        oppo
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/563b3484n9ba68e13.jpg" alt="">
-                                    <div>
-                                        vivo
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/563b33ffn9c288c6c.jpg" alt="">
-                                    <div>
-                                        一加
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/563b33d4n6c59780c.jpg" alt="">
-                                    <div>
-                                        诺基亚（NOKIA）
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/5631ccdene8df5efb.jpg" alt="">
-                                    <div>
-                                        锤子(smartisan)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/58f74d5an23fc1dff.jpg" alt="">
-                                    <div>
-                                        金立(Gionee)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/5670cf96ncffa2ae6.jpg" alt="">
-                                    <div>
-                                        酷派(Coolpad)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/5631cd12n7548352d.jpg" alt="">
-                                    <div>
-                                        努比亚(nubia)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/56a855a3ne38ee719.jpg" alt="">
-                                    <div>
-                                        中兴(ZTE)
-                                    </div>
-                                </a></li>
-                                <li><a href="#"><img src="/static/search/img/5836e479n88a98abb.jpg" alt="">
-                                    <div>
-                                        美图(meitu)
-                                    </div>
-                                </a></li>
                             </ul>
                         </div>
                     </div>
@@ -889,80 +806,22 @@
                         </a>
                     </div>
                 </div>
-                <!--价格-->
-                <div class="JD_pre">
+                <!--分类-->
+                <div class="JD_nav_wrap">
                     <div class="sl_key">
-                        <span>价格：</span>
+                        <span>分类：</span>
                     </div>
                     <div class="sl_value">
-                        <ul>
-                            <li><a href="#">0-499</a></li>
-                            <li><a href="#">500-999</a></li>
-                            <li><a href="#">1000-1699</a></li>
-                            <li><a href="#">1700-2799</a></li>
-                            <li><a href="#">2800-4499</a></li>
-                            <li><a href="#">4500-11999</a></li>
-                            <li><a href="#">12000以上</a></li>
-                            <li class="sl_value_li">
-                                <input type="text">
-                                <p>-</p>
-                                <input type="text">
-                                <a href="#">确定</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!--系统-->
-                <div class="JD_pre">
-                    <div class="sl_key">
-                        <span>系统：</span>
-                    </div>
-                    <div class="sl_value">
-                        <ul>
-                            <li><a href="#">0-安卓（Android）</a></li>
-                            <li><a href="#">苹果（IOS）</a></li>
-                            <li><a href="#">微软（WindowsPhone）</a></li>
-                            <li><a href="#">基础功能机系统 </a></li>
-                            <li><a href="#">其他</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--屏幕尺寸-->
-                <div class="JD_pre">
-                    <div class="sl_key">
-                        <span>屏幕尺寸：</span>
-                    </div>
-                    <div class="sl_value">
-                        <ul>
-                            <li><a href="#">5.56英寸及以上</a></li>
-                            <li><a href="#">5.5-5.1英寸</a></li>
-                            <li><a href="#">5.0-4.6英寸</a></li>
-                            <li><a href="#">4.5-3.1英寸</a></li>
-                            <li><a href="#">3.0英寸以下</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--热点-->
-                <div class="JD_pre">
-                    <div class="sl_key">
-                        <span>热点：</span>
-                    </div>
-                    <div class="sl_value">
-                        <ul>
-                            <li><a href="#">以旧换新</a></li>
-                            <li><a href="#">功能机</a></li>
-                            <li><a href="#">儿童手机</a></li>
-                            <li><a href="#">合约机</a></li>
-                            <li><a href="#">全面屏</a></li>
-                            <li><a href="#">直板键盘</a></li>
-                            <li><a href="#">翻盖</a></li>
-                            <li><a href="#">商务手机</a></li>
-                            <li><a href="#">安全手机</a></li>
-                            <li><a href="#">键盘手机</a></li>
-                        </ul>
+                        <div class="sl_value_logo">
+                            <ul>
+                                <li th:each="catelog:${result.catelogs}">
+                                    <a href="#" th:text="${catelog.catelogName}"></a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="sl_ext">
-                        <a href="#" class="sl_ext_show">
+                        <a href="#">
                             更多
                             <i style='background: url("image/search.ele.png")no-repeat 3px 7px'></i>
                             <b style='background: url("image/search.ele.png")no-repeat 3px -44px'></b>
@@ -974,58 +833,17 @@
                         </a>
                     </div>
                 </div>
-                <!--机身颜色-->
-                <div class="JD_pre">
+                <!--其他属性-->
+                <div class="JD_pre" th:each="attr:${result.attrs}">
                     <div class="sl_key">
-                        <span>机身颜色：</span>
+                        <span th:text="${attr.attrName}"></span>
                     </div>
                     <div class="sl_value">
                         <ul>
-                            <li><a href="#">白色</a></li>
-                            <li><a href="#">黑色</a></li>
-                            <li><a href="#">灰色</a></li>
-                            <li><a href="#">金色</a></li>
-                            <li><a href="#">银色</a></li>
-                            <li><a href="#">红色</a></li>
-                            <li><a href="#">蓝色</a></li>
-                            <li><a href="#">粉色</a></li>
-                            <li><a href="#">黄的</a></li>
-                            <li><a href="#">蓝色</a></li>
+                            <li th:each="attrValue:${attr.attrValue}">
+                                <a href="#" th:text="${attrValue}"></a>
+                            </li>
                         </ul>
-                    </div>
-                    <div class="sl_ext">
-                        <a href="#"></a>
-                        <a href="#">
-                            多选
-                            <i>+</i>
-                            <span>+</span>
-                        </a>
-                    </div>
-                </div>
-                <!--机身内存-->
-                <div class="JD_pre" style="border: 0">
-                    <div class="sl_key">
-                        <span>机身内存：</span>
-                    </div>
-                    <div class="sl_value">
-                        <ul>
-                            <li><a href="#">16G</a></li>
-                            <li><a href="#">8G</a></li>
-                            <li><a href="#">256G</a></li>
-                            <li><a href="#">128G</a></li>
-                            <li><a href="#">64G</a></li>
-                            <li><a href="#">32G</a></li>
-                            <li><a href="#">8G以下</a></li>
-                            <li><a href="#">支持内存卡</a></li>
-                        </ul>
-                    </div>
-                    <div class="sl_ext">
-                        <a href="#"></a>
-                        <a href="#">
-                            多选
-                            <i>+</i>
-                            <span>+</span>
-                        </a>
                     </div>
                 </div>
             </div>
