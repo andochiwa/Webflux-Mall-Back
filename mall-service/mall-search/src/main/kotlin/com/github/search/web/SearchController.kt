@@ -6,6 +6,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
 /**
@@ -22,9 +23,10 @@ class SearchController {
 
     @GetMapping("list", "list.html")
     @ApiOperation("route and search")
-    suspend fun listPage(searchParam: SearchParamVo): String {
+    suspend fun listPage(searchParam: SearchParamVo, model: Model): String {
 
         val searchDto = searchService.search(searchParam)
+        model.addAttribute("result", searchDto)
 
         return "list"
     }
