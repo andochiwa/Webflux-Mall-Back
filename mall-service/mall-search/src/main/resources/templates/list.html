@@ -785,7 +785,7 @@
                         <div class="sl_value_logo">
                             <ul>
                                 <li>
-                                    <a href="#" th:each="brand:${result.brands}">
+                                    <a th:href="${'javascript:searchProducts(&quot;brandId&quot;,&quot;'+brand.brandId+'&quot;)'}" th:each="brand:${result.brands}">
                                         <img th:src="${brand.brandImg}" alt="">
                                         <div th:text="${brand.brandName}"></div>
                                     </a>
@@ -814,7 +814,7 @@
                     <div class="sl_value">
                         <ul>
                             <li th:each="catelog:${result.catelogs}">
-                                <a href="#" th:text="${catelog.catelogName}"></a>
+                                <a th:href="${'javascript:searchProducts(&quot;catelog3Id&quot;,&quot;'+catelog.catelogId+'&quot;)'}" th:text="${catelog.catelogName}"></a>
                             </li>
                         </ul>
                     </div>
@@ -827,7 +827,7 @@
                     <div class="sl_value">
                         <ul>
                             <li th:each="attrValue:${attr.attrValue}">
-                                <a href="#" th:text="${attrValue}"></a>
+                                <a th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;)'}" th:text="${attrValue}"></a>
                             </li>
                         </ul>
                     </div>
@@ -1956,6 +1956,14 @@
     }, function () {
         $(this).css("color", "#727272")
     })
+
+    function searchProducts(name, val) {
+        if (location.href.includes("?")) {
+            location.href += `&${name}=${val}`;
+        } else {
+            location.href += `?${name}=${val}`;
+        }
+    }
 </script>
 </body>
 </html>
