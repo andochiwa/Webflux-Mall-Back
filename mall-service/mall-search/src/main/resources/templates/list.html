@@ -402,8 +402,8 @@
         <a href="http://chiwamall.com"><img src="/static/search/image/logo1.jpg" alt=""></a>
     </div>
     <div class="header_form">
-        <input type="text" placeholder="手机"/>
-        <a href="#">搜索</a>
+        <input id="keyword_input" type="text" placeholder="手机"/>
+        <a th:href="${'javascript:searchByKeyword()'}">搜索</a>
     </div>
     <div class="header_ico">
         <div class="header_gw">
@@ -1963,6 +1963,10 @@
         } else {
             location.href += `?${name}=${val}`;
         }
+    }
+
+    function searchByKeyword() {
+        searchProducts("keyword", $("#keyword_input").val())
     }
 </script>
 </body>
