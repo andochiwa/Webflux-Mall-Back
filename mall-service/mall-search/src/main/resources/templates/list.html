@@ -785,7 +785,8 @@
                         <div class="sl_value_logo">
                             <ul>
                                 <li>
-                                    <a th:href="${'javascript:searchProducts(&quot;brandId&quot;,&quot;'+brand.brandId+'&quot;)'}" th:each="brand:${result.brands}">
+                                    <a th:href="${'javascript:searchProducts(&quot;brandId&quot;,&quot;'+brand.brandId+'&quot;)'}"
+                                       th:each="brand:${result.brands}">
                                         <img th:src="${brand.brandImg}" alt="">
                                         <div th:text="${brand.brandName}"></div>
                                     </a>
@@ -814,7 +815,8 @@
                     <div class="sl_value">
                         <ul>
                             <li th:each="catelog:${result.catelogs}">
-                                <a th:href="${'javascript:searchProducts(&quot;catelog3Id&quot;,&quot;'+catelog.catelogId+'&quot;)'}" th:text="${catelog.catelogName}"></a>
+                                <a th:href="${'javascript:searchProducts(&quot;catelog3Id&quot;,&quot;'+catelog.catelogId+'&quot;)'}"
+                                   th:text="${catelog.catelogName}"></a>
                             </li>
                         </ul>
                     </div>
@@ -827,7 +829,8 @@
                     <div class="sl_value">
                         <ul>
                             <li th:each="attrValue:${attr.attrValue}">
-                                <a th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;)'}" th:text="${attrValue}"></a>
+                                <a th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;)'}"
+                                   th:text="${attrValue}"></a>
                             </li>
                         </ul>
                     </div>
@@ -1192,23 +1195,23 @@
                     <div class="filter_page">
                         <div class="page_wrap">
                             <span class="page_span1">
-                                <a href="#">
+                                <a class="page_a" th:attr="pn=${result.pageNum - 1}" href="#"
+                                   th:if="${result.pageNum > 1}">
                                     < 上一页
                                 </a>
-                                <a href="#" style="border: 0;color:#ee2222;background: #fff">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#" style="border: 0;font-size: 20px;color: #999;background: #fff">...</a>
-                                <a href="#">169</a>
-                                <a href="#">
+                                <a class="page_a" th:attr="pn=${index}" href="#"
+                                   th:style="${index == result.pageNum} ? 'border: 0;color:#ee2222;background: #fff' : ''"
+                                   th:each="index:${#numbers.sequence(1, result.totalPage)}">[[${index}]]</a>
+                                <a class="page_a" th:attr="pn=${result.pageNum + 1}" href="#"
+                                   th:if="${result.pageNum < result.totalPage}">
                                     下一页 >
                                 </a>
                             </span>
                             <span class="page_span2">
-                                <em>共<b>169</b>页&nbsp;&nbsp;到第</em>
+                                <em>共<b th:text="${result.totalPage}"></b>页&nbsp;&nbsp;到第</em>
                                 <input type="number" value="1">
                                 <em>页</em>
-                                <a href="#">确定</a>
+                                <a class="page_submit" href="#">确定</a>
                             </span>
                         </div>
                     </div>
@@ -1966,7 +1969,26 @@
     }
 
     function searchByKeyword() {
-        searchProducts("keyword", $("#keyword_input").val())
+        if (location.href.includes("keyword")) {
+            location.href = replaceParamVal(location.href, "keyword", $("#keyword_input").val())
+        } else {
+            searchProducts("keyword", $("#keyword_input").val())
+        }
+    }
+
+    $(".page_a").click(function () {
+        let pn = $(this).attr("pn");
+        if (location.href.includes("pageNum")) {
+            location.href = replaceParamVal(location.href, "pageNum", pn)
+        } else {
+            searchProducts("pageNum", pn)
+        }
+    })
+
+    function replaceParamVal(url, paramName, replaceVal) {
+        let oldUrl = url.toString()
+        let re = eval(`/(${paramName}=)([^&]*)/gi`);
+        return oldUrl.replace(re, `${paramName}=${replaceVal}`);
     }
 </script>
 </body>
