@@ -402,7 +402,7 @@
         <a href="http://chiwamall.com"><img src="/static/search/image/logo1.jpg" alt=""></a>
     </div>
     <div class="header_form">
-        <input id="keyword_input" type="text" placeholder="手机"/>
+        <input id="keyword_input" type="text" placeholder="手机" th:value="${param.keyword}"/>
         <a th:href="${'javascript:searchByKeyword()'}">搜索</a>
     </div>
     <div class="header_ico">
