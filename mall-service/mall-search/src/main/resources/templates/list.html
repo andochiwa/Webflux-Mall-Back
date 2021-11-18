@@ -807,30 +807,16 @@
                     </div>
                 </div>
                 <!--分类-->
-                <div class="JD_nav_wrap">
+                <div class="JD_pre">
                     <div class="sl_key">
                         <span>分类：</span>
                     </div>
                     <div class="sl_value">
-                        <div class="sl_value_logo">
-                            <ul>
-                                <li th:each="catelog:${result.catelogs}">
-                                    <a href="#" th:text="${catelog.catelogName}"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sl_ext">
-                        <a href="#">
-                            更多
-                            <i style='background: url("image/search.ele.png")no-repeat 3px 7px'></i>
-                            <b style='background: url("image/search.ele.png")no-repeat 3px -44px'></b>
-                        </a>
-                        <a href="#">
-                            多选
-                            <i>+</i>
-                            <span>+</span>
-                        </a>
+                        <ul>
+                            <li th:each="catelog:${result.catelogs}">
+                                <a href="#" th:text="${catelog.catelogName}"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <!--其他属性-->
