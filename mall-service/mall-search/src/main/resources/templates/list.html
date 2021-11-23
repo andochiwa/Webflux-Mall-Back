@@ -1025,6 +1025,8 @@
                             <a class="sort_a" sort="skuPrice" href="#">价格</a>
                             <a class="sort_a" href="#">评论分</a>
                             <a class="sort_a" href="#">上架时间</a>
+                            <input id="skuPriceFrom" type="number" style="width: 100px; margin-left: 30px;"> -
+                            <input id="skuPriceTo" type="number" style="width: 100px"> <button id="skuPriceSearchBtn">确定</button>
                         </div>
                         <div class="filter_top_right">
                             <span class="fp-text">
@@ -1134,7 +1136,7 @@
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i></i>
+                                        <input id="showHasStock" type="checkbox"></input>
                                         仅显示有货
                                     </a>
                                 </li>
@@ -2013,6 +2015,23 @@
         location.href = replaceParamVal(location.href, "sort", sort);
         changeStyle.call(this);
 
+        return false
+    })
+
+    $("#skuPriceSearchBtn").click(function () {
+        let from = $("#skuPriceFrom").val();
+        let to = $("#skuPriceTo").val();
+        let query = `${from}_${to}`;
+        location.href = replaceParamVal(location.href, "skuPrice", query);
+    })
+
+    $("#showHasStock").change(function () {
+        if ($(this).prop("checked")) {
+            location.href = replaceParamVal(location.href, "hasStock", 1)
+        } else {
+            let re = eval(`/(hasStock=)([^&]*)/gi`);
+            location.href = location.href.replace(re, '');
+        }
         return false
     })
 </script>
