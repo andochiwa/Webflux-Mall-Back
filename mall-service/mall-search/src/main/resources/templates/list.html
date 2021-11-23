@@ -2009,9 +2009,9 @@
     }
 
     $(".sort_a").click(function() {
-        changeStyle.call(this);
         let sort = $(this).attr("sort") + "_desc";
-        location.href = replaceParamVal(location.href, "sort", sort)
+        location.href = replaceParamVal(location.href, "sort", sort);
+        changeStyle.call(this);
 
         return false
     })
