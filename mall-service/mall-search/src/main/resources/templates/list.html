@@ -1020,11 +1020,11 @@
                     <!--综合排序-->
                     <div class="filter_top">
                         <div class="filter_top_left">
-                            <a href="#">综合排序</a>
-                            <a href="#">销量</a>
-                            <a href="#">价格</a>
-                            <a href="#">评论分</a>
-                            <a href="#">上架时间</a>
+                            <a class="sort_a" sort="hotScore" href="#">综合排序</a>
+                            <a class="sort_a" sort="saleCount" href="#">销量</a>
+                            <a class="sort_a" sort="skuPrice" href="#">价格</a>
+                            <a class="sort_a" href="#">评论分</a>
+                            <a class="sort_a" href="#">上架时间</a>
                         </div>
                         <div class="filter_top_right">
                             <span class="fp-text">
@@ -1976,7 +1976,7 @@
         }
     }
 
-    $(".page_a").click(function () {
+    $(".page_a").click(function() {
         let pn = $(this).attr("pn");
         if (location.href.includes("pageNum")) {
             location.href = replaceParamVal(location.href, "pageNum", pn)
@@ -1986,10 +1986,35 @@
     })
 
     function replaceParamVal(url, paramName, replaceVal) {
-        let oldUrl = url.toString()
-        let re = eval(`/(${paramName}=)([^&]*)/gi`);
-        return oldUrl.replace(re, `${paramName}=${replaceVal}`);
+        let oldUrl = url.toString();
+        if (oldUrl.includes(paramName)) {
+            let re = eval(`/(${paramName}=)([^&]*)/gi`);
+            return oldUrl.replace(re, `${paramName}=${replaceVal}`);
+        }
+        if (oldUrl.includes("?")) {
+            return `${oldUrl}&${paramName}=${replaceVal}`
+        }
+        return `${oldUrl}?${paramName}=${replaceVal}`
     }
+
+    function changeStyle() {
+        $(".sort_a").css({"color": "#333", "border-color": "#CCC", "background": "#FFF"});
+        $(this).css({"color": "#FFF", "border-color": "#e4393c", "background": "#e4393c"});
+        $(".sort_a").each(function () {
+            let text = $(this).text().replace("↓", "");
+            $(this).text(text);
+        });
+        let text = $(this).text().replace("↓", "") + "↓";
+        $(this).text(text);
+    }
+
+    $(".sort_a").click(function() {
+        changeStyle.call(this);
+        let sort = $(this).attr("sort") + "_desc";
+        location.href = replaceParamVal(location.href, "sort", sort)
+
+        return false
+    })
 </script>
 </body>
 </html>
