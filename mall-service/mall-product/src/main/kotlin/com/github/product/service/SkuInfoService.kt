@@ -41,6 +41,9 @@ class SkuInfoService {
     @Autowired
     lateinit var attrGroupService: AttrGroupService
 
+    @Autowired
+    lateinit var skuSaleAttrValueService: SkuSaleAttrValueService
+
     suspend fun getById(id: Long): SkuInfo? {
         return skuInfoDao.findById(id)
     }
@@ -99,9 +102,9 @@ class SkuInfoService {
         // sku图片信息
         skuItemDto.skuImages = skuImagesDao.findAllBySkuId(skuId).toList()
         // spu销售信息组合
-
+        val spuId = skuInfo.spuId!!
+        skuItemDto.saleAttrs = skuSaleAttrValueService.getSaleAttrsBySpuId(spuId)
         // spu介绍
-        val spuId = skuInfo?.spuId!!
         skuItemDto.spuInfoDesc = spuInfoDescDao.findBySpuId(spuId)
         // spu规格参数信息
         val catelogId = skuInfo.catelogId!!
