@@ -3,13 +3,16 @@ package com.github.product.service
 import com.github.product.dao.AttrDao
 import com.github.product.dao.AttrGroupDao
 import com.github.product.dao.AttrGroupRelationDao
+import com.github.product.dao.ProductAttrValueDao
 import com.github.product.dto.AttrGroupWithAttrsDto
+import com.github.product.dto.SkuItemDto
 import com.github.product.entity.Attr
 import com.github.product.entity.AttrGroup
 import com.github.product.entity.AttrGroupRelation
 import com.github.product.vo.AttrAndGroupRelationVo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +35,9 @@ class AttrGroupService {
 
     @Autowired
     lateinit var attrDao: AttrDao
+
+    @Autowired
+    lateinit var productAttrValueDao: ProductAttrValueDao
 
     suspend fun getById(id: Long): AttrGroup? {
         return attrGroupDao.findById(id)
@@ -129,6 +135,27 @@ class AttrGroupService {
                 attrGroupWithAttrsDto.attrList = this.getAttrRelation(it.attrGroupId!!)
                 attrGroupWithAttrsDto
             }.toList()
+    }
+
+    suspend fun getAttrGroupWithAttrsBySpuId(spuId: Long, catelogId: Long): List<SkuItemDto.SpuItemAttrGroupDto> {
+        val list = mutableListOf<SkuItemDto.SpuItemAttrGroupDto>()
+        val attrGroups = attrGroupDao.findByCatelogId(catelogId)
+        attrGroups.onEach { attrGroup ->
+            val groupDto = SkuItemDto.SpuItemAttrGroupDto()
+            groupDto.groupName = attrGroup.attrGroupName
+
+            val attrIds = attrGroupRelationDao.getAllByAttrGroupId(attrGroup.id!!).map { it.attrId!! }
+            val attrs = attrDao.findAllById(attrIds)
+            groupDto.attrs = attrs.map { attr ->
+                val spuAttrGroupDto = SkuItemDto.SpuAttrGroupDto()
+                spuAttrGroupDto.attrName = attr.attrName
+                spuAttrGroupDto.attrValue = productAttrValueDao.getBySpuIdAndAttrId(spuId, attr.id!!)?.attrValue
+                spuAttrGroupDto
+            }.toList()
+
+            list += groupDto
+        }.toList()
+        return list
     }
 }
 

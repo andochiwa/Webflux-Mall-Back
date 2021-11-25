@@ -1,6 +1,9 @@
 package com.github.product.web
 
+import com.github.product.service.SkuInfoService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
@@ -11,9 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable
  */
 @Controller
 class ItemController {
+    @Autowired
+    lateinit var skuInfoService: SkuInfoService
 
     @GetMapping("{skuId}", "{skuId}.html")
-    fun skuItem(@PathVariable("skuId") skuId: Long): String {
+    suspend fun skuItem(@PathVariable("skuId") skuId: Long, model: Model): String {
+        val skuItem = skuInfoService.getSkuItem(skuId)
+        model.addAttribute("result", skuItem)
         return "item"
     }
 }

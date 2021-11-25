@@ -10,5 +10,5 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  * @date 2021-09-24 00:47:19
  */
 interface SpuInfoDescDao : CoroutineCrudRepository<SpuInfoDesc, Long> {
-
+    suspend fun findBySpuId(spuId: Long): SpuInfoDesc
 }

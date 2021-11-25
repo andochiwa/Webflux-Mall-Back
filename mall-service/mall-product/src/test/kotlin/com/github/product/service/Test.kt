@@ -14,10 +14,13 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate
  * @since 11-13-02:12
  */
 @SpringBootTest
-class TestRedis {
+class Test {
 
     @Autowired
     lateinit var stringRedisTemplate: ReactiveStringRedisTemplate
+
+    @Autowired
+    lateinit var skuInfoService: SkuInfoService
 
     @Test
     fun test() {
@@ -26,6 +29,13 @@ class TestRedis {
             opsForValue.set("hello", "world_${UUID.fastUUID()}").awaitSingle()
 
             println("data = ${opsForValue.get("hello").awaitSingle()}")
+        }
+    }
+
+    @Test
+    fun getSkuItemTest() {
+        runBlocking {
+            println(skuInfoService.getSkuItem(1451894371813515264))
         }
     }
 }

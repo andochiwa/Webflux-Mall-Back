@@ -1,6 +1,9 @@
 package com.github.product.service
 
+import com.github.product.dao.SkuImagesDao
 import com.github.product.dao.SkuInfoDao
+import com.github.product.dao.SpuInfoDescDao
+import com.github.product.dto.SkuItemDto
 import com.github.product.entity.SkuInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -28,6 +31,15 @@ class SkuInfoService {
 
     @Autowired
     lateinit var template: R2dbcEntityTemplate
+
+    @Autowired
+    lateinit var skuImagesDao: SkuImagesDao
+
+    @Autowired
+    lateinit var spuInfoDescDao: SpuInfoDescDao
+
+    @Autowired
+    lateinit var attrGroupService: AttrGroupService
 
     suspend fun getById(id: Long): SkuInfo? {
         return skuInfoDao.findById(id)
@@ -77,6 +89,24 @@ class SkuInfoService {
             this["list"] = list
             this["totalCount"] = count
         }
+    }
+
+    suspend fun getSkuItem(skuId: Long): SkuItemDto {
+        val skuItemDto = SkuItemDto()
+        // sku基本信息
+        val skuInfo = skuInfoDao.findById(skuId) ?: return skuItemDto
+        skuItemDto.skuInfo = skuInfo
+        // sku图片信息
+        skuItemDto.skuImages = skuImagesDao.findAllBySkuId(skuId).toList()
+        // spu销售信息组合
+
+        // spu介绍
+        val spuId = skuInfo?.spuId!!
+        skuItemDto.spuInfoDesc = spuInfoDescDao.findBySpuId(spuId)
+        // spu规格参数信息
+        val catelogId = skuInfo.catelogId!!
+        skuItemDto.groupAttrs = attrGroupService.getAttrGroupWithAttrsBySpuId(spuId, catelogId)
+        return skuItemDto
     }
 }
 

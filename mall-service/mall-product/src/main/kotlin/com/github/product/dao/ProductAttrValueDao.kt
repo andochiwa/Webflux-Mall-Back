@@ -13,4 +13,6 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 interface ProductAttrValueDao : CoroutineCrudRepository<ProductAttrValue, Long> {
 
     fun getAllBySpuId(spuId: Long): Flow<ProductAttrValue>
+
+    suspend fun getBySpuIdAndAttrId(spuId: Long, attrId: Long): ProductAttrValue?
 }
