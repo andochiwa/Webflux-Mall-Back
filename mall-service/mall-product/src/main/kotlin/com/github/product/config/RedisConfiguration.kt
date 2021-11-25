@@ -30,10 +30,10 @@ class RedisConfiguration {
     fun reactiveRedisTemplate(
         reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory,
         resourceLoader: ResourceLoader,
+        mapper: ObjectMapper
     ): ReactiveRedisTemplate<String, Any> {
         val stringSerializer = StringRedisSerializer()
         val jsonSerializer = Jackson2JsonRedisSerializer(Any::class.java)
-        val mapper = ObjectMapper()
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
         mapper.configure(MapperFeature.USE_ANNOTATIONS, false)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -42,7 +42,6 @@ class RedisConfiguration {
         // 解决jackson2无法反序列化LocalDateTime的问题
         mapper.registerModule(JavaTimeModule())
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        mapper.activateDefaultTyping(mapper.polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL)
         jsonSerializer.setObjectMapper(mapper)
 
         val redisSerializationContext = RedisSerializationContext
