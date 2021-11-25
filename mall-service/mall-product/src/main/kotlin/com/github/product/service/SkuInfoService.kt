@@ -1,5 +1,8 @@
 package com.github.product.service
 
+import cn.hutool.core.util.RandomUtil
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.product.dao.SkuImagesDao
 import com.github.product.dao.SkuInfoDao
 import com.github.product.dao.SpuInfoDescDao
@@ -8,15 +11,21 @@ import com.github.product.entity.SkuInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.redisson.api.RedissonReactiveClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.r2dbc.core.flow
 import org.springframework.data.r2dbc.core.select
+import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.core.getAndAwait
+import org.springframework.data.redis.core.setAndAwait
 import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
 import org.springframework.data.relational.core.query.isEqual
 import org.springframework.stereotype.Service
+import java.time.Duration
 
 /**
  *
@@ -43,6 +52,15 @@ class SkuInfoService {
 
     @Autowired
     lateinit var skuSaleAttrValueService: SkuSaleAttrValueService
+
+    @Autowired
+    lateinit var redisTemplate: ReactiveRedisTemplate<String, Any>
+
+    @Autowired
+    lateinit var redisson: RedissonReactiveClient
+
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
 
     suspend fun getById(id: Long): SkuInfo? {
         return skuInfoDao.findById(id)
@@ -95,6 +113,28 @@ class SkuInfoService {
     }
 
     suspend fun getSkuItem(skuId: Long): SkuItemDto {
+        val valueOperation = redisTemplate.opsForValue()
+
+        valueOperation.getAndAwait("skuItemJson-$skuId")?.run {
+            return objectMapper.convertValue(this)
+        }
+        val threadId = RandomUtil.randomLong()
+        val lock = redisson.getSpinLock("skuItemJson-lock-$skuId")
+        lock.lock(threadId).awaitSingleOrNull()
+        try {
+            valueOperation.getAndAwait("skuItemJson-$skuId")?.run {
+                return objectMapper.convertValue(this)
+            }
+            val result = getSkuItemImpl(skuId)
+            valueOperation.setAndAwait("skuItemJson-$skuId", result, Duration.ofHours(1))
+            return result
+        } finally {
+            lock.unlock(threadId).awaitSingleOrNull()
+        }
+
+    }
+
+    private suspend fun getSkuItemImpl(skuId: Long): SkuItemDto {
         val skuItemDto = SkuItemDto()
         // sku基本信息
         val skuInfo = skuInfoDao.findById(skuId) ?: return skuItemDto

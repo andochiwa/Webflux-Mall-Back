@@ -39,6 +39,9 @@ class CategoryService {
     @Autowired
     lateinit var redisson: RedissonReactiveClient
 
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
+
     suspend fun getById(id: Long): Category? {
         return categoryDao.findById(id)
     }
@@ -112,7 +115,7 @@ class CategoryService {
         val valueOperation = redisTemplate.opsForValue()
 
         valueOperation.getAndAwait("catelogJson")?.run {
-            return ObjectMapper().convertValue(this)
+            return objectMapper.convertValue(this)
         }
         // coroutine will switch threads to cause thread id change
         val threadId = RandomUtil.randomLong()
@@ -121,7 +124,7 @@ class CategoryService {
         lock.lock(threadId).awaitSingleOrNull()
         try {
             valueOperation.getAndAwait("catelogJson")?.run {
-                return ObjectMapper().convertValue(this)
+                return objectMapper.convertValue(this)
             }
             val resultMap = getCatelogJsonImpl()
             valueOperation.setAndAwait("catelogJson", resultMap, Duration.ofMinutes(30))
