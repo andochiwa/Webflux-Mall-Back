@@ -52,7 +52,7 @@ spring:
         - id: host-product
           uri: lb://mall-product
           predicates:
-            - Host=chiwamall.com
+            - Host=chiwamall.com,item.chiwamall.com
 
         - id: host-product
           uri: lb://mall-search
