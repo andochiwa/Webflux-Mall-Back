@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.product.dao.CategoryDao
 import com.github.product.entity.Category
+import com.github.product.extensions.withLock
 import com.github.product.vo.Catelog2Vo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.redisson.api.RedissonReactiveClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.ReactiveRedisTemplate
@@ -121,21 +121,18 @@ class CategoryService {
         val threadId = RandomUtil.randomLong()
 
         val lock = redisson.getSpinLock("catelogJson-lock")
-        lock.lock(threadId).awaitSingleOrNull()
-        try {
+        lock.withLock(threadId) {
             valueOperation.getAndAwait("catelogJson")?.run {
                 return objectMapper.convertValue(this)
             }
             val resultMap = getCatelogJsonImpl()
             valueOperation.setAndAwait("catelogJson", resultMap, Duration.ofMinutes(30))
             return resultMap
-        } finally {
-            lock.unlock(threadId).awaitSingleOrNull()
         }
     }
 
     private suspend fun getCatelogJsonImpl(): Map<String, List<Catelog2Vo>> {
-        // 查出一级分类
+
         val level1Category = getLevel1Category()
 
         return level1Category.associateBy(

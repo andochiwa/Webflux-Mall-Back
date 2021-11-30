@@ -8,10 +8,10 @@ import com.github.product.dao.SkuInfoDao
 import com.github.product.dao.SpuInfoDescDao
 import com.github.product.dto.SkuItemDto
 import com.github.product.entity.SkuInfo
+import com.github.product.extensions.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.redisson.api.RedissonReactiveClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -120,18 +120,14 @@ class SkuInfoService {
         }
         val threadId = RandomUtil.randomLong()
         val lock = redisson.getSpinLock("skuItemJson-lock-$skuId")
-        lock.lock(threadId).awaitSingleOrNull()
-        try {
+        lock.withLock(threadId) {
             valueOperation.getAndAwait("skuItemJson-$skuId")?.run {
                 return objectMapper.convertValue(this)
             }
             val result = getSkuItemImpl(skuId)
             valueOperation.setAndAwait("skuItemJson-$skuId", result, Duration.ofHours(1))
             return result
-        } finally {
-            lock.unlock(threadId).awaitSingleOrNull()
         }
-
     }
 
     private suspend fun getSkuItemImpl(skuId: Long): SkuItemDto {
