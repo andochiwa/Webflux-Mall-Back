@@ -1,0 +1,6 @@
+server:
+  port: 18000
+spring:
+  application:
+    name: mall-security
+
