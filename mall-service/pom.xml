@@ -19,6 +19,7 @@
     <module>mall-order</module>
     <module>mall-third-party</module>
     <module>mall-search</module>
+    <module>mall-security</module>
   </modules>
 
   <properties>
