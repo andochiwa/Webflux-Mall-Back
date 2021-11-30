@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
+import reactivefeign.spring.config.EnableReactiveFeignClients
 
 /**
  * @author Andochiwa
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan
  */
 @SpringBootApplication(exclude = [R2dbcAutoConfiguration::class, DataSourceAutoConfiguration::class])
 @ComponentScan("com.github")
+@EnableReactiveFeignClients
 class AuthApplication
 
 fun main(args: Array<String>) {
