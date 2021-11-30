@@ -58,3 +58,8 @@ spring:
           uri: lb://mall-search
           predicates:
             - Host=search.chiwamall.com
+
+        - id: host-product
+          uri: lb://mall-security
+          predicates:
+            - Host=auth.chiwamall.com
