@@ -27,7 +27,7 @@
   </dependencies>
 
   <build>
-    <finalName>mall-search</finalName>
+    <finalName>${project.artifactId}</finalName>
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
   </build>
