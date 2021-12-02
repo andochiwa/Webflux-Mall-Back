@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
  */
 @Controller
 @Api
-class LoginController {
+class LoginWebController {
 
     @GetMapping("login", "login.html")
     @ApiOperation("login page")
