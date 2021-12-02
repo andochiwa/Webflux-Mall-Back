@@ -10,3 +10,5 @@ spring:
             refresh: true
           - data-id: alibaba-oss.yml
             refresh: true
+          - data-id: email.yml
+            refresh: true
