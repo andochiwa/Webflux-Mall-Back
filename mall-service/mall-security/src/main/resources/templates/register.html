@@ -63,10 +63,7 @@
             <label for="username" class="other_label">验 证 码
                 <input maxlength="20" type="text" placeholder="请输入验证码" class="caa">
             </label>
-            <span id="code"></span>
-            <div class="tips">
-
-            </div>
+            <a href="#" id="sendCode" >发送验证码</a>
         </div>
         <div class="arguement">
             <input type="checkbox" id="xieyi"> 阅读并同意
@@ -313,13 +310,26 @@
         }
 
     })
-    $(".ty").click(function () {
-        $(".zong").hide();
-        $(".laoda").hide();
+
+    $("#sendCode").click(function () {
+        if ($(this).hasClass("disabled")) {
+            return;
+        }
+        $(this).attr("class", "disabled");
+        timeoutChange(60);
     });
-    $(".cuo").click(function () {
-        $(".zong").hide();
-    });
+
+    function timeoutChange(num) {
+        let str = `${num} 后再次发送`;
+        if (num === 0) {
+            $("#sendCode").text("发送验证码");
+            $("#sendCode").attr("class", "");
+            return
+        }
+        num--;
+        $("#sendCode").text(str);
+        setTimeout(() => { timeoutChange(num) }, 1000)
+    }
 </script>
 </body>
 
