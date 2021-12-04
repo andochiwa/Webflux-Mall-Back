@@ -315,7 +315,7 @@
         $(this).attr("class", "disabled");
         let email = $("#email").val();
         $.ajax({
-            url: `/auth/login/email/code`,
+            url: `/auth/register/email/code`,
             type: `get`,
             data: {"email": email},
         });
