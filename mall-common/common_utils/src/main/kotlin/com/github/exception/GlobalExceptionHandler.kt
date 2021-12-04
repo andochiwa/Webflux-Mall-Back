@@ -29,6 +29,6 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     suspend fun globalException(e: Exception): ResultDto {
         e.printStackTrace()
-        return resultError(BizCodeEnum.UNKNOWN_EXCEPTION.code, BizCodeEnum.UNKNOWN_EXCEPTION.msg)
+        return resultError(BizCodeEnum.UNKNOWN_EXCEPTION.code, e.message ?: BizCodeEnum.UNKNOWN_EXCEPTION.msg)
     }
 }
