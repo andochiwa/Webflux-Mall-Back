@@ -1,9 +1,14 @@
 package com.github.auth.web
 
+import com.github.auth.service.RegisterService
+import com.github.auth.vo.UserRegisterVo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 
 /**
  * @author Andochiwa
@@ -13,6 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 @Api
 class LoginWebController {
+
+    @Autowired
+    lateinit var registerService: RegisterService
 
     @GetMapping("login", "login.html")
     @ApiOperation("login page")
@@ -24,5 +32,11 @@ class LoginWebController {
     @ApiOperation("register page")
     fun register(): String {
         return "register"
+    }
+
+    @PostMapping("auth/register")
+    suspend fun register(@Validated userRegisterVo: UserRegisterVo): String {
+        registerService.register(userRegisterVo)
+        return "redirect:/login"
     }
 }
