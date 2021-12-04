@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
  * @since 12-02-18:44
  */
 @RestController
-@RequestMapping("auth/login")
+@RequestMapping("auth/register")
 @Api
 class RegisterController {
 
