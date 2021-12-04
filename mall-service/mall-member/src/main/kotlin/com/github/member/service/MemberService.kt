@@ -2,6 +2,9 @@ package com.github.member.service
 
 import com.github.member.dao.MemberDao
 import com.github.member.entity.Member
+import com.github.member.exception.EmailExistException
+import com.github.member.exception.UsernameExistException
+import com.github.to.UserRegisterTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
@@ -12,6 +15,7 @@ import org.springframework.data.r2dbc.core.flow
 import org.springframework.data.r2dbc.core.select
 import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -61,6 +65,30 @@ class MemberService {
         return mutableMapOf<String, Any>().apply {
             this["list"] = list
             this["totalCount"] = count
+        }
+    }
+
+    suspend fun register(userRegisterTo: UserRegisterTo) {
+        checkUsernameExist(userRegisterTo.username)
+        checkEmailExist(userRegisterTo.email)
+        val member = Member().apply {
+            username = userRegisterTo.username
+            password = BCryptPasswordEncoder().encode(userRegisterTo.password)
+            email = userRegisterTo.email
+        }
+
+        memberDao.save(member)
+    }
+
+    private suspend fun checkUsernameExist(username: String) {
+        if (memberDao.existsByUsername(username)) {
+            throw UsernameExistException()
+        }
+    }
+
+    private suspend fun checkEmailExist(email: String) {
+        if (memberDao.existsByEmail(email)) {
+            throw EmailExistException()
         }
     }
 }

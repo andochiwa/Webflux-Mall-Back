@@ -4,6 +4,7 @@ import com.github.dto.ResultDto
 import com.github.dto.resultSuccess
 import com.github.member.entity.Member
 import com.github.member.service.MemberService
+import com.github.to.UserRegisterTo
 import com.github.vaild.AddGroup
 import com.github.vaild.UpdateGroup
 import io.swagger.annotations.Api
@@ -71,5 +72,11 @@ class MemberController {
     ): ResultDto {
         val map = memberService.getPagination(page - 1, limit, key)
         return resultSuccess().putAll(map)
+    }
+
+    @PostMapping("register")
+    suspend fun register(@RequestBody userRegisterTo: UserRegisterTo): ResultDto {
+        memberService.register(userRegisterTo)
+        return resultSuccess()
     }
 }

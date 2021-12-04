@@ -10,5 +10,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
  * @date 2021-09-26 03:43:36
  */
 interface MemberDao : CoroutineCrudRepository<Member, Long> {
+    suspend fun existsByEmail(email: String): Boolean
 
+    suspend fun existsByUsername(username: String): Boolean
 }
