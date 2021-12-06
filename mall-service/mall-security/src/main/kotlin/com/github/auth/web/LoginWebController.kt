@@ -24,7 +24,7 @@ class LoginWebController {
 
     @GetMapping("login", "login.html")
     @ApiOperation("login page")
-    fun login(): String {
+    fun loginPage(): String {
         return "login"
     }
 
@@ -35,8 +35,15 @@ class LoginWebController {
     }
 
     @PostMapping("auth/register")
+    @ApiOperation("register")
     suspend fun register(@Validated userRegisterVo: UserRegisterVo): String {
         registerService.register(userRegisterVo)
         return "redirect:/login"
+    }
+
+    @PostMapping("auth/login")
+    @ApiOperation("login")
+    suspend fun login(): String {
+        return "redirect:http://chiwamall.com"
     }
 }
