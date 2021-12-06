@@ -4,6 +4,7 @@ import com.github.member.dao.MemberDao
 import com.github.member.entity.Member
 import com.github.member.exception.EmailExistException
 import com.github.member.exception.UsernameExistException
+import com.github.member.vo.MemberLoginVo
 import com.github.to.UserRegisterTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -90,6 +91,11 @@ class MemberService {
         if (memberDao.existsByEmail(email)) {
             throw EmailExistException()
         }
+    }
+
+    suspend fun login(memberLoginVo: MemberLoginVo): Boolean {
+        val member = memberDao.findByUsernameOrEmail(memberLoginVo.account!!, memberLoginVo.account!!) ?: return false
+        return BCryptPasswordEncoder().matches(memberLoginVo.password, member.password)
     }
 }
 

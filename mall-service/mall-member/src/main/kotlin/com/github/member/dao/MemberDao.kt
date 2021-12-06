@@ -13,4 +13,6 @@ interface MemberDao : CoroutineCrudRepository<Member, Long> {
     suspend fun existsByEmail(email: String): Boolean
 
     suspend fun existsByUsername(username: String): Boolean
+
+    suspend fun findByUsernameOrEmail(username: String, email: String): Member?
 }

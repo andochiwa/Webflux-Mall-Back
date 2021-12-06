@@ -1,9 +1,11 @@
 package com.github.member.controller
 
 import com.github.dto.ResultDto
+import com.github.dto.resultError
 import com.github.dto.resultSuccess
 import com.github.member.entity.Member
 import com.github.member.service.MemberService
+import com.github.member.vo.MemberLoginVo
 import com.github.to.UserRegisterTo
 import com.github.vaild.AddGroup
 import com.github.vaild.UpdateGroup
@@ -78,5 +80,11 @@ class MemberController {
     suspend fun register(@RequestBody userRegisterTo: UserRegisterTo): ResultDto {
         memberService.register(userRegisterTo)
         return resultSuccess()
+    }
+
+    @PostMapping("login")
+    suspend fun login(@RequestBody memberLoginVo: MemberLoginVo): ResultDto {
+        val loginSuccess = memberService.login(memberLoginVo)
+        return if (loginSuccess) resultSuccess() else resultError()
     }
 }
