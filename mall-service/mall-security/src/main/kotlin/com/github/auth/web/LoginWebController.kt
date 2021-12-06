@@ -1,6 +1,8 @@
 package com.github.auth.web
 
+import com.github.auth.service.LoginService
 import com.github.auth.service.RegisterService
+import com.github.auth.vo.UserLoginVo
 import com.github.auth.vo.UserRegisterVo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -21,6 +23,9 @@ class LoginWebController {
 
     @Autowired
     lateinit var registerService: RegisterService
+
+    @Autowired
+    lateinit var loginService: LoginService
 
     @GetMapping("login", "login.html")
     @ApiOperation("login page")
@@ -43,7 +48,8 @@ class LoginWebController {
 
     @PostMapping("auth/login")
     @ApiOperation("login")
-    suspend fun login(): String {
-        return "redirect:http://chiwamall.com"
+    suspend fun login(@Validated userLoginVo: UserLoginVo): String {
+        val loginSuccess = loginService.login(userLoginVo)
+        return if (loginSuccess) "redirect:http://chiwamall.com" else "redirect:/login"
     }
 }

@@ -1,5 +1,6 @@
 package com.github.auth.feign
 
+import com.github.auth.vo.UserLoginVo
 import com.github.dto.ResultDto
 import com.github.to.UserRegisterTo
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,4 +17,7 @@ import reactor.core.publisher.Mono
 interface MemberFeign {
     @PostMapping("member/member/register")
     fun register(@RequestBody userRegisterTo: UserRegisterTo): Mono<ResultDto>
+
+    @PostMapping("member/member/login")
+    fun login(@RequestBody userLoginVo: UserLoginVo): Mono<ResultDto>
 }
