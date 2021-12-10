@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.ComponentScan
 import reactivefeign.spring.config.EnableReactiveFeignClients
 
 /**
@@ -13,6 +14,7 @@ import reactivefeign.spring.config.EnableReactiveFeignClients
  */
 @SpringBootApplication(exclude = [DataSourceAutoConfiguration::class, R2dbcAutoConfiguration::class])
 @EnableReactiveFeignClients
+@ComponentScan("com.github")
 class CartApplication
 
 fun main(args: Array<String>) {
