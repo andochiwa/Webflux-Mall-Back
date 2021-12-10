@@ -16,6 +16,13 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+  </dependencies>
+
   <build>
     <finalName>${project.artifactId}</finalName>
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
