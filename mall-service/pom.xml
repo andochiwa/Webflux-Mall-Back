@@ -20,6 +20,7 @@
     <module>mall-third-party</module>
     <module>mall-search</module>
     <module>mall-security</module>
+    <module>mall-cart</module>
   </modules>
 
   <properties>
