@@ -52,7 +52,7 @@
 						<input type="button" value="搜索" class="one_right_btn">
 					</div>
 				</div>
-				<div class="one_search_load" th:if="${userId}==null">
+				<div class="one_search_load" if="${userId}==null">
 					<img src="/static/cart/img/shop_07.jpg" class="one_load_wraing">
 					<span>您还没有登录！登录后购物车的商品将保存到您账号中</span>
 					<a href="#"><input type="button" onclick="login()" value="立即登录" class="one_load_btn"></a>
@@ -81,32 +81,32 @@
 
 				<div class="One_ShopCon">
 					<ul>
-						<li th:each="cartInfo:${cartList}">
+						<li each="cartInfo:${cartList}">
 							<div> </div>
 
 							<div>
 								<ol>
-									<li><input type="checkbox" class="check" th:value="${cartInfo.skuId}" onchange="checkSku(this)" th:checked="(${cartInfo.isChecked}==1)?'true':'false'" /></li>
+									<li><input type="checkbox" class="check" value="${cartInfo.skuId}" onchange="checkSku(this)" checked="(${cartInfo.isChecked}==1)?'true':'false'" /></li>
 									<li>
-										<dt><img th:src="${cartInfo.imgUrl}" src="/static/cart/img/shop1.jpg" alt=""></dt>
-										<dd th:onclick="'toItem('+${cartInfo.skuId}+')'">
+										<dt><img src="${cartInfo.imgUrl}" src="/static/cart/img/shop1.jpg" alt=""></dt>
+										<dd onclick="'toItem('+${cartInfo.skuId}+')'">
 											<p>
-												<span th:text="${cartInfo.skuName}">TCL 55A950C 55英寸32核</span>
+												<span text="${cartInfo.skuName}">TCL 55A950C 55英寸32核</span>
 											</p>
 										</dd>
 									</li>
 									<li>
-										<p class="dj" th:text="'￥'+${cartInfo.skuPrice}">4599.00</p>
+										<p class="dj" text="'￥'+${cartInfo.skuPrice}">4599.00</p>
 									</li>
 									<li>
 										<p>
 											<span>-</span>
-											<span th:text="${cartInfo.skuNum}">5</span>
+											<span text="${cartInfo.skuNum}">5</span>
 											<span>+</span>
 										</p>
 									</li>
 									<li style="font-weight:bold">
-										<p class="zj" th:text="'￥'+${cartInfo.totalPrice}">￥22995.00</p>
+										<p class="zj" text="'￥'+${cartInfo.totalPrice}">￥22995.00</p>
 									</li>
 									<li>
 										<p>删除</p>
