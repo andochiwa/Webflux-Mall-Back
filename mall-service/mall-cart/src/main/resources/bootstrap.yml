@@ -8,3 +8,5 @@ spring:
         extension-configs:
           - data-id: nacos.yml
             refresh: true
+          - data-id: redis.yml
+            refresh: true
