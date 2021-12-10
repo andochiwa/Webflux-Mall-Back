@@ -1,4 +1,4 @@
-package com.github.product.config
+package com.github.config
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
 import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
@@ -23,6 +25,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
  * @version 1.0
  * @since 11-13-02:53
  */
+@ConditionalOnClass(RedisOperations::class)
 @Configuration
 class RedisConfiguration {
 
@@ -30,7 +33,7 @@ class RedisConfiguration {
     fun reactiveRedisTemplate(
         reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory,
         resourceLoader: ResourceLoader,
-        mapper: ObjectMapper
+        mapper: ObjectMapper,
     ): ReactiveRedisTemplate<String, Any> {
         val stringSerializer = StringRedisSerializer()
         val jsonSerializer = Jackson2JsonRedisSerializer(Any::class.java)
