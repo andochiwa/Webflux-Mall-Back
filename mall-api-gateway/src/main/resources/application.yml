@@ -49,7 +49,7 @@ spring:
           predicates:
             - Path=/search/**
 
-        - id: host-product
+        - id: host-search
           uri: lb://mall-product
           predicates:
             - Host=chiwamall.com,item.chiwamall.com
@@ -59,7 +59,12 @@ spring:
           predicates:
             - Host=search.chiwamall.com
 
-        - id: host-product
+        - id: host-auth
           uri: lb://mall-security
           predicates:
             - Host=auth.chiwamall.com
+
+        - id: host-cart
+          uri: lb://mall-cart
+          predicates:
+            - Host=cart.chiwamall.com
