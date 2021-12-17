@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
  * @since 12-11-05:56
  */
 @Controller
-class CartController {
+class CartWebController {
 
     @GetMapping("cart", "cart.html")
     suspend fun cartListPage(): String {
