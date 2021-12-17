@@ -18,4 +18,9 @@ class CartWebController {
         println(Mono.deferContextual { ctx -> Mono.just<String>(ctx.get("token")) }.awaitSingle())
         return "cartList"
     }
+
+    @GetMapping("addToCart")
+    suspend fun addToCart(): String {
+        return "success"
+    }
 }
