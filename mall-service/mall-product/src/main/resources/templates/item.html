@@ -617,7 +617,7 @@
 
                 <div class="box-btns clear">
                     <div class="box-btns-one">
-                        <input type="text" name="" id="" value="1"/>
+                        <input type="text" name="" id="numInput" value="1"/>
                         <div class="box-btns-one1">
 
                             <div>
@@ -634,7 +634,7 @@
                         </div>
                     </div>
                     <div class="box-btns-two">
-                        <a href="http://cart.chiwamall.com/addToCart">
+                        <a href="#" id="addToCart" th:attr="skuId=${result.skuInfo.id}">
                             加入购物车
                         </a>
                     </div>
@@ -1259,6 +1259,13 @@
 <script src="/static/item/js/jquery1.9.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/item/js/js.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+
+    $("#addToCart").click(function () {
+        let num = $("#numInput").val();
+        let skuId = $(this).attr("skuId")
+        location.href = `http://cart.chiwamall.com/addToCart?skuId=${skuId}&num=${num}`;
+        return false
+    })
 </script>
 
 </html>
