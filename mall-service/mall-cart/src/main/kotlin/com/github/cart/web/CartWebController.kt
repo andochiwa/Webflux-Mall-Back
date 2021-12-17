@@ -1,8 +1,12 @@
 package com.github.cart.web
 
+import com.github.cart.service.CartService
 import kotlinx.coroutines.reactor.awaitSingle
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
 import reactor.core.publisher.Mono
 
 /**
@@ -13,14 +17,19 @@ import reactor.core.publisher.Mono
 @Controller
 class CartWebController {
 
+    @Autowired
+    lateinit var cartService: CartService
+
     @GetMapping("cart", "cart.html")
     suspend fun cartListPage(): String {
-        println(Mono.deferContextual { ctx -> Mono.just<String>(ctx.get("token")) }.awaitSingle())
+        println(Mono.deferContextual { ctx -> Mono.just<String>(ctx["token"]) }.awaitSingle())
         return "cartList"
     }
 
     @GetMapping("addToCart")
-    suspend fun addToCart(): String {
+    suspend fun addToCart(@RequestParam("skuId") skuId: Long, @RequestParam("num") num: Int, model: Model): String {
+        val cartItem = cartService.addToCart(skuId, num)
+        model.addAttribute("result", cartItem)
         return "success"
     }
 }
